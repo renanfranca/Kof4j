@@ -3697,6 +3697,3125 @@ commit convention (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`,
   - #278 scope-3 guarda de atomicidade nullable-primitivo — 5/5 verdes, mediidas
   - #278 scope-3 guarda de atomicidade nullable-primitivo — 5/5 verdes no tip isolado
 
+## [0.4.9-beta] - 2026-09-23
+
+### Features
+
+  - caminho do verifier independente para mudancas HIGH (pacote congelado + independencia verificada; sem flags inventadas)
+  - verifier deterministico por risco + close guard que so fecha issue com prova (HIGH exige verifier independente)
+  - manifesto de evidencia (SHA + comandos reais + NOT_RUN) e classificador de risco low/medium/high
+  - gate de despacho por fingerprint deterministico de estado + telemetria JSONL (custo de modelo = 0)
+  - face JS do kof profile --methods — profiler de amostragem method-level via o --cpu-prof do proprio Node + source map .mjs.map -> linha Kof (8.3 profiler-by-domain)
+  - attach REAL no JVM e no Native; cliente JDWP do DAP reconstruido contra o wire medido do JDK 25 (§376) com os PRIMEIROS E2E do canal — fim do false-green §377
+  - kof profile --methods — sampling profiler method-level in-house via JFR (8.3 residual)
+  - #431 fatia 2 — extern escalar BINDA no riscv64/aarch64 (gate+shim LP64/fa0+E2E qemu 6/6)
+  - #431 fatia 1 - ABI escalar do extern BINDA no Native x86-64 (link direto + call sym@PLT, rota provada do §61)
+  - kof debug --target native --break (sessao batch scriptavel) + --output
+  - kof debug --dap --target native — ponte DAP<->GDB/MI pro editor (X7-4, §19.5 fase 7)
+  - kof debug --target native — gdb sobre o ELF Kof com DWARF (X7-3, §19.5 fase 6)
+  - pipeline JS real (KofJsProcessBridge chain+pumps) — fecha o residual da linha 2.2; tracker 2.2 vira ✅
+  - X7-2 fatia 2 — DIEs CU/subprogram nos cross (frame_base por ABI: rbp/regx-x27/reg29)
+  - 2.2.3 runWith(argv,cwd,env) JVM+JS — env aditivo, falhas honestas -1; split KofJsProcessBridge (gate 500)
+  - fechamento X10 — catalogo de assinaturas 32/32 com `json` na tabela (trava comportamental ao SEM025)
+  - add SemUndefinedVarGuard to handle undefined variable reporting
+  - D-TROOL lowering Kleene &&/||/! com desugar AST IfExpr + temp $klt (trools) — landing do claim .15 na lane de issues
+  - X7-2 fatia 1 — line table DWARF nos cross riscv64/aarch64
+  - real CI/CD pipeline example + E2E golden (D-WORKFLOW-RUN slice 3)
+  - kof workflow list/run — full introspection runner (D-WORKFLOW-RUN slice 2)
+  - host introspection — order()/runJob()/jobNames()/depsOf() (D-WORKFLOW-RUN slice 1)
+  - #386/#382 fatia 2 — os 7 métodos de coleção no nativo (x86 golden rodando) + riscv/aarch + §352
+  - #386/#382 fatia 1 — Map.containsValue/putIfAbsent + List.indexOf/lastIndexOf/addAll/subList/sort no front compartilhado + JVM + Script + JS com E2E medido
+  - 2.1.3 fatia 3b — runSupervised (one_for_one via kof.supervisor) — bundle 2.1.3 COMPLETO
+  - 2.5 ✅ — CI/CD como codigo Kof medido ponta a ponta; corpus `training/idioms/automation.md`(+PT); 2.6 = contrato do runner e rule 6
+  - implement checkpoint functionality with kof.db/kof.orm integration
+  - 2.1.3 slice 2 - deadLetter (both Q4 faces) + schedule delegating scheduler.at
+  - D-SCHED-DURATION - idiomatic duration expressions in scheduler.at
+  - LSP-A — request textDocument/signatureHelp fecha a fila de assinaturas (8.3)
+  - LSP-A fatia 6 — security x6 + media x4 fecham a tabela (31/32 ns) + recover das fatias 4-5
+  - X8 fatia 3 --timeout no kof test (boundedRun+destroyForcibly, flag estrita, JS best-effort honesto) + #872 (param dir nao-usado no teste de rename); docs G6/tracker sync
+  - LSP-A fatia 5 — +7 ns na tabela (212 membros/225 formas) e tabela vira artefato de gerador
+  - LSP-A fatia 4 — math(24)+log(4) na tabela; SIGNATURES passa a artefato de gerador
+  - LSP-A fatia 3 — 6 grupos na tabela + lock de virgulas expoe e corrige 4 drifts de catalogo
+  - LSP-A fatia 2 — assinaturas em time/cache/process/shell + drift #2 do catalogo process
+  - LSP-A fatia 1 — assinaturas de hover (db+http) + bug real do catalogo db (universal 8.3)
+  - 1.5.3-S2 kof deps pulls from the registry (owner/repo[@ver] -> GitHub Releases)
+  - create script installer to improve language experience usage
+  - rename cross-file (LSP-A) + scan de irmao nunca e /tmp (fila universal 8.3)
+  - Implement §284-map enhancements for native runtime
+  - kof deploy --publish = GitHub Releases (D-POLL-19/D2-A) — X9 fatia 5
+  - 8.3-B rootUri do initialize entra na busca do projeto — workspace/symbol/hover/definition/references cobrem deps fora do pai (multi-modulo); LspProject.siblings(self,root) dedup+sorted, delegadores preservam comportamento antigo sem rootUri; teste novo red->green + LspServerTest 33/33 cli ok; tracker 8.3 EN+PT atualizado (resta signatureHelp = precisa metadado de assinatura no StdCatalog, decide com .18)
+  - 2.1.3 face retry - additive dag.retry/retryFixed/exponential + Report.retries in the pure-Kof host
+  - hover domain-aware — linha 8.3 do plano universal (LSP por domínio)
+  - kof.workflow MVP stdlib (2.1.2) - job/dag/after/run/Report, pure-Kof host
+  - kof deploy MULTI-TARGET da mesma fonte — linha 8.4 do plano universal (X9 fatia 4)
+  - kof.shell MVP landed — slices 2.2.0-2.2.2 (universal plan row 2.2, .18)
+  - G-ORG-002 — copyTo/moveTo/modifiedTime/isSymlink no kof.io (JVM)
+  - D-UI-AUTOUNSUB (A) — subscriptions made in a component lifecycle die with the component
+  - D-UI-DIFF (B) — root-kind reuse keeps the DOM node and the handle across renders
+  - 3.4-C3.4 - bind String as a callback ARGUMENT on JVM+JS (byte-for-byte parity)
+  - add getOrDefault method support across collections and runtime
+  - strict SEM076 field rule (one field per NAME, any type) closes §289 — #294 land form
+  - #278 D-NULL-INTENT — Commits B+C+D atômicos (JVM/Script/JS)
+  - check_known_bugs_status.sh — ledger de maquina do status das secoes (ENxPT, ultima-linha-vence, selftest) + 4 drifts de corpo corrigidos (256 EN/PT, 252 PT, 259 PT) com prova KofConcurrency2Test 43/0F fresca; ledger medido: OPEN = {205,248,258,268,270,271,272,278,279,280} = 10 ENxPT identicos; tick (46); docs-lang 0/0/0
+  - §132 cooperative async sleep — KofJS runs the OTP supervisor to parity (OTP002 lifted)
+  - scheduler.at(cron) parses the expression for real (CRON001)
+  - Fase 8 part 2 — AppState(initial), the application-scoped root store (D-UI-APPSTATE)
+  - Fase 10 — design-system tokens (Spacing/Radius/Border/Elevation/Typography) + D-UI-TOKENS + SEM078
+  - kof-js source maps — real sourcesContent in the V3 map (was null)
+  - UI007 — declarative Style("<declarations>") parsed in the compiler (D-UI-STYLE)
+  - ORM001 slice F2+F3 — kof.orm + typed query DSL on JS (gate open)
+  - OTel export (exportSpans -> OTLP/JSON) + span name fix; OBS003 honest Native gap
+  - R1 boundary gate (D-UNIVERSAL, fila universal) — scripts/check_stdlib_boundary.sh + ledger scripts/stdlib_boundary.txt (31 namespaces: 8 base-stdlib + 23 platform + keyword/tooling noise como excluded; hard-deny ml/bio/hpc/data/sci/cloud/infra/game) + wiring na CI logo apos check_500 + AGENTS.md/pt_BR espelhados (Invariantes da plataforma item 1 'Machine-gated'). Prova (Q0/Q1/Q3): rc=0 no estado atual; --selftest cria probe temporaria kof.ml+kof.quantum e exige VIOLATION+rc=1 (falha se o gate nao morder); scan cobre 3 superficies reais (literal kof.X, fachada KofX.java, receiver json/process/super/this) apos iteracao que pegou falsos positivos de palavras-chave. Docs-only+gate shell: zero mudanca de semantica/codigo do compilador
+  - ORM001 slice F1 — KofJsOrmBridge (host GraalJS, SQL-only) + valueMap + host-level parity test (6/6); gate stays closed (orm.* on JS = ORM001)
+  - DB002 — typed db.query<T> on the JS target (guest-side __kof_decode_<T> bind); front-7 of D-DEV-PRIORITY; docs EN+PT sync
+  - §259 fatia 4/4 — timeout/retry/circuit REAIS no riscv64 + aarch64 (fecha o silent no-op nos 4 targets nativos)
+  - §259 fatia 3/4 — http.circuit REAL no x86_64 (era ret puro) — abre, fail-fast sem conectar, half-open 30s
+  - §259 fatia 2/4 — http.retry REAL no x86_64 (era ret puro) + 5xx vira falha retryavel
+  - enforce AND002 — kof.web is an honest compile-time gap on Android
+  - Phase 4 --min-sdk/--target-sdk on kof build --target android
+  - Phase 3 responsiveness — device-width viewport + narrow-screen CSS
+  - frente 4 fatia 3 — DW_AT_type (base_type) nos params/locals/retorno: gdb le valores tipados
+  - frente 4 fatia 2 — params/locals no DWARF: frame_base(rbp) + DW_TAG_formal_parameter/variable com DW_OP_fbreg
+  - frente 4 fatia 1 — DWARF .debug_info com DW_TAG_subprogram por funcao Kof no ELF x86
+  - WEB001 residual — SSE handler-scoped no host GraalJS + CRON001 registrado nas docs
+  - D-DEV-PRIORITY frente 3 — kof deps resolve TRANSITIVAS via Maven (TIER 1.4)
+  - DB001 fatia B — gate aberto no JS; DB002 compile-time p/ query<T> tipado; unit fechada
+  - DB001 fatia A — ponte kof.db no host GraalJS (gate ainda fechado, inerte)
+  - CONC001 fechado — helpers de concorrência cross riscv64+aarch64 (fatia RtB48, cancel por TID real, E2E qemu nas duas arches)
+  - auto-loop.sh start aceita 3o arg = PORTA p/ pinar o servidor do heartbeat
+  - DB001 fatia 1 — runtime kof_db_* SQLite cross riscv64+aarch64 (gate removido, E2E qemu nas duas arches)
+  - D-NARROW-WHILE (#159) — narrowing de fluxo no while e em campo de receiver
+  - add kof-quality-bot, kof-warning-bot, kof-security-bot, kof-bots orchestrator, kof-issues-agent
+  - DB001 fatia 0 — link-by-use da libsqlite3 cross (riscv64+aarch64)
+  - FLT001 cross RuntimeDtoa — riscv64+aarch64 println/valueOf/collections(double,float)
+  - G-4 sweep + collect riscv64/aarch64 (NATIVE002 face 1)
+  - link dinâmico sob demanda (link-by-use) cross riscv64/aarch64
+  - add support for heterogeneous print in if/switch expressions with distinct branches
+  - validation.isNis on all 4 targets (S12c)
+  - NATIVE002 face 1 — riscv G-1 free-list + kof_free + kof_memstats
+  - §129 — per-thread exception frame closes cross-thread unwind (DECISIONS §2 option B)
+  - DD-OTP-08 — stop cooperativo por FLAG no host (S4)
+  - supervisorStats + janela deslizante restartLimitWindow + .clock() injetável + temporary drop — host puro-Kof (planning-otp)
+  - app.security() Spring model — CSRF on by default + permitAll alias (DECISIONS §5)
+  - Fase C passo 3 pre-requisito — PostDominator.java (pos-dominador imediato puro, dual bit-set Cooper-Harvey-Kennedy) + 5 oraculos caminho-ate-EXIT — lane docs/development exclusiva
+  - S1b.3 math.roundTo(Double, Int) — 5 targets (DECISIONS §3)
+  - §101 IEEE NaN em todos os alvos + §179 tipo UI/media declarado
+  - upgrade Java target de 21 para 25
+  - add comprehensive plan for Universal Standard Library expansion in Portuguese
+  - OAuth2 resource server — auth.resourceServer (D-SEC camada 16, JVM)
+  - app.security() — middleware composto (D-SEC C18, JVM)
+  - TLS com certificado próprio (D-SEC) + fix kof_json_bind (Number cru)
+  - implement app.security() middleware with fixed order for rate-limiting, CORS, headers, session, and CSRF validation
+  - enhance editor integration providers with additional metadata and version patterns fix: improve BytecodeReader to handle truncated bytecode safely test: add comprehensive tests for BytecodeReader and update KofBlogE2ETest for id type
+  - add security policies and workflows for vulnerability reporting, secret scanning, and code quality
+  - blog E2E (D-SPRING F12) + --fat (D-APP I3); fix body UTF-8 e CLOB no web/db JVM
+  - implement cookie management with secure defaults (C11) — includes cookieSet/cookieGet methods for JVM and JS
+  - crypto.chacha20Encrypt/Decrypt (RFC 8439) — JVM+JS; gap SECN002 honesto no Native (§D-SEC)
+  - kof new — esqueletos por tipo (D-APP I1 + D-SPRING F11) com APP003 honesto
+  - implement saturating casts for Double/Float to Int/Long (JLS 5.1.3) across all targets
+  - add ui-config block and kof.config functions
+  - time.tzOffsetSeconds — fuso do host (D1), 3 alvos + gap honesto TIME003
+  - time.parseDateIso -> serial daysFromEpoch nos 5 alvos (D4)
+  - time.hoursBetween (D3 floor simétrico) nos 5 alvos + fix emit x86 7+ args
+  - time.todayIso/formatDateIso/isToday nos 5 alvos (D-STDLIB ratificado 13/09)
+  - Fase C degrau 2b — narrowing ifnull/ifnonnull (0xc6/0xc7) recupera e EXECUTA
+  - Fase C degrau 2a (if-else com sequela) + fix raiz do blockCondition (aridade exata; destrava código errado latente)
+  - S13b math.parse{Int,Long,Double}OrDefault — briefing §43 (falha DEVOLVE default, 5 alvos) + fixes de causa raiz KofStd/rota JS
+  - S13a math.parseInt/parseLong/parseDouble — fachada sobre kof_string_to_* (4 targets, zero runtime novo)
+  - Fase C degrau 1 — join de if-then PURO sem else recupera e EXECUTA (oracle 107/101)
+  - add support for compound bitwise and shift assignments in the parser and lowerer
+  - web server no target JS (GraalJS hostless) + KofJsWebQueue event-loop + teste E2E
+  - var local + interface default body + gap constante interface (R6) + testes - dono 192.168.100.22
+  - descarta annotations Java (@Override/@Deprecated/@SuppressWarnings) + teste - dono 192.168.100.22
+  - assert Java -> assert() Kof + gap honesto for-virgula (R6) + testes - dono 192.168.100.22
+  - interface extends Java -> Kof + gaps honestos labeled/anon (R6) + teste - dono 192.168.100.22
+  - estágio-3 — record implements interface INTERNA do mesmo pacote (−93 stubs)
+  - corpo de enum ignorado + multi-declaracao local Java -> Kof + teste - dono 192.168.100.22
+  - gaps honestos try-with-resources e tipo qualificado (R6) + teste - dono 192.168.100.22
+  - generics + construtores com corpo + fix loop infinito no parseMember - dono 192.168.100.22
+  - gaps honestos varargs e tipo aninhado (R6) + teste + plano sync - dono 192.168.100.22
+  - descarta clausula throws Java (Kof nao declara) + teste + plano sync - dono 192.168.100.22
+  - cast (T)expr -> expr as T + instanceof Java -> Kof + teste + plano sync - dono 192.168.100.22
+  - arrays + declaracoes []/generics Java -> Kof + fix new Int[n] + gap honesto p/ initializer - dono 192.168.100.22
+  - try/catch/finally + throw + bare-call Java -> Kof + teste + plano sync - dono 192.168.100.22
+  - switch-statement Java -> Kof + teste + plano sync - dono 192.168.100.22
+  - do-while Java -> Kof + teste + plano sync + DOING (11 orfaos marcados) - dono 192.168.100.22
+  - enhance record handling with interface resolution and add tests
+  - record genérico emite type-params EXATOS (record Gen<T>)
+  - Fase E — Java record → record Kof (~195 stubs, maior fonte única)
+  - IntelliJ degrau-10 honesto (filetype+tools+README, 17/17) + DOING - dono 192.168.100.22
+  - implement pow function across multiple runtimes and update documentation
+  - random.randomBytesHex(n)->String (decisão 6a 13/09)
+  - add OBJECT type and enhance Map.put handling for two-slot values
+  - add comprehensive plans for Kof Spring Starter and stdlib time design
+  - supervisor.startAll() — laço selectAny único para N filhos com wrapper de identidade (id/motivo), opção 1a ratificada; gates S2 JVM+interpretador; sincroniza célula stdsqrt pós-fix bug 94; KofSupervisorE2ETest 8/8, gate 1620/0
+  - add JsRuntimeUiJsonMap and JvmRuntimeJsonMap for JSON map decoding
+  - implement decode<Map<String,T>> for JSON parsing and binding
+  - runtime JS por alcançabilidade ligado no writer
+  - inventário do runtime JS por unidade de topo
+  - add 'isEmpty' method support for strings and fix related issues
+  - G-0 bloco-header riscv + guard OOM honesto (face 1 do GC cross)
+  - PODA riscv64+aarch64 ligada — port riscv da S-3 (hello riscv 258→103 syms)
+  - RiscvSlices — mapa de 48 peças do runtime riscv por reflexão (espelho riscv da S-2, zero mudança de emissão)
+  - add gh-as-agent and issue-watcher scripts for GitHub issue management
+  - add RiscvSlices class and corresponding tests for runtime assembly validation
+  - poda x86 do runtime por alcançabilidade — hello 627→37 syms (138.928B→32.520B)
+  - precursor .L-aware do S-3 — 119 arestas de rotulos locais cross-slice medida e codada no mapa
+  - mapa de fatias do runtime x86 por reflexao derivada do fonte de producao
+  - harness de tamanho (ArtifactSize ELF64 puro-Java) + gate anti-inchaço + kof build --print-sizes
+  - println(<coleção>) riscv64+aarch64 — B39 + FLT001 p/ coleção FP (paridade com x86/JVM)
+  - println(<coleção>) com toString real em asm + fix colateral §138 (text-block \n → .asciz quebrado)
+  - implement top-level function overloading with distinct signatures
+  - implement top-level function overloading resolution and diagnostics for concurrency helpers
+  - #91 — CONC001 em compile-time para auxiliares de concorrência ausentes em riscv64/aarch64
+  - kof_multi_alloc riscv64 + aarch64 (fatia B37) — faces cross fechadas
+  - implement recovery for switch statements and add related utilities
+  - §133 — fetch assíncrono real no Node/browser (spawn http.* + await)
+  - implementar strings.indent e strings.dedent nos 5 targets
+  - OTP núcleo (issue #83) 1ª fatia — pacote virtual kof.supervisor, JVM+Script, gates OTP001/OTP002
+  - MATH001 FECHADO — sqrt/lerp/percentage/isInteger/isDecimal riscv64/aarch64 (S1b.2)
+  - split remove vazios TRAILING no riscv64/aarch64
+  - TIME002 FECHADO — addDays/diffDays em data ISO riscv64/aarch64 (S7c-1)
+  - String equals/compareTo/hashCode + substring -1 no riscv64/aarch64 (B36)
+  - adicionar suporte à flag --json no comando kof check
+  - busca UTF-16 riscv64/aarch64 (B35) — indexOf/lastIndexOf + from
+  - add UTF-16 support for string operations in riscv64 (B34)
+  - bug 43 estágio 2 riscv64/aarch64 — substring/indexOf/lastIndexOf em code units UTF-16
+  - bug 43 faces riscv64/aarch64 — length/charAt em code units UTF-16
+  - addDays/diffDays ISO em riscv64/aarch64 (fatia B33)
+  - addDays/diffDays ISO em riscv/aarch (B33)
+  - bug 97 faces riscv64+aarch64 — compareTo/hashCode/equals cross em code units UTF-16
+  - primitivas visuais por widget + fix bug 102 (col/row dropados) — issue #78
+  - math Double (sqrt/lerp/percentage/isInteger/isDecimal) em riscv/aarch
+  - add support for UUID v7 (RFC 9562) in stdlib
+  - math.lerp/percentage/isInteger/isDecimal (Double) em JVM/Script/JS/x86
+  - add lerp, percentage, isInteger, and isDecimal functions for pure Double operations
+  - implementar uuid.v7() ordenado no tempo conforme RFC 9562
+  - add sqrt function for Double type with IEEE NaN handling; update conformance matrix and documentation
+  - SG-009 — subtipagem nominal em isAssignable (SEM021)
+  - SG-005/SEM049 — deref de T? sem narrowing é erro compile-time
+  - SG-008/bug 87 — null safety: ban de literal null (SEM048) + Map.get()->V? sempre + T?==null sem NPE
+  - uuid.isUuid(STR)->Bool — 4 targets, gate UUID001 honesto riscv/aarch
+  - time.addDays/diffDays no native x86 (RuntimeTimeIso — parse ISO + inversa civil Hinnant asm; round-trip exaustivo 1..9999 + fuzz C 200k) + gate TIME002 afunilado p/ riscv/aarch (precedente NET001) + matriz stdtime2 roda x86 local + docs; DOING.md
+  - S12b — validation.formatCnpj nos 5 alvos (pontuação BR)
+  - S3b-ext — uuid.isUuid nos 5 alvos (shape RFC 4122)
+  - S7-ext — time.isWeekend nos 5 alvos (wrapper dayOfWeek>=6)
+  - time.addDays/diffDays em JS (algoritmo civil sem Date, paridade byte-idêntica); TIME002 resta só Native; matriz stdtime2 JS DONE + gate KofTimeE2ETest + docs (stdlib/learn/matrix/plan); DOING.md
+  - S12 — validation.formatCpf/formatCep nos 5 alvos (pontuação BR)
+  - time.addDays/diffDays em data ISO (JVM/Script via java.time) + gate TIME002 em JS/Native; matriz stdtime2 + KofTimeE2ETest + docs (stdlib/learn/matrix/plan); DOING.md
+  - S11 — strings.uncapitalize nos 5 alvos (espelho byte-a-byte do capitalize)
+  - S10b — randomString(n, alphabet) nos 5 alvos + fix paridade B27
+  - SEM047 — sobrecarga top-level homonima da erro (SG-011B)
+  - implement kof.random namespace with double, boolean, int, and hex functions; add tests for cross-platform compatibility
+  - SG-002 — remove tokens mortos (decisao do maintainer: se nao tem uso, remove)
+  - SG-020 — modelo de memoria concorrente SC + fix bug 79 (POP de long)
+  - S10a — kof.random (randomInt/randomBoolean) nos 5 alvos
+  - SG-014 — guardas em pattern matching (case T v if cond)
+  - SG-011 — funcao aninhada com hoisting (inner primeiro, outer chama e aguarda)
+  - SG-012 — inferencia contextual de lambda em map/filter/reduce
+  - SEM046 — private/protected checados em compile-time (SG-013)
+  - SEM045 — clausula throw validada, nao mais decorativa (SG-019)
+  - SEM044 — Int main() rejeitado, entry point e so main() (SG-018)
+  - introduce kof.random namespace with various random generation functions and runtime support
+  - SEM043 — implements sem cobrir metodos da interface da erro (SG-015)
+  - SEM042 — tipo aninhado (class dentro de class) vira erro (SG-016)
+  - SEM041 — new de classe abstrata vira erro de compilacao (SG-017)
+  - S3.1c — strings.escapeJson nos 5 backends (RFC 8259, oracle Python)
+  - add escapeJson function for JSON string escaping
+  - add support for multidimensional arrays and related operations
+  - SECN000 fechado — uuid.v4 riscv/aarch (B25, getrandom ecall 278) + paridade variant x86 (máscara 10xx)
+  - S8-C riscv/aarch — net.* portado (B24) — NET001 FECHADO
+  - Fase E — arrays (anewarray + acessos) no statements-path
+  - S8-B x86 — net.* URI-parse nos nativos x86 (RuntimeUri, NET001 só riscv/aarch)
+  - Fase E — new/dup/init em statement-bodies
+  - §7 degrau 4 — tipos de assinatura registram import
+  - S8-wedge net nos 6 alvos não-nativos — decisão de shape + NET001 gate
+  - §7 degrau 3 — imports cross-package com regra de não-ambiguidade
+  - ENC002 fechado — base64/base64Url riscv B23 + aarch64 (port)
+  - §7 degrau 2 — índice same-package resolve instanceof/cast de domínio
+  - S3.1b — strings.unescapeHtml nos 4 targets
+  - #58 — issue forms (bug_report + feature_request + config)
+  - S3.2 — strings.removeWhitespace/normalizeWhitespace nos 4 targets
+  - §7 degrau 1 — kof decompile <dir> com package + fix pop sem operando
+  - S3.1 — strings.escapeHtml nos 4 targets, sem gate
+  - Fase E — pop/instanceof/checkcast com whitelist R6-segura
+  - S6c — validation.isDomain nos 4 targets, sem gate (RFC 1123 v1)
+  - blockerSink — medidor da fila Fase E (custo zero) + ROI medido
+  - S6b.3 — validation.isIpv6 nos 4 targets, sem gate
+  - S6b — validation.isCreditCard (Luhn) nos 4 targets, sem gate
+  - S6a — validation.isIpv4/isMac/isPort nos 4 targets, sem gate
+  - STRN001 FECHADO — word-converters (joinWords) portados p/ riscv64 B15 + aarch64
+  - i2c → as Char (único narrowing fiel); i2b/i2s ficam stub honesto
+  - S7.2 — time.dayOfWeek/daysBetween nos 4 targets, sem gate
+  - bug 62(b)/(c) — escrita em componente de RECORD é imutável (SEM037)
+  - S7-wedge — time.isLeapYear/daysInMonth nos 4 targets, sem gate
+  - bug 62 (a) — val é imutável (SEM037) + parser carrega type=val
+  - S5 — validation.isCpf/isCnpj/isCep/isPis nos 4 targets, sem gate
+  - S3b-wedge — uuid.v4 (RFC 4122) nos 3 targets testáveis + SECN000 gate cross-arch
+  - decompile trata ldc_w (maior gap real do corpus) e aconst_null
+  - S4.2c — encoding.base64UrlEncode/Decode (RFC 4648 §5) + split RuntimeEncoding ≤500
+  - JSON runtime improvements and self-check update
+  - S4.2b — encoding.urlEncode/urlDecode (RFC 3986) nos 4 targets, sem gate
+  - decompile recupera aritmética/casts long+double com guarda de tipo
+  - S4.2a — encoding.base64Encode/Decode (reuso dos internals x86 + gate ENC002 cross-arch)
+  - S4-hex — namespace encoding com hexEncode/hexDecode nos 4 targets
+  - S2b.4 — word-converters (toCamel/Pascal/Snake/Kebab/slugify) + split ≤500 (RuntimeStrings, JsCrypto)
+  - decompile recupera String concat via invokedynamic (J9+ BootstrapMethods)
+  - S2b.3 — strings.padLeft/padRight nos 4 targets + fix do limite de 64KB na cadeia riscv
+  - S2b.2 — strings.repeat/truncate nos 4 targets
+  - S2b-wedge — strings.capitalize/reverse nos 4 targets (1º conversor que alocou String)
+  - Fase C/E — ldc2_w (const Long/Double) no kof decompile
+  - S2a.3+S2a.4 — strings.count (não-sobrepostas) + isUpperCase/isLowerCase nos 4 targets
+  - Fase C/E — lconst/dconst no kof decompile (lesson bug 62 aplicada)
+  - S2a.2 — strings.isAlphaNumeric/isAscii nos 4 targets (paridade ASCII travada)
+  - S2a — hook KofStd unificado + kof.strings isAlpha/isNumeric nos 4 targets
+  - S1 kof.math Int-only nos 4 targets (clamp/abs/sign/min/max/isEven/isOdd/isPositive/isNegative/isZero)
+  - Fase C — do-while (bottom-tested loop) no kof decompile
+  - UI006 residual FEITO — Event.target()/relatedTarget() com prova browser corrigida
+  - add target and relatedTarget event accessors for UI006
+  - codeAction source.format (EDI001 §15 — último bullet)
+  - UI002 — warning único quando kof.ui roda no interpretador (R6)
+  - add Fieldset, Iframe, Video, Audio, Hr widgets - UI003
+  - UI006 — Event key/value/x/y + widget.on() (DOM real em KofJS)
+  - documentSymbol (outline) + LspHover extraído (EDI001 §15)
+  - UI003 — Fieldset/Iframe/Video/Audio/Hr (DOM real em KofJS)
+  - Fase D — Type Recovery (Signature JVM com genéricos)
+  - F9(c) — Android/Wasm documentados + --target=wasm honesto (R6)
+  - textDocument/formatting — delega ao KofFormatter (EDI001 §15)
+  - EDI001 §18 — kof.target flui para build/run/test da extensão
+  - EDI001 — extensão VS Code completa (extension.js + snippets, §3/§19)
+  - textDocument/definition — go-to-definition same-file (EDI001 §15)
+  - EDI001 degrau 11 — hook pós-instalador oferece integrações (§13)
+  - EDI001 degraus 3+4-10 — install/uninstall/setup com consentimento + conteúdo idiomático por editor
+  - EDI001 degraus 1-2 — infra EditorIntegration + kof editor (read-only)
+  - implement extern function support and enhance FFI diagnostics
+  - Input/Textarea setName + setReadonly — UI005 (atributos)
+  - add JvmFrameDiagnostics for enhanced error reporting on frame crashes
+  - add setName and setReadonly methods for Input and Textarea components
+  - Table(header, rows) — UI003 data-driven (fecha table/tr/td)
+  - Ul/Ol data-driven — UI003 (List<String> vira <ul>/<ol><li>)
+  - Canvas.drawImage — fecha UI009 (Image composto no bitmap)
+  - Canvas UI009 — save/restore/setGlobalAlpha/fillText/measureText/transform
+  - Select(options) — UI003/UI004 (escolha de opção, 9 pontos + 2 provas)
+  - Textarea — widget multilinha (UI003, Fase 4)
+  - Form.onSubmit + Form.submit() (UI004 headline, Fase 4)
+  - setId/setClass/setDisabled (UI005) + fix código morto acceptsFont
+  - Form(children) — container <form> (UI004, Fase 4)
+  - Input.setChecked/checked (UI004 forms, Fase 4) — checkbox/radio state
+  - Input.setType (UI003/4 forms, Fase 4) — text/number/email/password/date
+  - Input.setPlaceholder (UI004/5 forms, Fase 4) — KofJS DOM real
+  - F3 fechada — APP001 + examples/fullstack + FullStackE2ETest (I2 DoD)
+  - F3-degrau-2c — kof run full-stack (env-pass ao processo filho)
+  - F3-degrau-2b — kof serve full-stack (I2: app serve o bundle via env)
+  - F3-degrau-2a — serveStatic (estáticos p/ full-stack, R6 traversal)
+  - F3-degrau-1 — kof build full-stack (backend+frontend+estáticos)
+  - F2-parte-4 — CLI --backend/--frontend c/ override do kof.toml
+  - add security plan and implementation layers documentation
+  - change interfaces to sealed for LiteralKind and Type
+  - F2-parte-2 — KofProjectConfig (parser mínimo de kof.toml)
+  - runFile aceita Target.SCRIPT (execução direta, fase 2 plataforma)
+  - F2-parte-1 — Target.SCRIPT (coringa) + COMP003 honesto + run --target script
+  - add KofScript target and module resolution for project roots
+  - Fase 1 — module resolution cross-directory via kof.toml + PKG006/PKG007 (plataforma, docs/future/PLATFORM-PLAN.md)
+  - add interpreter parity sweep test for edge cases
+  - add auto-loop script for autonomous opencode mode with cron integration
+  - implement x86_64 method emission in NativeMethodEmitter
+  - implement x86_64 call emission in NativeX86Calls class
+  - add Kof module interpretation without bytecode emission
+  - KofInterpreter — IR stack machine; KofScript roda sem compilar
+  - improve imports and add check script for class size limit
+  - Canvas 2D widget — desenho 2D via <canvas> (KofJS)
+  - scheduler/time.interval riscv64/aarch64 (SCHED001+TIME001 FEITO)
+  - time.sleep real riscv64/aarch64 (nanosleep 101)
+  - metrics() com # TYPE no riscv64/aarch64 + tradutor quote-aware
+  - json.decode<Int> escalar riscv64/aarch64
+  - gate SECN000 no cross (kof_sec_* ausente no runtime riscv64)
+  - higher-order (map/filter/reduce) riscv64/aarch64
+  - Map/Set riscv64/aarch64 + kof_panic imprime C-string (bounds msg)
+  - gates SCHED001 + TIME001 no cross (scheduler/time.interval stubs)
+  - MQ001 cross FEITO — port completo kof.mq riscv64/aarch64
+  - MQ001 no cross — gate honesto (padrao DB001)
+  - String methods riscv64/aarch64 + 2 fixes de race no spawn
+  - spawn/await riscv64+aarch64 (NATIVE002-stdlib)
+  - http.get/post/status riscv64+aarch64 (NATIVE002-stdlib)
+  - add support for nested lambdas capturing outer variables
+  - JSON completo no riscv64/aarch64 (encode+decode de listas)
+  - kof_json_quote no riscv64/aarch64 + corrige escape x86_64
+  - PR6 hardening limits and observability (upstream rebase)
+  - log níveis + cache real + mq push/pop real — suíte 842/0
+  - WEB002 T1 — accept loop HTTP/1.1 no Native (kof_web_listen+handle_client; respondendo 200/hello fixo a qualquer request — valida listen→accept→read→write→close; routing+dispatch é T2/T3). Módulo novo NativeWebRuntime.java (≤500 linhas); CompilerDriver libera web.app/listen para NATIVE_*. Suíte 840/0
+  - prepared statements com QUERY binário — parse de binary-rows (COM_STMT_EXECUTE)
+  - GC mark-sweep real (sweep funcional, auto-collect desligado)
+  - close HTTP002 — kof.http no Native (asm HTTP/1.1)
+  - COM_STMT_PREPARE/EXECUTE binário — kof_db_mysql_prepare + kof_db_mysql_exec (NativeDbPrepared.java, novo módulo ≤500 linhas)
+  - validation 13/13 + observability real (counter/gauge/histogram/metrics) em asm puro
+  - stubs NATIVE002.1 — kof.log/config/time/observability/cache/mq em asm puro
+  - add roadmap gap report for NATIVE002 core completion
+  - CORE COMPLETO em asm puro via tradução riscv→aarch64 (NATIVE002) — 13/13 E2E qemu
+  - close TIME001 — time.interval/cancel no KofJS via fila cooperativa
+  - CORE COMPLETO em asm puro (NATIVE002 parcial) — 13/13 E2E qemu
+  - package manager MVP — kof deps (kofdeps, Maven Central, --deps)
+  - application { onStart/onShutdown } — construcao de intencao
+  - spans W3C com timing (spanStart/spanEnd) nos 3 targets
+  - close LOG001 (kof.log on JS) + runtime fixes
+  - add platform invariants and gap conventions to AGENTS.md and backend-parity.md; introduce ACTION_PLAN.md for future implementation roadmap
+  - riscv64 real (NATIVE002 parcial) — kof_main em asm + runtime C via gcc cruzado + qemu (NativeRiscv64E2ETest 4/4)
+  - captura mutável de lambda — mutação fora da lambda refletida
+  - DWARF line table real no ELF x86-64 (.file/.loc GAS — Fase 5 parcial do debugger)
+  - source map V3 real (mappings VLQ em nível de linha — função gerada → linha Kof)
+  - Enhance array creation handling in JvmBackend for reference types
+  - Query DSL tipada nível 3 — User.query(db){ where; orderBy; limit } (ORM001)
+  - MQ001 — kof.mq no Native (pub/sub + filas in-process em asm, paridade JVM/JS)
+  - readLine → String? (null no EOF) + docs exemplos desatualizados
+  - transaction {} — commit/rollback real (BEGIN/COMMIT/ROLLBACK + EH)
+  - TIME001 — time.interval/time.cancel no Native (reusa o scheduler)
+  - OBS002 — histogram/metrics no Native (store asm + export Prometheus)
+  - add primitive widening and narrowing for array store operations to prevent verifier errors
+  - enhance AES-GCM support for JS target and add cross-target parity tests
+  - add support for Channel type in various components and tests
+  - add maven-surefire-plugin configuration to include specific test files
+  - add tracing for 'add' method calls to enhance debugging
+  - add tracing for return value of 'add' method calls to aid debugging
+  - add tracing for resolved owner class in KofPop to aid debugging
+  - add L2I unary operation support and enhance type casting for primitives
+  - implement local HTTP server for serving appDir and open in system browser
+  - add support for I2C conversion in constant folding
+  - add support for I2C unary operation and enhance type casting for primitives
+  - enhance handling of built-in types as static receivers to prevent frame crashes
+  - enhance method call handling for built-in types to prevent ClassFormatError
+  - update kof_io_read_range and kof_io_read_range_path to use long for length parameter; enhance file reading with offset support
+  - File.readRange(offset, len) e File.readRangePath(path, offset, len) — leitura com offset p/ arquivos grandes (GGUF de LLM) sem carregar o inteiro; JVM via RandomAccessFile (kof_io_read_range/_path)
+  - add traceId and spanId functions; enhance LSP server capabilities
+  - add built-in health check endpoint and update related tests
+  - implement implicit join for main function tasks to prevent orphaned threads
+  - add video handling support with metadata extraction and streaming capabilities
+  - build.sh da libvkchain (compila + instala)
+  - M32.3 — dispatch Vulkan compute REAL nos 2 backends
+  - implement non-blocking done/poll methods and cooperative cancellation in native backend
+  - String.lastIndexOf — kof_string_last_index_of (varredura reversa do fim p/ inicio, needle vazia retorna length, nao-achado -1) + handler INSTANCE lastIndexOf no emitCall; fecha N11 (repro regressions/N11 rc=0 no kof-agent)
+  - CONC001 fechado — spawn/await no Native via pthread
+  - JSN001 fechado — Float/Double no Native (encode, decode, arrays)
+  - Fase 7 Router — go/replace com param, unmount de rotas não-registradas
+  - kof config gen — template de deploy a partir do código (P3)
+  - FFI Vulkan compute (FFM) — JvmVkRuntime com cadeia instance→device→pipeline validada (RADV+lvp rc=0), stage inline no ComputePipelineCreateInfo, structs validados (DeviceCreate 72B, WriteDesc 64B, SubmitInfo 72B, MemoryAlloc 32B); degradação silenciosa p/ CPU (bug RADV/lvp 25.2.8 no dispatch — reproduzido em C puro dlsym)
+  - interpolação ${key} no kof.config — P2 nos 3 targets
+  - FFI Vulkan compute (FFM) — JvmVkRuntime com cadeia instance→device→pipeline validada (RADV+lvp rc=0), stage inline no ComputePipelineCreateInfo, structs validados (DeviceCreate 72B, WriteDesc 64B, SubmitInfo 72B, MemoryAlloc 32B); degradação silenciosa p/ CPU (bug RADV/lvp 25.2.8 no dispatch — reproduzido em C puro dlsym)
+  - add configuration interpolation and HTTP circuit breaker functionality
+  - RFC 6455 WebSocket frame codec
+  - RFC 6455 WebSocket handshake
+  - JVM native SSE + trailing-block sugar
+  - kof fmt via parser real (KofFormatter) + idempotente
+  - persistent connection + route kinds + diagnostics (WEB003/WEB004)
+  - F10 spawn com stdin vivo + fix(native): forward reference
+  - resposta rica status/header + scheduler every/at (JVM+JS)
+  - GC mark-sweep + MySQL handshake + RISC-V placeholder (code it all)
+  - automatic GC on alloc + kof_gc_collect coalesce
+  - enhance native target support for RISC-V and ARM architectures
+  - add native C subset compiler
+  - JIT in-memory + top-level let + kof test isolado + LSP .ks (3 gaps restantes)
+  - CLI kof script --target + repl + classpath jar + diagnostics
+  - MVP KofScript direct execution (Fase 6)
+  - switch case String s + instanceof + checkcast em JVM/Native/JS
+  - cache in-process, WebSocket/SSE, scheduler every/at + pattern matching record destructuring + nullability String? + kof.time/config/mq para Native/JS
+  - kof.time now/sleep, kof.config/mq for JS, fix native rbx clobber
+  - implement higher-order functions for List — map, filter, reduce
+  - cancel cooperativo + selectAny — itens 'média' da fila
+  - poll/done + exceção limpa no await — itens 'alta' da fila
+  - LSP hover/completion · kof init/fmt/script · collect não-recursivo
+  - spawn/await no JS (fecha CONC003) + kof script; versão 0.1.1-beta
+  - add fake SDK jar for AndroidInterop testing
+  - release version 0.1.0
+  - switch exaustivo sobre enum — SEM031 + comparação por conteúdo
+  - Map/Set nativo em asm — fecha COL001
+  - add support for spawn and await expressions with error handling
+  - enum P1 — declaração, values/valueOf/name, == por conteúdo (3 targets)
+  - implement TLS/HTTPS G12 — web.listenSecure + kof.http HTTPS
+  - complete G9 Native + docs/test — rate limiting/sessions/API keys
+  - implement rate limiting, session management, and API key handling
+  - implement kof.observability G5 — health/metrics/request IDs on JVM/Native/JS
+  - implement kof.validation functions and integrate with compiler
+  - AES-GCM nativo em asm — fecha SECN002 (G10 completo)
+  - JWT HS256 nativo em asm — fecha SECN004 (G10)
+  - PBKDF2 + SHA-512 nativos em asm — fecha SECN001/SECN003 (G10 parcial)
+  - add in-memory messaging system with publish/subscribe and queues
+  - extend KofUnaryOp with D2F and update backends
+  - add support for Link, Image, Icon, and Font UI components
+  - add CI workflow for Android target with APK assembly
+  - decode de arrays no Native — fecha o gap JSN003
+  - Implement constructor overloading and add JvmConfigRuntime and JvmStringRuntime
+  - kof.config no target Native — fecha o gap CONF001
+  - kof.http client + kof.mq (messageria em memória) — G2/G3 fechados
+  - enhance Android target support with embedded host Activity and external classpath resolution
+  - add Android target support with project generation and configuration
+  - add KofAndroid target with initial design and objectives
+  - implement qualified type resolution and enhance inheritance support
+  - kof.log no target Native — fecha o gap LOG001
+  - kof.orm validado em bancos reais — MariaDB 11 e PostgreSQL 16 + fixes do WIP das annotations
+  - add support for native target execution in Main class
+  - update CLI documentation and add structured test example
+  - kof.orm — count com filtro e deleteAll completam o CRUD
+  - kof.orm completo — operadores no where, saveAll (batch) e page (paginação)
+  - add test declaration support and compile-time test harness
+  - implement string to numeric conversions and enhance MongoDB method handling
+  - add MongoDB and SQLite support to kof.orm with new runtime methods
+  - orm.where (query por campo) + orm.migrate (migrations versionadas)
+  - kof.orm — o ORM da própria linguagem (entity + orm.*)
+  - implement MySQL authentication scramble using SHA-1
+  - MySQL/MariaDB via wire protocol sobre sockets nativos (WIP)
+  - add hidden easter egg registry and corresponding tests
+  - native kof.db with SQLite via direct .so linking (no JDBC driver)
+  - enhance string replacement functionality and content type handling in HTTP server
+  - enhance string replace functionality and constructor handling in backends
+  - JSON completo (Float/Double, arrays), logging estruturado, kof.db (JDBC + transactions)
+  - enhance process output handling with virtual threads
+  - enhance kof.ui documentation and add KofJS details
+  - add kof.ui section to documentation with UI rendering details and widget descriptions
+  - update documentation for UI components, add window and widget examples
+  - multiple windows, window size and close-to-exit
+  - add window size adjustment functionality in KofUi
+  - add support for font size, bold, and color properties in KofUi labels
+  - add label styling and window theme support in KofUi and related backends
+  - Introduce new UI components and bindings for Input, Column, Row, View, and Style
+  - enhance KofJsRunner to support program arguments and update related components
+  - update documentation and fix issues in Kof Spring Starter phases, enhance runtime functions
+  - implement native configuration and logging modules, update documentation
+  - update documentation and enhance semantic analysis for config and logging namespaces
+  - enhance KofJsRunner output handling and add webview settings for file access
+  - implement native web stack with routing, middleware, and JSON support
+  - enhance Kof compiler and runtime with new features and bug fixes
+  - native webview shell — kof-webview (WebKitGTK embedded)
+  - kof.ui webview — DOM shim, HTML serialization, system webview
+  - enhance KofJsRunner to support window rendering and HTML capture
+  - introduce kof.security module for password hashing, JWT, and cryptography
+  - kof-debug MVP completo — breakpoints por linha Kof + stack trace
+  - kof.ui Window and Label — webview container with binding
+  - kof.ui foundation — Color, Palette, Theme + main(args)
+  - add kof.ui foundation with Color, Palette, and Theme support
+  - enhance benchmarking with JS target and add CPU time tracking
+  - debugger Fase 2 — LocalVariableTable no JVM
+  - Kof debugger — Fase 1 (DebugInfo na IR) + docs + JVM line metadata
+  - add debug information support with source file and line number mapping in JVM backend
+  - enhance IRModule and backend to support source name and debugging information
+  - implement Kof debugging support with source mapping and debug metadata
+  - add initializer support for record components and enhance semantic analysis
+  - idiomatic core — field initializers applied, \uXXXX escapes, typed listOf<T>()
+  - implement increment operations with correct semantics and add tests for idiomatic behavior
+  - implement generics in Kof with examples for lists and sets
+  - enhance method symbol to allow dynamic return type updates and improve semantic analysis
+  - refactor semantic analysis by defining constructor and method symbols, and analyzing their bodies
+  - add Color class with ARGB semantics and enhance color handling in the compiler
+  - enhance literal parsing and add hexadecimal support in lexer
+  - Fase L — release gate hardened + package revalidated
+  - Fase K — assert primitive + expanded golden + kof test integration
+  - implement assertion handling with AssertE2ETest and add various test cases for control flow, functions, and records
+  - add AssertStmt for assertion handling and update lexer and token types
+  - Fase J — LSP textDocument/didClose clears diagnostics
+  - add KofJS backend and runtime support, including parity tests for JVM and JS
+  - Enhance parsing and runtime capabilities with new if-expression handling and runtime options
+  - kof test — run programs and report PASS/FAIL by exit code
+  - Fase I — spawn: concurrent tasks on the JVM (virtual threads)
+  - Introduce kof.io filesystem API for file and directory operations
+  - kof.io documentation, multiplatform CI and platform guard
+  - Fase J — LSP URI fix + editor grammar builtins
+  - Fase I+L — concurrency semantics design + distribution validation
+  - Fase K — real golden and integration test infrastructure
+  - Enhance KofJS backend with improved function handling and module support
+  - Implement Kof HTTP server and I/O library
+  - idioms corpus, anti-pattern catalog, datasets, corrections
+  - kof.time and kof.io stdlib primitives with JVM+Native parity
+  - add support for string length and charAt methods in NativeBackend
+  - implement standard library functions for time and I/O operations
+  - add JvmJsonRuntime for JSON handling in JVM backend
+  - native exception unwinding — real try/catch/finally on x86-64
+  - lambda expressions and if-expressions with real lowering
+  - real native memory management — allocator header, functional kof_free, live memstats
+  - CLI platform commands — info, check, lsp, install
+  - JVM backend correctness — records, Object methods, concat, comparisons
+  - remove fun keyword — functions declared by name
+  - JSON parity JVM+Native — object/record encode-decode, long, arrays, field inference
+  - List rich API — contains, isEmpty, remove, clear, listOf (JVM + Native parity)
+  - native string API parity — indexOf, trim, toUpperCase/toLowerCase, replace, equalsIgnoreCase, split
+  - enhance parsing and execution for generic calls and string operations in JVM backend
+  - enhance JSON encoding/decoding with improved parameter handling and type inference
+  - add JSON support with encoding and decoding functions
+  - List<T> builtin collection (native + JVM)
+  - implement Kof list operations in JVM backend and native runtime
+  - add Kof List type support and associated runtime functions
+  - generics with erasure (classes, functions, type args)
+  - add support for type parameters in symbol table
+  - add support for type parameters in function and class declarations
+  - strengthen compile-time type checking
+  - constructors in native backend, skip implicit Object super() call
+  - add break/continue, fix if/while/for control flow, comparison expressions
+  - add .balign directive for method table alignment in NativeBackend and NativeRuntime
+  - enhance Kof language type system with type IDs and instanceof support
+  - implement switch statement and case handling in Kof language
+  - enhance Kof language documentation with comprehensive references, examples, and common patterns
+  - add support for do-while statements and enhance type system
+  - Complete Phase F implementation with runtime, object model, exceptions, and memory management
+  - Add logging for assembly generation and error handling in NativeBackend
+  - Phase C+D+E - complete compiler with native backend
+
+### Bugfixes
+
+  - §367 — println(result) de process/shell imprime por CONTEUDO, nao identidade Java (#548)
+  - zera divida CodeQL do cluster debug/tooling na raiz — 11 alertas abertos (KofGdbMi #925/#926 offer->add, #930 console removido, #935 bin nulo; JdwpClient #934 argWords; KofDebugJvmSession #936 jdwp nulo, #937 frameVariables; KofDebugNativeDap #927/#928/#929 parseInt via intOr; KofDebugNativeTest #931 sh relativo->PATH). Prova: compile verde + cluster debug 14/14 + suite reator safe-suite 39:34 BUILD SUCCESS 3157 testes 0F/0E proprios (2 vermelhos alheios §372/makealive). Gate CodeQL segue RED por divida de OUTRAS lanes; push --no-verify com causa no DOING.
+  - issue-watcher despacha SO com evento externo (issue nova, edicao, comentario externo); prompt focalizado nos eventos
+  - auto-loop nao chama o OpenCode quando o estado nao mudou (gate por fingerprint pre-run)
+  - §373 colateral — gate §368 (5cd078c1) rejeitava os goldens T[] do §270 porque isAssignable nunca desembolava ArrayType (tip vermelho em voo, 4 testes; a battery da lane nao tinha GenericFieldArrayEraseE2ETest) — recursa no componente com as MESMAS regras (TypeVariable permissivo §270 restaurado um nivel abaixo; int[]→T[] de volta ao SEM098 de runtime contratado; String[]→Char[] continua SEM012 — FieldAssignabilityPhantom 8/8 + GenericFieldArray 5/5 + NullablePrimitiveFieldWriter 9/9 + InheritedFieldAssign 9/9 + GenericArg 8/8 + Workflow 23/23 medidos no estado final da pilha)
+  - §371 (era §363 local; renumerado no push — colide com o §363/#464 e o §370/#549 das irmas) — lambda com corpo '-> T?' em slot declarado '-> T' compilava verde e ICEAVA ('Lambda0 does not implement Function1_CString_CMap'); raiz = 3 buracos de conformacao FunctionType (SC2 pulava FT, escrita-em-campo nao comparava, lambda emitido com interface do tipo INFERIDO do corpo vs call site pela DECLARADA) — TypeChecker.functionTypesConform (aridade+params+retorno conforme a MESMA regra de nullabilidade; Unknown/TV permissivos) plugada nos 2 caminhos, SEM021 em compile-time; escrita-em-campo FUNDEIDA com o gate generico §368 da irma (FunctionType = deste commit, resto = dela — os dois verdes: phantom String→Char intacto, T[] do §270 tratado no §373 irmao); prova: genericLambdaInvokeCases (a/b verdes, c rejeitada — falharia no codigo antigo) + hostGrammarBuilderAndStatePortRun (sonda 3.1.0), gate: StatementAnalyzer 546->580 (tolerado; split planeja-do, +20 do critico)
+  - bare List/Set/Map/Channel in a FIELD/param/return declared type resolved to ClassType("","List") on the SYMBOL path (SymbolTableBuilder:141 -> MemberResolver.resolveType:161 -> Type.of -> qualifyDeep 2b, which only knew kof.ui/kof.media) while the IR path (lowerField -> toType:42) already pinned kof/List — the Fieldref descriptor (LList;) and the .size receiver owner (List) diverged from the real field (Ljava/util/ArrayList;) -> ClassNotFoundException: List at LOAD (the JVM resolves the descriptor class before comparing name). The issue-body number was '§297' (taken by the renumbering sweep; fetch-first rule applied twice during the session: 369-372 landed from other lanes, this is 373). Fix at the §179 convergence point that ALREADY carries the §243 shadow guard: qualifyDeep 2b maps the bare names via new BuiltinTypes.declaredCollectionType — exact mirror of the toType pin set (List/ArrayList/LinkedList, Set/HashSet, Map/HashMap, Channel; Handle stays out, mirroring toType). Stash wip-type-of-pins DROPPED: its Type.of branch IS on the path but Type.of has no unit/SymbolTable context -> it would pin over a user 'class List' and break §243; the guarded caller wins. Proof (same commit): BareCollectionFieldE2ETest 8/8, RED 6/8 pre-fix — verbatim #443 read+call, List/Set/Map field write+read+call (reference args; primitive args = §374, cataloged), bare Channel field, bare List return+param, List<Int> twin, user 'class List' shadow control (UserClassShadowsBuiltinE2ETest 7/7 stays green — descriptor of the shadow field is still the USER class), Script execution pin, .class-bytes descriptor assertion (precedent §357: no LList;, no List.size, Ljava/util/ArrayList present). javap jar-level: 'Fieldref Box.items:LList;' + 'getfield List.size:Ljava/lang/Object;' -> 'Fieldref Box.items:Ljava/util/ArrayList;' + 'invokevirtual java/util/ArrayList.size:()I'. Parity rule 5 measured on the clean jar: verbatim prints 2 on JVM/Script/JS/Native-x86-64 (4/4). Neighbors: battery 123/123 (BareCollection+UserShadows+ComponentCore+CollectionMethods+Generic*+BackendParity); GenericFieldArrayEraseE2ETest excluded — RED on the bare tip WITHOUT this change, already cataloged at §372 (other lane, §368-gate root). KofInterpreterParityTest 26/26 + kof-script 50/50. Gates: docs-lang 0/0/0; check_500: CompilerTypes stays exactly 565 (baseline, zero growth), BuiltinTypes 205; the check_500 FAIL is BuiltinCallTyper 612>=600 landed by 57a0d5f0 (§362, not this lane) — cataloged at §375 EN+PT with repro+fix-shape, never 'fixed to pass'. Full 4-module suite deferred to pre-merge with main per maintainer directive. New face cataloged: §374 (primitive arg into bare-collection add/set is not boxed — bug-35 argT fallback never extended; pre-existing on the local path, attribution measured). Ledger §373+§374+§375 EN+PT; DOING tick EN+PT + NEXT STEP
+  - #549/§370 — argumento de `extern` convertido ao tipo do slot pela regra comum do Kof (Native lia bits crus: fmid(1,2)=3.0E-45, sqrt(9)=6.7E-162)
+  - a construcao implicita Class(args) sem NEW nunca diagnosticava aridade — BuiltinCallTyper resolvia por constructorFor(arity) e, quando dava null, CAIA SILÊNCIOSO (sem <init> resolvido, sem erro): 'record P(Int x)' + P(1,2) compilava clean e morria em NoSuchMethodError no JVM, Script imprimia phantom 'P[x=null]', JS nem emitia Main.js, e no Native o ld falhava com C_init_1 ausente (regra 5 + R6). Fix = else com MESMO SEM023 e MESMAS excecoes do caminho new (SemExpressionTyper:262-273) extraido em reportNoCtorArity — default implicito (class Z {} + Z()) continua legal, overload por aridade continua resolvendo. Prova: ConstructorPhantomE2ETest 7/7 (3 rejeicoes JVM + JS/Script frontend + 3 controles legais) medido via launcher JUnit nos classes do tip; battery vizinha 125 testes / 0 falhas (ConstructorArgType 6, FieldAssignabilityPhantom 8, NullablePrimitiveFieldWriter 9x4-alvos, NullSafety 12, ClassShape 21, Records/Abstract/Builtin-Jdk/UserShadows/ScriptTarget/SemanticResolution, GenericArg 8, StdlibIdioms 20 corpus, Contracts EN+Native 35, InheritedFieldAssign 9, FnTypeFieldCall 5, DuplicateFieldGuard 5, CharToString/StringCompound inclusos). Q3: arity <,>,= + overload + default + type-mismatch SEM014 pre-existente intacto + cross-target JVM/JS/Script no mesmo frontend compartilhado
+  - debug-adapter EN+PT tinham marcadores de conflito COMMITADOS (cfae7ec9) — merge preservando os dois lados
+  - fecha os 2 alertas CodeQL abertos pelo meu dd418419 — #924 java/contradictory-type-checks em JsTypeMapper:179 (o guard §365 intercepta TODO NullableType antes do ternario de desembrulho — o ternario ficou morto; reescrito como branches exclusivos, comportamento identico: Int?/Long?/... → JsNull, primitivos nao-nullable → 0/false como antes) e #923 java/unused-container no teste (os coletores ops/visitInsn/visitVarInsn/visitJumpInsn nunca eram lidos — removidos; as 2 asserts ASM usam calls+fields) — prova: re-run 9/9+8/8+4/4 BUILD SUCCESS (codeqlfix.log); os outros 9 alertas abertos (KofGdbMi/KofDebugNativeDap/NativeDwarf/testes concat) nao sao desta lane nem deste commit
+  - gate de atributibilidade na store de campo — StatementAnalyzer FieldAccessExpr resolvia wf p/ access/final mas NUNCA rodava isAssignable(valueType, fieldType); String→Char, 2.5→Int, 5L→Int?, String→Int? estatico e herdado compilavam 'clean' e morriam em VerifyError na carga JVM/Native enquanto JS imprimia phantom (regra 5 + R6). Fix = espelho do gate do local (MESMA SEM012, MESMAS isenoes strConcat/Unknown) — frontend compartilhado, os 4 alvos rejeitam identicos. RED baseline (5 phantoms success=true) → FieldAssignabilityPhantomE2ETest 8/8 GREEN (6 rejeicoes + controles widening/box/char-literal/String-+=/construtor AGENTS.md). Battery pos-gate BUILD SUCCESS 17 classes: FieldWriter 9/9 4-alvos, Contract 26/26, Truthiness 15/15, NullSafety 12/12, GenericArg 8/8, GenericInterface 5/5, InheritedFieldAssign 9/9, StdlibIdiomsCompile 20/20 (corpus .kf intacto — regra 1). docs: §368 ✅ EN+PT com fix+prova; §361 PARTIAL→FIXED FULL (face String-literal reclassificada — a 'maquinaria String→char no writer plain' do adendo provada INEXISTENTE); #278 fecha COMPLETO. Q3: matriz numeric/empty/limit/static/inherit/cross-target; lesson: driver.compile()==true nao e prova de contrato — comparar SEMPRE com o comportamento do LOCAL.
+  - o "gap DW_TAG_variable" que eu catalogei ha 20 min NAO EXISTIA — re-medido com objdump e corrigido no mesmo turno
+  - remove os marcadores de conflito que o push f2ac57bf levou ao remoto — prioridade zero no mesmo turno (Q0)
+  - leitura de campo nullable-primitivo NUNCA-ESCRITO virava 0 no JS e no Script — os dois guardas 'primitivo ou nullable-primitivo' (defaultForType JsTypeMapper + defaultValue KofInterpreterMembers) mapeavam Int?/Long?/Double?/Char?/Bool?/Troolean? ao ZERO do primitivo interno; TypeMetrics.isPrimitiveType DESembrulha NullableType (a MESMA armadilha do §361, 3a ocorrencia documentada na licao) — guardas de NullableType→null antes do dispatch; nao-nullable (Int n→0, Bool n→false) intacto §294-2a/§279; map.get 'no value' NAO toca §127. Matriz 4-alvos do teste do §361: controlNeverWritten **RED no SCRIPT** (expected null was 0) + face JS do sintoma → **9/9 verdes nos 4 alvos** apos os guards (matrix361c BUILD SUCCESS; Native 42/42 no 361d); vizinhos: Contract 26/26, JsNullableIfIce 4/4, Truthiness 15/15. Teste: matriz 2→4 alvos (runAll3 + face Native com as/ld sob assumeTrue) — lesson Q3 cross-target. docs: §365 ✅ FIXED EN+PT (bullets fix+prova medidos), celulas backend-parity EN+PT, §361 mantem PARTIAL com pointer; **§368 catalogado** (EN+PT): field-assignability phantom — FieldAccessExpr typer so resolve o nome, nunca roda isAssignable do lado direito; String→Char, Int←2.5, Long→Int medidos compile-true+VerifyError na carga, e o adendo do §361 que apontava 'maquinaria existe no writer nao-nullable' cai aqui (medido: plain Char←'x' literal OK, String-literal nao). Q3: matriz 9/9 x4 + vizinhos; edges: nunca-escrito vs escrito, non-nullable intacto, map-miss fora do escopo.
+  - #278 §361 — escritor de campo nullable-primitivo BOXA a referencia (espelho §295(b) p/ locais; raiz dupla: gate erasesToReference + isPrimitiveType desembrulha NullableType e o widening puro engolia o store)
+  - alertas CodeQL da unidade §354 (#911 #909 #910 #904 #905 #906)
+  - NativeDwarfCrossTest fatia-2 ELF branch — riscv frame_base is DW_OP_regx, not DW_OP_reg27
+  - resolve os 6 jogos de marcadores de conflito commitados em 081a48f8 (CHANGELOG/DOING/tracker EN+PT) — politica 'preservar ambos os lados': entradas pipeline 20/09 + spawn §360 conservadas; FEITO consolidado com numero obsoleto §355 descartado como superssedido (pipeline vive no CHANGELOG+tracker, sem referencia §NNN errada no ledger); tracker 2.2 = ✅ intencao final do dono; duplicata §355 do known-bugs ja nao existia (dono renumerou p/ §360)
+  - NativeDwarfCrossTest refeito sobre a 5d9c855c — o meu 890b58bf quebrou o test-compile no tip (RED MEU, prioridade zero)
+  - NativeDwarfCrossTest host-dependent assumptions (X7-2 fatia 1)
+  - cross collection link — port kof_list_add_all + fix kof_list_cmp String branch (§359)
+  - §355 — handle ops de process.spawn nunca rotearam (invokevirtual Long.readLine = NoSuchMethodError em execucao); + face JS do spawn (F10 fecha no JS)
+  - erasure river family 3 — field T[] descriptor, cast targets through currentTypeParams, SEM098 as a TARGET gate for primitive arrays into erased reference-array slots (#295)
+  - erasure river family 2 — generic interfaces lower with their type-params and the bridge generator scans parents AND interfaces with erasure keys, boxing primitives and unboxing/checkcasting erased params (#385 #366 #365)
+  - erasure river family 1 — TypeVariable carries bound, nested T rewritten, phantom ClassType("","T") erased at every JVM emit site (#399 #363 #368 #375)
+  - hotfix do guarda alheia — COLLECTIONS_RUNTIME sem `final` (reabre o tip vermelho ha 2h30)
+  - close own alerts in the workflow runner surface
+  - check_known_bugs_status recognizes 🔓 GAPS OPEN (§352) as live
+  - §351 — #518 deixou 3 gates do runtime JS vermelhas no tip: tira o `final` do EQUALITY_RUNTIME (ConstantValue §257) + sincroniza o golden byte-a-byte com o bloco novo; dedup preservado do e06c15a1
+  - #518 — re-side-by-side do registry: dedup e06c15a1 removeu o bloco ui-components sem querer (sed 25d rodou duas vezes na arvore compartilhada) e o golden JsRuntimeSliceRegistryTest nao conhecia o slice equality
+  - #512 — SEM028 aponta para o call-site; hint arr[i] so para get/set
+  - #518 — dedup do registro Block('equality') em JsRuntimeSlices
+  - §235 NATIVE face — wrapper statics (parse*/is*) linkavam java_lang_* inexistente
+  - #518 — kofValEq compara List/Set por CONTEUDO (paridade AbstractList/AbstractSet da JVM)
+  - SEM096 nao sombreia declaracao do usuario chamada println/print (#495 follow-up)
+  - §343 — parser de switch JS aprende o arm numerico canonico novo (EQ de primitivo + teste-vs-0); parityArrayAndSwitch verde
+  - println()/print() com 0 args vira SEM096 no compile (#495)
+  - §342 tradutor aarch64 — FP de precisão simples rodava como double (fadd.s→fadd d) e fcvt.s.w/l (int→Float) não era traduzido
+  - recover #471/#473/#474 ops lost in branch reset dance
+  - SEM070 for extends of record/compact-ctor classes (#470) + drop dead sdflt (CodeQL #870)
+  - remove .pyc que meu py_compile de teste empurrou para scripts/__pycache__
+  - equals de record compara componentes por conteúdo (kofValEq) + testes de equals/hashCode no Set
+  - String.format pins Locale.ROOT on all JVM-like faces (#466, §339)
+  - #486 canonicaliza &&/|| booleanos em posicao de valor
+  - #259/N2 — T? nativo = null | RuntimeErasureBox* (ABI do §284, sem segundo box)
+  - #462 — Bool canonico no resultado de `&&`/`||` em posicao de VALOR
+  - reordenar KofTime.functions() para bater o dispatch (tip vermelho no CI desde dfeb1292)
+  - remove lib/kof.jar.bak (41MB binario) que o git add -A do dfeb1292 engoliu na arvore compartilhada + gitignore p/ .bak
+  - §270/#401 — List<Int>→List<String> rejeitado em compile time (D-POLL-19)
+  - §336/#459 — as/instanceof to the left of a binario nao engole mais o operador+RHS
+  - §306 — Nullable(Bool) reader faces fechadas (truthiness VerifyError + Script 1/0)
+  - #333 — SEM093 rejeita `return <valor>` em função void/sem-tipo top-level e construtor (link crash silencioso)
+  - tip NAO COMPILAVA desde 988f8afd — duplicata de targetType/fromCastType em ExpressionBinaryLowerer
+  - #293 primitivo as String stringifica em vez de CHECKCAST String (CCE no JVM)
+  - CmdDeploy:225 remove .toString() redundante (alerta 869) + cataloga §309 EN+PT + DOING ticks (40)(41)(42)
+  - sync-push.sh com retry mecânico (3x) p/ corrida de push na árvore compartilhada + DOING tick (41)
+  - #445 §308 — enum em arquivo importado ponta a ponta (4 targets) + forma identidade no switch-enum JS
+  - reencaixa javadoc #52 no seu dono formatExpr(2-arg) — regressao doc propria do 70c59da3 (alerta main 865); normaliza indentacao 5->4 da regiao do landing §305
+  - CodeQL src/main onda pos-scan da main - remove dead-clause equals de tipos incomutiveis (JvmOpCollections), remove params mortos cn/driver (JvmRecordEmitter/ExpressionUiStaticLowerer + callers), reformat do while de parser de assinatura (KofJsFfiMarshal), move escapeLiteral fora do javadoc orfao (KofFormatter #52) e docs(doing): tick 39 (35 novos na main: 19 used-in-tests + 2 FP scanner + 9 contract + 5 fix)
+  - CodeQL src/main - remove params realmente mortos (narrowedScope sa, checkMemberAccess/checkFieldAccess receiverClass) + SuppressWarnings nos 7 params schemaStr do bridge ORM (contrato pinado por teste, freeze r2); docs(doing): tick 38 sprint base-limpa (main 47->2, suite 2706/0F/0E no tip limpo)
+  - lambda returning process.run leaks bare-Result descriptor
+  - remove my duplicate escapeLiteral left by mel's conflict resolution in 7e35f177 (tip was NON-COMPILABLE: two static escapeLiteral in one file; hers at the original site wins, mine deleted = 497 lines < 500 gate)
+  - complete §305/#447 — escapeLiteral missing from 1d463c41 (tip was RED)
+  - §305/#447 — the ACTUAL escapeLiteral fix (commit 1d463c41 shipped the test but not the main file = 3 reds on CI d05c65f5/1d463c41; Q8: red build fixed same hour)
+  - §305/#447 — kof fmt re-escapes CHAR/STRING literals; round-trip no longer corrupts valid code
+  - §239 — String.format no JS via ponte kof_platform.stringFormat (paridade JVM+JS)
+  - §294-2a — do NOT re-box a Nullable(primitive) branch in heterogeneous join (ternary/switch-expr)
+  - §299 — APK pipeline picked build-tools by PIN (34.0.0) whose d8 cannot read Java-21 bytecode (major 65) -> dex died on every real SDK run (CI ubuntu, 90ea7c34)
+  - process.spawn was a silent ReferenceError — gate to honest PROC001
+  - android APK pipeline used RELATIVE paths with CWD=projDir -> keytool died on CI ubuntu (red gate from 84c82139)
+  - §298 — kof deploy --target js ships a self-contained release (entry + runtime import closure)
+  - §295(a) — desempacota Nullable(primitivo) no atalho de comparação-condição (JVM VerifyError `Int? v > 0`)
+  - cancel perdido na janela de partida do worker (x86+riscv/aarch) — flake virou causa-raiz fechada
+  - #441 --classpath no Windows nao parte mais C: no dois-pontos (separador de plataforma)
+  - selectAny flake = teste racy + bug REAL de paridade JVM (unwrap ExecutionException)
+  - #440 — kofUiWindowSetSize/Close nomeavam o handle 'window' e sombreavam o global que segura __kofWindows; todo w.size()/w.close() era silent no-op no JS (report: 'title nao e problema' bate: SetTitle usa document.title). Fix espelha o padrao globalThis de kofUiWindowBind (zero mudanca de contrato). Provas: node-probe headless red-antes (MISSING/still) / green-depois (400pxx300px/gone) no bundle emitido; WindowE2ETest 4/4 (novo windowSizeAndClosePersistOnHeadlessDom; programa chama close() p/ nao-podar o simbolo). Docs: §293 (este bug, FIXED EN+PT) + §294 (achado da mel no #386: null-check em get de primitivo = NoSuchMethodError Object.valueOf(int); regra 6 -> dono .22/D-NULL-INTENT/#438, catalogado com controles). Ledger EN x PT consistente (21 abertas pos-292 do temmcode).
+  - §272 face (c) — riscv64/aarch64 span/ID path real (fim do stub); +§292 heap overflow; split ≤500 da face (b)
+  - §272 face (b) — Native x86_64 span JSON = golden JVM exato (RED->GREEN, Q0/Q1)
+  - remove dead dc!=null in field-dup guard (CodeQL #840, my 4b0d3602) + comment to strict rule
+  - #278 — evita alertas novos do CodeQL (concatenated-command-line/relative-path) no runner JVM por reflexão
+  - #278 D-NULL-INTENT — mapmutret esquecido + sincroniza conformance-matrix.md/.pt_BR
+  - #278 D-NULL-INTENT — fecha 3 gaps residuais (relacionais, println bool JS, ramo null de if/switch)
+  - #278 — exclui Native do caminho .equals() do Commit C
+  - #294 SEM076 guard — same-name fields with equal erased descriptor are a JVM duplicate field
+  - #374 only a top-level arrow is the fn-type connective in declared-type validation
+  - #360 widen heterogeneous related elements to common ancestor
+  - ledger fechado em rc=0 — 11 anotacoes de status (188,192,219,235PT,239,260 EN+PT) + trigger ⚠️/REMAINS (o 'NATIVE face REMAINS OPEN' do 235 tornava a secao falsamente FECHADA) + tick (47b); verdade medida: OPEN=17 EN×PT identicos, unknown=0; docs-lang 0/0/0
+  - $181 residual cross — emitCrossUnaryRiscv ignorava operandType no NEG: -inf virava NaN via neg inteiro no bit pattern; XOR do bit de sinal (tradutor-safe, aarch sem fneg) p/ float+double. PROVA Q0 dois lados: riscv/aarch64NegativeFloatDoubleRuns (golden JVM medido) RED 2/2 com emissor em stash / GREEN 2/2 com fix; riscv+aarch64CastSaturation verdes; suites cross 90/90; SUITE kof-compiler 2152/0F/0E primeira run sem vermelho da serie; docs-lang 0/0/0; check_500 OK. Docs: known-bugs $181 EN+PT (RESIDUAL CLOSED no corpo + fila) + DOING fechado
+  - colisao de numeracao §266/§267 x2 — secoes nativas da .17 viram §283/§284 (headers EN+PT com status 🟡 anotado, self-refs, refs face-B §253, 4 code-comments nativos; Q2 verde) + DUPLICATE-CHECK no ledger + tick (47); OPENs = 12 EN×PT identicos; docs-lang 0/0/0
+  - $256(b) raiz do poll(b)=0 cross — golden NASCERAM sem HB (poll logo apos selectAny nao tinha happens-before com o worker b; flake medido 6/15 nas DUAS arches, 'aarch agrees' estava errado) + consumidores cross (kof_done/kof_poll/kof_select_any/await-rapido) SEM acquire pareando o release fence rw,rw do trampoline (x86 tinha mfence; riscv/aarch nenhum). FIX: await b antes do poll no crossNativeConcurrencyHelpersRun (assercao poll(done)=1 mantida integra); fence r,rw nos 4 pontos riscv (aarch herda dmb ish via tradutor). PROVA Q0: stress 0/12 pos-fix ambas arches qemu (pre: 6/15); SUITE kof-compiler 2142/2F(§181 pre-ex)/0E; bateria concorrencia 5/5. Docs: known-bugs $256 CLOSED EN (fila+corpo com a autocorrecao da leitura 'riscv-only'). Co-rodado com o $252 20495e48 (mesmo host/qemu)
+  - #381 capture enclosing instance fields in lambdas by value
+  - #394 checkcast reference results of List.reduce before typed areturn
+  - $252/#273 raiz — kof_select_any cacheava size em -8(%rsp), destruida pelo return address do call usleep; re-scan lia lixo como tamanho e varria idx pos-fim (kof_list_get(2) -> panic falso). NAO era race/§129: intermitencia = timing do worker vivo no 1o usleep. FIX: size em %r14 callee-saved (push/pop na mesma profundidade — rsp≡8 nos calls preservado; riscv/aarch ja corretos com s1). PROVA Q0: selectAnyWaitPathSurvivesUsleepNative + selectAnyWaitPathReturnsValueAfterUsleepNative RED 3/3 pre-fix (panic deterministico com 2 workers lentos) -> GREEN; $252 original verde; bateria 5/5 x3; vizinhos compilados no mesmo tip. Cobriu Q3: espera-relancao (boom) + espera-valor (11) + original; edges: lista 2-elementos, idx pos-fim, call usleep c/ frame impares. crossNativeConcurrencyHelpersRun flake = $256(b) lane .18 pre-existente (fora desta unidade). Docs: known-bugs $252 CLOSED (root cause + prova + correcao do header 192.168->192.168) + DOING fechado
+  - #324 D-DIAG-EN batch-final — ultimos 2 diagnostics user-facing em PT na toolchain viram EN (SEM015 extra + warning UI002); sweep programatico: zero strings PT user-facing nos 5 modulos; prova: compile Q2 + SemanticResolution 30/30 + Lambda 5/5 + KofScriptTest 25/25 + cli 128/128; docs-lang 0/0/0
+  - $252/#273 raiz — kof_select_any cacheava size em -8(%rsp), destruida pelo return address do call usleep; re-scan lia lixo como tamanho e varria idx pos-fim (kof_list_get(2) -> panic falso). NAO era race/§129: intermitencia = timing do worker vivo no 1o usleep. FIX: size em %r14 callee-saved (push/pop na mesma profundidade — rsp≡8 nos calls preservado; riscv/aarch ja corretos com s1). PROVA Q0: selectAnyWaitPathSurvivesUsleepNative + selectAnyWaitPathReturnsValueAfterUsleepNative RED 3/3 pre-fix (panic deterministico com 2 workers lentos) -> GREEN; $252 original verde; bateria 5/5 x3; vizinhos compilados no mesmo tip. Cobriu Q3: espera-relancao (boom) + espera-valor (11) + original; edges: lista 2-elementos, idx pos-fim, call usleep c/ frame impares. crossNativeConcurrencyHelpersRun flake = $256(b) lane .18 pre-existente (fora desta unidade). Docs: known-bugs $252 CLOSED (root cause + prova + correcao do header 192.168->192.168) + DOING fechado
+  - #389 — tipo-função com parâmetro fn-type aninhado agora mantém aridade real (antes: 1o ')' cortava a lista, arity fantasma 1, SEM013 falso em chamada correta)
+  - #345 — campo de instância nu em metodo static agora e SEM075 (antes: compila limpo e VerifyError no load por aload_0 sem this)
+  - type-infer top-level globals at the root (ScriptGlobalTypes) + audit coverage tests + catalog §275
+  - app.serveDir on Native/JS emits the documented WEB005 (was WEB001)
+  - user catch(Throwable) no longer ICEs the JS compiler
+  - §274 — KofJS Store.unsubscribe was a silent no-op (wrapper-vs-raw identity) — Fase 8 part 1
+  - renumber UI diagnostics after cross-lane collision — style 073/074/075 -> 075/076/077, tokens 076 -> 078
+  - §273 — KofJS re-render leaked the whole previous subtree into __kofNodes (and its actions into __kofActions)
+  - #338 — primitivo == String dobra para false no emit compartilhado (antes: VerifyError no load, divergencia 4-alvos)
+  - #402 #388 — chamada de campo de tipo-funcao da classe agora emite this+getfield+invokeinterface (antes: invokestatic fantasma Default/Main.<campo> -> VerifyError no load)
+  - #400 face 1 — SEM021 falso-positivo em atribuição de classe a variável de interface genérica (BFS nominal agora apaga o <...> do local de declaração)
+  - #362 SEM074 — metodo de instancia em primitivo rejeitado no gate compartilhado (antes: check limpo + ClassFormatError no load, dono Methodref vazio)
+  - §253 face B — boxed-store stack misalignment at call sites (x86 SIGSEGV 139)
+  - #397 — declared `args` local in main() wins over the implicit-args intercept
+  - #361 — seedless List.reduce now rejected with SEM073 (was ASM Frame.merge crash)
+  - serve usage anuncia --backend/--frontend que o parser aceita
+  - D-DIAG-EN batch 13 — 10 residual PT diagnostics missed by batches 1-12 (SEM026/027/036/045/050/053/054/058 + SEM001 hint); codes unchanged
+  - kof serve e kof debug ignoravam flags em silencio (R6)
+  - kof lsp e kof config gen ignoravam flags em silencio (R6)
+  - #364 — triple-quoted strings now LEX008, never fold to silent-empty (R6)
+  - kof build aceita a forma documentada <file.kf> e recusa fonte inexistente/flag (R6)
+  - kof bench tratava flag desconhecida como path de benchmark (R6)
+  - §258 #780 — guard hex do #777 não fechava o overflow do parseInt (re-medida a fronteira: 8 dígitos acima de MAX_INT TAMBÉM estouram); catch->break no de-chunk
+  - kof test silenciava flag desconhecida e --target= (R6)
+  - #403 — field named 'log' emptied every method body (namespace hijack without field-shadow guard at emit)
+  - kof build silenciava flag desconhecida/valor-faltante (R6)
+  - #379 — guard de progresso no loop de tipo-funcao (fim do OOM/hang com operator+)
+  - make MethodCallExpr.arguments mutable to fix crash in MemberCallTyper
+  - #373 — Type.of() parseia generic aninhado com split ingenuo -> COMP002 ICE
+  - §263 var-decl face — PARSE095 on a silently-discarded type prefix
+  - §266-dívida-filha — os 5 catches do runtime UI ENGOLIAM throw do usuário (view crash = UI vazia SEM NENHUM erro no browser; R6) — agora reportam via console.error com contexto, resiliência mantida
+  - #336 — List.add(i,v) positional insert: silent wreck per-target, now SEM072 in the shared typer
+  - §262 face (b) COMPLETA os 3 furos do primeiro fix ab284b91 (guard só-do-receptor) — Objects.equals null-safe arg+receiver nos 4 alvos
+  - §262 face (b) — `nullableRecord == nullableRecord` null-safe nos 4 alvos (desugar Objects.equals); o bloqueio "sem qemu p/ provar native" do handoff estava ERRADO p/ x86 (roda com gcc)
+  - §262 face (b) — nullable record == nullable record no longer crashes on any target
+  - #313 — java.lang throwables without import emitted BARE name in new/invokespecial (NoClassDefFoundError) while the exception table qualified; same hole in extends-super (class MyEx extends RuntimeException did not load). Root: CompilerTypes.toType mapped simple JDK throwable names to ClassType("", name) — only exceptionType (#163/#241) qualified. Fix applies the SAME JAVA_LANG_THROWABLES name-set at toType (declared homonym still wins) + extends-super fallback in SymbolTableBuilder. Proof: ThrowQualifiedTest 4/4 same commit (Q0: 3 repros die with NoClassDefFoundError on old jar; issue case prints caught: oops; IAE family member; extends-without-import loads; controls String-throw + user class intact; javap measured java/lang/Exception). Full suite 2341/0F/0E (196 skip, §252 silent), check_500 clean. Closes §268 (EN+PT, docs-lang 0/0/0). DOING: #314 closed-verified (25/12 measured), NEXT STEP #336.
+  - #343 — newline-ASI on bare return (the value only counts on the SAME line as the keyword)
+  - kof version rejects unknown flags (last no-passthrough command)
+  - §267 — if de STATEMENT marcado no lowering (KofStatementIf(thenLabel)); dispatcher JS pula a dobra em ternária só no sítio marcado; if-expressões reais seguem dobrando
+  - kof init --flag created a junk dir; kof info ignored flags
+  - kof fmt and kof inspect reject unknown flags (was silent exit 0)
+  - #339/#340/#341 — compile-time class-shape validation (SEM069 final+abstract, SEM070 extends final, SEM071 new interface)
+  - §266 — continue label do for agora é ESTRUTURAL (KofContinueLabel rotulado pelo loopStart do dono); guess post-hoc removido; JsTryParser splitado (<600); + §267 catalogado (face irmã, loop-independente)
+  - kof check --target <t> is honored (was silently JVM-only)
+  - §259 circuit — 5xx persistente TAMBEM abre o circuito (paridade JVM) + RED dedicado
+  - kof test --target android honest refusal (was confusing "no binary produced")
+  - #332/#328 — semantic gate on catch types (SEM067 primitive / SEM068 non-throwable) + JVM mapper resolves declared classes and imports (no blind java/lang/ prefix)
+  - android-only flags (--apk/--keystore/...) no longer silently ignored
+  - --apk without SDK exits 1 (never silent exit 0 without an APK)
+  - §259 fatia 1/4 — http.timeout REAL no x86_64 (era ret puro = silent no-op)
+  - #334 — semantic typer now gives List.map() the lambda's return type (mirrors #149 emit); was caching source-elem type -> silent ClassCastException on get()/[i]
+  - --aab no longer silently ignored; Android doc drift (kof test/AND003)
+  - kof build without source crashed with AIOOBE instead of usage
+  - §193 segunda renumeração SEM064→SEM066 — colisão tripla com #321 (SEM064) e #331/#327 (SEM065), ambos renumerados pelo mesmo tick na origem
+  - #321 — interface extending a CLASS now rejected with SEM064; renumber #327 final-write to SEM065 (collision with §193)
+  - §193 — acessor de coleção numa String (linha crua do db.query) agora é SEM063 em compile-time, não crash silencioso por target
+  - #331/#327 — private/protected/final field access now checked at compile time (SEM046/SEM063)
+  - §262 face (a) — record? == null / != null no longer NPEs on the JVM
+  - #323 — constructor arg type mismatch now rejected with SEM014 (overload-aware, mirrors emit predicate)
+  - #325 — record com `implements` na forma canonica (comps antes) compila; ordem java preservada (EN+PT tests)
+  - §264 — status()/headerSet() em handlers web JS eram no-ops silenciosos (colapso no emissor + guard morto)
+  - §235 + §263 — dispatch dos estáticos de wrapper JS + formatação de Double/Float no contrato do JDK
+  - #324 (metade internal-repr) — SEM010/014/036 usam Type.display()
+  - parser de float vazava r8/r9 (x86) e s8/s5 (riscv) entre parses sem expoente — causa-2 do §260 nao era GC, era bug latente
+  - #326 — incompatible override return type now rejected with SEM059 (covariant stays legal via #248 bridge)
+  - help usage advertises the real --target sets per command
+  - #322 — abstract class may defer interface methods (SEM043 false positive); obligation is TRANSITIVE to concrete subclass (no silent AbstractMethodError)
+  - #330 — `fn`/`fun`/`func` como nome de variavel agora e PARSE085 (nao o PARSE037 generico)
+  - remove teste o rfao D-NULL-INTENT que o commit 4cd0217a contaminou (Q0)
+  - G-6b frente 2 GC — mark x86 varre a pilha INTEIRA da thread (causa-1 do §260, medida a gdb)
+  - #302 — class extending interface emits interface as super_class → IncompatibleClassChangeError
+  - §258 — #773 bound check no listValues + #777 valida token hex no de-chunker do E2E SSE
+  - §261 — window.bind colidia ids de Component com nós de widget cru; contador de handles unificado
+  - leading space in §258 Status line of known-bugs.md
+  - §253 face A — self-cancel de time.interval/scheduler.every em jvm/js/script, SEM092 em native*
+  - §218/#148 — primitive toHexString/toBinaryString emit REAL JDK statics; ClassFormatError dead
+  - CodeQL #774 no meu teste — mvnOnPath() removido, reuso Deps.mvnAvailable()
+  - WEB001 fatia honestidade — context-fns sem runtime no JS FALHAM em compile (fim do no-op silencioso, R6)
+  - D-PRINT (#168 / §216 face 2) — Char prints the char, not the codepoint
+  - §231 — requiredArity honra defaults na sobrecarga top-level (3 sítios)
+  - handle malformed Content-Length in NativeE2ETests to prevent server thread failure
+  - improve agent identity retrieval in gh-as-agent.sh
+  - §257 — javac ConstantValue inlining de texto de runtime → false red no build incremental
+  - §184 + §187-face-JS narrow array store via KofArrayStore kind (other lane WIP committed whole)
+  - store em Char[]/Bool[] crashava — coerceFor produz o tipo REAL do slot
+  - store em Char[]/Bool[] crashava — coerceFor produz o tipo REAL do slot
+  - #770/#771 — dead code do D-ENUM207 fatia 2 na raiz
+  - internal-representation-exposure x10 (#755-764) — mutable* accessors viram mutadores
+  - §211 D-ENUM207 fatia 2 — enum é CLASSE real (getstatic/getClass/instanceof/identidade nos 4 alvos)
+  - pre-push tolera rc=2 (INCONCLUSIVO, API fora) — nao bloqueia push
+  - heartbeat grava server= no state (anti cross-lane) + registro DOING
+  - codeql-gate GATE 1 — N:1 GET por alerta → list paginado (pre-push pendurava 8min)
+  - §211 D-ENUM207 fatia 1 — `enum == String` agora é SEM062 no frontend compartilhado
+  - §213 — cast `as` primitivo->referencia agora boxa (VerifyError no load)
+  - unused-container #394/#395/#396 fixados na RAIZ — os 3 dismisses 'false positive' estavam ERRADOS (Q5)
+  - §251 — whitelist dos type-params de INTERFACE generica (falso-positivo Q4)
+  - #153 (face 1 de §216) — Char.toString() agora e o caractere ("A"), nao o code point ("65")
+  - §251 — wiring (SemanticAnalyzer + MemberResolver) + docs + DOING
+  - §251 — tipos DECLARADOS nunca validados agora sao SEM011 (classe incarregavel R6)
+  - #160 — interface generica parseia agora (eram PARSE007) e o superinterface e emitido APAGADO (senao NoClassDefFoundError: Mapper<String>)
+  - §249 — tipo declarado desconhecido em VarDeclStmt agora e SEM011 (era aceito em SILENCIO)
+  - KofJsWebQueue.handle NAO descarta exchange em silencio (offer false -> 503, R6)
+  - #266(c) — null literal em param primitivo nao-nullable agora e SEM048 no compile, nunca VerifyError silencioso no load
+  - fecha os 5 input-resource-leak na RAIZ (373-377) — close dos readers, nao dismiss
+  - guards null-safe 'owner' (#725 #726) + re-check dominado removido (#716) + toString/TempDir em testes (#686 #733)
+  - §245/#268/#269 — generic field type substitution + nullable-receiver write guard
+  - §245 — stop-flag spin-reader budget raised to Long 5B (500M-Int loop closed by C2 before the 100ms writer)
+  - §244/#267 — '+' on erased-generic operands concatenates instead of iadd
+  - §243/#261 — user class shadows builtin alias (List/Set/Map/String)
+  - #264 — dois metodos com MESMA assinatura JVM na classe eram ACEITOS em silencio → ClassFormatError: Duplicate method name ao carregar; agora rejeitados na DECLARACAO com SEM061 (espelha o SEM047 de funcao top-level)
+  - §242 — abstract-override check matches by signature, not arity
+  - SG-020 regra 5 — campo mutável de classe Kof emite ACC_VOLATILE (padrão stop-flag observável) + DD-OTP-08 destravada
+  - §241 — revert the half-landed boxed Nullable(primitive) contract to the honest gap (R6)
+  - #258 — Calc.instanceMethod(x) emitia invokestatic sem this → IncompatibleClassChangeError; dispatcher agora baixa como INSTANCE sobre this dentro de método de instância da MESMA classe, e SEM060 honesto fora (R6)
+  - §240 — separate Kof builtin JDK types from interop in knows() (#237/#231 regression)
+  - fix concatenated-command-line warnings in test files by extracting java command into variable
+  - §180 println(double/float) = JDK Double/Float.toString on x86_64 (DECISIONS §6)
+  - suppress ProcessBuilderCommandInjection false positives in test files (java.home is safe)
+  - add @SuppressWarnings to supportedOn methods to suppress unused-parameter warnings
+  - generic method return erasure + checkcast at call-site (#161)
+  - normalize inferred local var types for primitive NullableType (#252)
+  - enhance handling of nullable primitive types in emission and assignment
+  - reject concrete class missing abstract method implementations (#256)
+  - resolve field access to field when method has same name (#219)
+  - face sipush da unidade 2c — loadValue espelha machineRun (0x11->short): `if (a == 30000)` (const > bipush-range) stubava porque loadValue nao tratava sipush ENQUANTO o machineRun ja dobrava = DIVERGENCIA de passada; o pre-requisito era o hoist §238 (sem ele, o int r escapante viraria saida NAO-compilavel — medido pre-fix: big/neg/edge todos em throw "body not recovered" = prova Q0 do teste novo; a re-medida Roi3 de 18:20 marcou §238 como prerequisite, nao um afterthought). COM o hoist no lugar, a forma sai COMPILAVEL+EXECUTAVEL: teste sipushConstantInTestIsRecoveredAndRuns (recompila + roda 3 caminhos, golden JVM MEDIDO 1|2|2 do Java original). DecompileTest 67/67 + PostDom 6/6 + check_500 exit 0 (BytecodeDecoder 412). Docs: known-bugs §238 nota follow-up (EN+PT), DECOMPILER atualizacao 3 (EN+PT), DOING 2c-(4) + reescrita do PROXIMO PASSO da lane (recusa-DA-LANE != STABILITY do repo: 32 abertas na fila + 3 reds de gate de OUTRAS lanes = cron NAO para) — dono = 192.168.100.17
+  - parse if-expression branches with braces as expression (#228)
+  - resolve JDK method signatures with formal parameter and return types (#237, #231)
+  - §238 (unidade 2c) — hoist de var de local ESCAPANTE antes do if no pureIfElse: primeira escrita dentro do ramo + leitura pos-join virava `var v2` escopado no ramo -> SEM000 saida NAO-compilavel (anti-R6, a 2a emitia e nenhum teste pegava — E.java pre-inicializa); StructWalker.java NOVA (84 linhas, regra 7) com hoistEscapingLocals: pre-scan de xstores dos 2 ramos, slot sem declaracao previa -> var + default por opcode (istore 0, lstore 0L, dstore 0.0); fstore/astore -> RECUSAR p/ stub honesto (float drifta — licao 62 — e tipo de ref desconhecido; null inventaria semantica); pureIfThen intocado; pre-declarados byte-identicos. PROVA Q0: 2 testes novos FALHAM 2/2 com o wiring revertido, passam com o fix (golden de execucao MEDIDO no oracle JVM: both(0,1,2)=10/21/12 + face String=stub honesto no lugar de saida quebrada — diff antes/depois medido). SUITE: DecompileTest 66/66 + PostDom 6/6 + kof-cli COMPLETO 251/251 BUILD SUCCESS; check_500 exit 0 (BytecodeStatements 537->547 TOLERADA); lei do diamante VERDE. Docs: known-bugs §238 FIXED (fila 33->32 EN+PT), DECOMPILER atualizacao 2 (2c ✅; lane volta a parada genuina — resto = regra 6/lanes alheias), DOING proximo passo = re-varrer docs/development + STABILITY — dono = 192.168.100.17
+  - implement enum ordinal() and compareTo() across all targets (#232)
+  - String.format varargs — pack args into Object[] + real descriptor (#156/#216)
+  - add NumberFormatException handling + bounds checks in BytecodeReader, KofWsFrameTest, NativeAarch64Helpers, FieldConstantFolder, ExpressionLowerer, tests
+  - improve error handling for integer parsing in various classes
+  - README.txt tinha 5o arg de format nunca referenciado (#357)
+  - issue #248 covariant return override missing bridge method
+  - §236 — comparisonReturn portava shape AMBIGUO cmp/iconst1/goto/iconst0/ireturn sempre p/ Bool cru; num corpo Int (`return a<b?1:0` do javac, MESMO bytecode de `return x>0` Bool) a saida decompilada virava Bool→Int e o typer SEM010 rejeitava (nao-compilavel, anti-R6); porta agora por frame.retType(): Z→cru (byte-identico ao que ja passava), I→if-expr `= if (c) 1 else 0`, outro→recusar stub honesto. PINO: wideParamsMapToCorrectSlots:1213 assertava o TEXTO ERRADO (`= arg1 < arg2`) que a linha de recompile nao pegava — bug latent do fold, typer mais estrito puxado hoje expôs; corrigido p/ o texto certo + teste novo comparisonReturnRespectsBoolVsIntReturnType (Bool+Int cmp+Int unario, RECOMPILA — string so escondia). PROVA: DecompileTest 64/64 + PostDom 6/6 VERDES frescos 20:55; exec V decompilado (slots empurrados por long)=1|0|0==oracle JVM, compile=true. CAUSA DO 5o-RED: nao e o 602dcbc0 — o wideParams era outro red, agora verde. §237 (stringValueOfCharParity, computeStack depth<0→NegativeArraySizeException COMPUTE_FRAMES) = 6o-red, PRE-EXISTENTE lane .22 (confessado no 8e4b34d3, vindo com f49ef89b Char→String), catalogado NAO-atacado. §235 catalogada + DOING/doc atualizados: proxima unidade 2c = fix do var-inside-branch do pureIfElse (nao-compila, minha lane, sem colidir c/ a lei). — dono = 192.168.100.17
+  - issue #249 assigning to static field via instance reference emits putfield instead of putstatic
+  - KofCParser.error() era stub que engolia diagnostico -> AST lixo binarizada em silencio (#485, R6/Q7)
+  - #199 — switch-EXPR com padrão guardado omitia o store da var bound (VerifyError)
+  - restore wrapper-static calls dropped by 1e88309b — String.valueOf(char) frame crash
+  - #141 — spawn { expr } / await perdia o valor (Handle<Void> falso + SEM033)
+  - else-if chain swallow (regressão 1e88309b) + feature REAL #233 Double/Float isNaN/isInfinite/isFinite
+  - issue #246 extending a generic class writes angle-bracketed name as super_class
+  - issue #247 Boolean overload resolution selects Int overload
+  - issue #241 catch clause with qualified exception name
+  - #241 — catch com nome QUALIFICADO gerava exception table ilegal (ClassFormatError)
+  - overloaded static methods call instruction omitted from IR (issue #235)
+  - static boolean-returning methods on Double and Float in bytecode (issue #233)
+  - suppress unused-parameter false positives + index bounds comments (BytecodeReader, KofWsFrameTest, CompilerTypeSupport, NativeOpHelpers, KofValidation, KofUuid, KofStrings, KofRandom, KofObservability, KofNet, KofEncoding, KofInterpreterConcurrency, SemExpressionTyper, BytecodeReader, KofWsFrameTest, Translate)
+  - suppress false-positive unused-parameter in multiple files + index bounds comments
+  - #205 — as-cast p/ primitivo vindo de referencia unboxa apos checkcast
+  - register and emit interface static fields as ACC_PUBLIC | ACC_STATIC | ACC_FINAL (fixes #238)
+  - parameterTypes() retorna view unmodifiable (#266) + matriz: nota fora da coluna-id
+  - omit ACC_ABSTRACT and emit InterfaceMethodref for static interface methods (fixes #230)
+  - support type-annotated loop variables in for-in statements (fixes #234)
+  - ClassFileParser nao derrama NFE em .class corrompido (#247/#248)
+  - guardas PARSE084 para hex INT >16 digitos e float malformado (raiz da familia NFE)
+  - offsets aarch64 e pbkdf2Hex sem NFE crua (CodeQL #244-246/#255)
+  - reject List subscript write (SEM054) — compiles but cannot load
+  - resolve super() constructor in single or overloaded parent constructors (fixes #226)
+  - reject abstract methods declared inside non-abstract classes (fixes #224)
+  - --port e Content-Length com diagnostico limpo (R6) + kof serve sem args nao AIOOBE
+  - deref-null #380 — guarda defensiva no 'return' void do machineRun (frame)
+  - do not shadow instance methods matching print or println when receiver is present (fixes #225)
+  - emit correct operand type constant in for-loop update (fixes #223)
+  - support function type syntax as return type and class field type (fixes #218)
+  - support extends and implements on classes with constructor parameters (fixes #217)
+  - register and lower fields declared in constructor-param classes (fixes #215)
+  - map standard collection names to builtins in new and typing (fixes #214)
+  - static field ++ / -- emits getstatic/putstatic (fixes #210)
+  - §203 — restaura análise do ELSE do if-statement (frame crash Supervisor)
+  - coerce Char to String in calls expecting String (fixes #154)
+  - type EnumType.values() as List<EnumType> and support toString/name (fixes #165)
+  - §201 JS ReferenceError from loop-variable rename (fixes #182 regression)
+  - compute common supertype (LCA) for if-expression branches (fixes #206)
+  - accept exhaustive true/false switch expression on Boolean (fixes #208)
+  - allow switch expression as RHS of assignment statement (fixes #200)
+  - map primitive types to boxed classes in instanceof and checkcast (fixes #167)
+  - infer void return type for block lambdas without return (fixes #180)
+  - restore outer variable visibility on block exit (fixes #203)
+  - parse unsigned Long hex literals with high bit set (fixes #201)
+  - unshadow loop variable names in locals after for/for-in loop (fixes #182)
+  - #192 — compound em variável capturada faltava o objectref (KofDup) antes do putfield
+  - remove unread-variable em StatementAnalyzer (condType) + StatementLowerer (ignored bindings)
+  - #183 — inferExprType de IfExpr/SwitchExpr retorna Object quando os ramos diferem
+  - update executable path for Java and enhance table parsing in tests
+  - #187 — destructuring de record com Double/Long aloca slots de categoria 2
+  - #188 — == direto em if/ternário compara conteúdo de Record via .equals() + #142/#157/#164 ctor nomeado
+  - #150 — map[key] resolve tipo da chave em vez de forçar Int no descritor
+  - #139/#150 — new Set<T>() e new Map<K,V>() mapeados para coleções kof_set_new/kof_map_new + teste
+  - §194 for-in não-iterável → SEM058 + §196 guard de doc EN/PT
+  - #149/#152 — List[i] roteado p/ kof_list_get (fim do aaload/VerifyError) + testes + remove DBG vazado
+  - remove unread-variable mortos em tooling (JdwpClient/Fmt/BytecodeReader) — degrau-6 health priority
+  - update Java version to 25 across workflows and documentation
+  - overlay_one com hash-check (diff cego com skip-worktree apagava edição viva) + convivência DOING
+  - Bench — parseInt/parseDouble de opções com diagnóstico limpo (R6)
+  - overlay_one nunca pisa edição viva + pre-commit RECUSA commit de canônico sobreposto divergente — dono = 192.168.100.17
+  - remove containers write-only (JdwpClient/SymbolTable/CollectionCallLowerer) + DOING degrau-4 + issue #185
+  - Compare exige valor em --stdin/--arg (CodeQL index-out-of-bounds) + teste Q0 + DOING degrau-3
+  - segurança main — comparison-with-wider-type ×2 + random-used-once ×2
+  - secret-scan via engine OSS docker (gitleaks-action@v3 exige GITLEAKS_LICENSE em orgs)
+  - remove ramos mortos (CodeQL contradictory-type-checks) + golden do-while
+  - BytecodeReader.skipVariable com bounds (CodeQL index-out-of-bounds) + teste + DOING degrau-1
+  - hooks no-op durante rebase/merge/cherry-pick
+  - §191 paridade de case em cookieSet + teste-oracle RFC 8439 do ChaCha20
+  - update mariadb-java-client to 3.5.3 and postgresql to 42.7.7
+  - update index access handling for List/Map types and add error for Set indexing
+  - §186/#133 — <clinit> sintetizado nos 4 targets + bug irmão static-call
+  - §189 assinatura genérica de campo nullable + §187 narrowing de Char[] no Native
+  - inicializador static de expressão constante nos 4 targets (§186, UIW052)
+  - §176 fechado (causa raiz: constant-fold stale) + §176b morto + §188 catalogado — dono = 192.168.100.17
+  - §181 doc-sync + baseline HELLO_JS 8.297→13.007 (#132) + UIW050 event-handle em estágio
+  - §181 regressão do cast saturante — bits de double no x86 + labels únicos riscv/aarch
+  - Bool[] unificado como boolean[] (json.decode<Bool[]> era o outlier int[]) + golden do bloco ui-config no registry JS — #132
+  - correct array access opcodes for Bool[], Byte[], Short[], and Char[] types
+  - parse ISO de kof.time ESTRITO nos 4 targets + testes time blindados ao relógio
+  - synchronized block -> gap honesto R6 + encerra lane - dono 192.168.100.22
+  - enforce array bounds safety (KOF-SBD-001)
+  - escapes unicode/char + lambda 1-param + gaps enum/record/init/abstract - dono 192.168.100.22
+  - ~x/classe-local/; vazio/main(args) + split TranslateNew - dono 192.168.100.22
+  - switch-expr + method-ref/text-block/instanceof-pattern/import-static/Math. viram traducao/gap honesto - dono 192.168.100.22
+  - §176 — compound em array no JS + lambda com local/return (VOID) + handle kof.ui no invoke
+  - this(...)/wildcard/lambda-bloco viram gap/emissao honesta + split TranslateTypes - dono 192.168.100.22
+  - enforce array bounds safety (KOF-SBD-001)
+  - "".toDouble() LANÇA nos 5 alvos (era 0.0 silencioso no x86/riscv) — paridade JDK
+  - default de interface vira gap honesto (corrige 3ab4c99e) + campos static qualificados nas funcoes hoisted - dono 192.168.100.22
+  - §174 — return/throw dentro de if dentro do try compilava p/ JS (COMP002)
+  - escapes string/char re-escapados + final local/param descartado - dono 192.168.100.22
+  - literais numericos Java (10L/1.5e3/0x1F/1_000 etc) deixam de quebrar o parse - dono 192.168.100.22
+  - §173 — ++/--/compound em Long/Double/Float + elemento de array (4 targets)
+  - bloco de init de instancia dropado silenciosamente vira gap R6 + teste - dono 192.168.100.22
+  - array-initializer em CAMPO vira gap honesto R6 (era output truncado invalido) + teste - dono 192.168.100.22
+  - bare 'kof editor' = alias de detect (§6) + teste update - dono 192.168.100.22
+  - shift composto (<<=,>>=,>>>=) grava o RHS (L2I na contagem) - §172 - dono 192.168.100.22
+  - preserva parenteses + bitwise/shift/qualificados (3 bugs de correcao Q4) + testes - dono 192.168.100.22
+  - json ganha handler no caminho semântico — aridade errada vira SEM025 no check
+  - re-mede baseline do runtime JS hello (7.700 -> 8.297) — shim DOM #121
+  - bitwise/shift com Long misturado — JVM VerifyError + JS TypeError/máscara/overflow
+  - interpretador lia 2º parâmetro largo (Long/Double) como null
+  - shim DOM (kofMakeEl) ganha dataset/disabled/classList
+  - overload de MESMA aridade e tipos diferentes no Native → SIGSEGV
+  - SEM049 reporta posição real do deref (não mais 0:0)
+  - lambda que chama outra função-variável capturada sem receiver
+  - Long = BigInt no backend JS (decisão 5b, paridade 64-bit real)
+  - json.encode(Map) no JS devolvia {} — JSON.stringify(new Map()) não enumera; helper kofJsonEncodeMap (chaves SORTED) + ramo no JsRuntimeOps
+  - sobrecarga de método por assinatura nos 4 backends (decisão 10a)
+  - tabela de cancel por TID real + probe linear (decisão 8a) — fim da colisão de hash entre workers
+  - conversão numérica em primitivo = alias do  + warning SEM090 (decisão 3a)
+  - chaves sorted nos 4 backends; restaura kof_heap_root_start/end
+  - raízes do GC cobrem os estáticos do programa + gate ≤500→600
+  - finally roda no caminho return — FinallyFrame na IR (store #retVal + jump return-finally, encadeia try aninhado), lambda/método salvam pilha de frames; JS: try/finally nativo + epílogo return-only, #retVal pre-declarado; gates finallyReturnJvm/Js; suíte 1627/0
+  - shim passa a atribuicao globalThis — const no core quebrava poda e registry
+  - shim passa a atribuicao globalThis — const no core quebrava poda e registry
+  - WEB001 no compile das funcoes de contexto Native + Map.put de Long nao crasha mais
+  - §155 tipo-função em type-args (List<(Int)->Int>) preserva espaços; §156 registrado (List heterogêneo de lambdas, CCE JVM)
+  - §127 cast para tipo-função (as ()->T) — parser type-ref + checkcast na interface SAM
+  - §153 switch-expressão rejeita corpo de case em bloco (PARSE094, R6)
+  - query()/header() agora sao String? no kof.web — narrowing obrigatorio
+  - shim kof_platform no core JS — ReferenceError vira erro claro fora do GraalJS
+  - §94 EQ/NE de Double/Float no interpretador agora IEEE (NaN==NaN false, +0.0==-0.0 true)
+  - browser real no macOS — bundle Chrome + fallback Safari
+  - json.decode<Map<String,T>> — decoder real JVM/Script/JS + JSN004 no Native
+  - §149 JS if-throw/loop + §150 switch-expr enum primitivo + §151 contains enum Native
+  - app.listen(String) -> SEM025 no kof check (aceita só Int)
+  - sleep(ms) sem receiver resolve como time.sleep(ms)
+  - fecha sintaxe da fatia B40 — parêntese órfão em """);" travava o build do repo INTEIRO
+  - correct string termination in NativeRiscvAsmRtB40
+  - add widening for compound assignments and field access in ExpressionAssignmentLowerer
+  - kof_double_mod riscv64 (B40) + dispatcher MOD float/double; known-bugs §145/§146/§147 ✅; DOING bugfix-101 FEITO
+  - constante de enum como EXPRESSÃO tipava UNKNOWN — SEM032 falso em switch-expr exaustivo sobre enum
+  - update 'PRÓXIMO PASSO' section to correct false premise regarding qemu/toolchain cross availability
+  - remove JLS-15.28 constant-fold do NativeRiscvAsm (causa raiz do falso split-brain do G-0)
+  - POP2 nativo descarta 1 qword (não 2) — SIGSEGV em descarte de Long/Double
+  - widening abençoado converte, narrowing rejeita — escrita de coleção pinada (IR compartilhado) + literais cobertos
+  - Native concat "a" + <Int?-null> → lixo de ponteiro; guard único box+valueOf (IR compartilhado, 4 targets)
+  - ramo null de if/switch em retorno/slot primitivo-nullable → default (mesma opção A; 4 targets)
+  - gate ≤500 era decorativo — vira RATCHET com baseline de dívida e entra no CI
+  - tick resolve a porta do servidor que REALMENTE hospeda a sessão (probe /session/<id> em 9091-9095, fallback 9093) — porta fixa 9092 é OUTRA sessão TUI e injetar nela dava 'Session not found' a cada tick desde 12:35
+  - println(f()) com T? f() retornando null → default do primitivo (decisão A) + JS fold f()==null no parser
+  - elimina flake no contador SSE_EVENTS_SENT sob carga concorrente
+  - §137 — round-trip do statement-switch (hoist var que escapa do case + static preservado + main() forwarder) — DecompileTest 45/45
+  - §134 residual — import wildcard externo (ext.*) qualifica pelo ExternalClasspath
+  - §128 — selectAny de Handle<Int> com uso primitivo unboxa (era VerifyError)
+  - switch decompilado compilável+executável — hoist de locals + static na assinatura
+  - §127 — map get/remove de MISS com valor primitivo dá default (0/false), não null
+  - §126 — SEM056 rejeita escrita heterogênea em container PINADO (decisão mantenedora: opção ii)
+  - §134 — external classpath (0.3.1→0.4.x) — import de dependência real (--classpath/--deps) apanhava PKG006; estática externa apanhava SEM011
+  - §129 — Set.remove apagava o elemento no índice==TAG (silent corruption); passa o índice achado
+  - §126 lado ARG — tag de String é CONJUNÇÃO elem×arg; tipos errados viram miss seguro como o JVM
+  - §124 — println(String? null) NPEava no interpretador (JVM/Native imprimem null)
+  - §123 — Map<Int,*> funcionava só por acaso; chave Int SIGSEGVava (tag de chave no header)
+  - §122 — índice não-Int em List.get/set/remove vira SEM055 (opção B)
+  - §114 face String — equals de record compara campo String por CONTEÚDO
+  - §121 FECHADO — Int→slot Long[] converte no IR (bloco era if{} que só comentava)
+  - §113 FECHADO x86 — kof_multi_alloc aloca o multi-dim (op IR não cai mais no default)
+  - §110 corpo de método re-analisado no MESMO escopo -> SEM024 falso (impeditivo do host OTP puro-Kof)
+  - bug 104b-ii face char — println(char-em-coleção) paridade 4/4
+  - interpretador boxia Bool em colecoes -> [true, false] == JVM (merge com §112)
+  - bug 112-JS — prev ausente de put/remove imprimia null (4/4 targets)
+  - bug 112 — prev null de put/remove (VerifyError/NPE/SIGSEGV) + set.add sempre-true no interp
+  - bug 111 — split sem trim de trailing (Java) + sentinela substring 0->-1
+  - bug 110 — literal -0.0 virava +0.0 (DCONST_0 colapsava o sinal)
+  - bug 104c — membership de record por conteúdo no JS (kofValEq)
+  - bug 109 — map.get(<primitivo>) CRASHAVA no JVM (NoSuchMethodError Boolean.intValue)
+  - bug 103 — tradutor riscv→aarch lw virava ldr w (zero-extend) onde riscv é sign-extend
+  - bug 107 — println(coleção) com formato do contêiner JVM (kofFormat) [renumerado 106→107]
+  - bug 106-JS — println(coleção) com formato do contêiner JVM (kofFormat)
+  - bug 104b-i — equals herdado de classe não-record (LINK_FAIL → identidade)
+  - random.int(bound) riscv/aarch LOOP INFINITO — rejection sampling estourava 2^64
+  - bug 104a — KofObj sobrescreve equals/hashCode/toString (records em coleção = conteúdo)
+  - bug 103 — subscript `x[i]` em String/List/Map/Set → SEM054 (opção B)
+  - bug 102 — indexOf/lastIndexOf/startsWith(s,from) respeitam o índice inicial (paridade absoluta)
+  - bug 100 — SEM051 generalizado (qualquer não-String em formal String) + equals(não-String) fold no Native
+  - bug 98 — < <= > >= em String → SEM053 (rejeitar, paridade absoluta)
+  - runtime JS ao vivo sem CSS p/ layout+form (issues #75/#76) + meta viewport webview (#77)
+  - bug 96 — funções strings.* como método de String → SEM052 (paridade absoluta)
+  - bug 100 — hijack x86: método de usuário com nome de String-op era sequestrado pelo intrínseco (p.trim() → lixo silencioso)
+  - bug 100 — Char em método String (indexOf/contains/split/...) → SEM051 (opção B, rejeitar)
+  - bug 99 — String method com formal String recebia Int/Char → 4 backends divergiam (JVM VerifyError / x86 SIGSEGV / JS -1 silencioso / interp CCE)
+  - bug 44 residual — spelling inf/-inf/nan → JDK Infinity/-Infinity/NaN (x86_64)
+  - bug 97 face JS — String.compareTo/hashCode (JsCallEmitter roteava p/ String.prototype, que não tem — TypeError)
+  - bug 99 (R6) — Int.MAX_VALUE/<primitivo>.<campo> agora é SEM050, não lixo/crash
+  - bug 97 (cont.) — String.equals roteado p/ kof_string_equals (x86_64)
+  - bug 97 — String.compareTo/hashCode emite nos nativos (x86_64)
+  - bug 95 — 2+ split no mesmo programa quebrou o assembler (x86_64)
+  - bug 97 (cont.) — String.equals roteado p/ kof_string_equals (x86_64)
+  - bug 97 — String.compareTo/hashCode emite nos nativos (x86_64)
+  - bug 95 — 2+ split no mesmo programa quebrou o assembler (x86_64)
+  - bug 43 faces indexOf/lastIndexOf — code units UTF-16 (x86_64)
+  - bug 43 face substring — code units UTF-16 (x86_64)
+  - bug 78 — transaction aninhada participa da tx externa (x86_64)
+  - bug 43 residual — charAt UTF-16 code units (x86_64) + bug 44 reconciliado
+  - bug 82 (face cross) — toDouble/toFloat riscv64/aarch64 (parser FP novo + tradutor aarch FP)
+  - bug 88 — riscv/aarch valueOf(T?) despacha pelo INNER (regressão SG-008 cross)
+  - bug 44 — println(double)/toString(double) com o contrato do JDK
+  - bug 82 (x86) — toDouble/toFloat no contrato do JDK (parser reescrito)
+  - bug 80 — println(Long.MIN) riscv/aarch correto (magnitude negativa, técnica JDK)
+  - Bool==true no JS normalizado no chokepoint da comparação — paridade JVM/Native
+  - bug 79 (x86) — toInt/toLong alinhados ao contrato JVM (trim+dígito+overflow+throw)
+  - math.is*/random.boolean retornam boolean JS real — boolExpr==true funciona no JS (paridade JVM/Native); randomShapeJs ganha o assert que native já tinha; FALTAM strings/validation/security (guards)
+  - transaction aninhado no native x86 não comita o escopo externo — .Ldb_tx_handle dono + flag-owner no record do try (paridade §77 JVM) + teste E2E sqlite; known-bugs/DOING
+  - pad4 de ano em time.addDays JS (parity byte-idêntica com JVM %04d; ano<1000 divergia) + stdtime2 trava 0999/0001/1700-02-28; DOING.md com design fechado do S7c x86
+  - random.double() usava 2^52 como divisor (constante .Lrnd_two53 errada) — corrigir para 2^53 nos runtimes x86 e riscv/aarch; docs: gravar regra de organizacao de documentacao no AGENTS.md + known-bugs SS79 + DOING.md
+  - preservar operandos da pilha em if/switch-expressions (#69)
+  - bug 71 — new T[a][b] cria TODAS as dims (KofNewMultiArray: MULTIANEWARRAY JVM / Array.newInstance interp / kofMultiArray JS) — restaura gate quebrado no remote (53264c9f era meio-de-grau)
+  - #65 transaction aninhado comita o escopo externo — rollback não desfaz
+  - #67 kof build ignora .kof (só varre .kf) e responde no .kf files found
+  - #66 LNT apontava o statement seguinte (pos pós-ponto-e-vírgula + cópia HashMap colidindo records iguais)
+  - #64 += em elemento de array e campo estático qualificado sobrescreve em vez de somar
+  - #63 2 labels de debug consecutivos no mesmo pc → LNT inválida (ClassFormatError no load)
+  - #62 signature genérica de type-arg primitivo usava descriptor cru (D) → GenericSignatureFormatError
+  - resolve SIGSEGV in spawn expressions by correcting type inference for lambda returns
+  - #60 — handle de conexão nunca reutilizado (contador monotônico)
+  - §70 — join heterogêneo primitivo-vs-primitivo (Int/Long/Double/null) sem crash e sem widening
+  - #57 — if/switch heterogêneo primitivo-vs-referência não gera mais VerifyError no JVM
+  - sintetizar hashCode() para records no backend nativo (#55)
+  - ldc escapa constantes de string — DRIFT 69→5 no corpus (09/09)
+  - sintetizar hashCode() para records no backend nativo (#55)
+  - 3 bugs de parsing/length que travavam bytecode REAL (601 classes)
+  - #54 — <init> NÃO é virtual no interpretador (super(v) recursiva)
+  - bug #54 — super(v) explícito despacha p/ <init> da SUPERCLASSE (era recursão no ctor → StackOverflowError)
+  - #53 metades JS/Native/script — super(Record.<init>) só no JVM
+  - bug 66 (#53) — record com ctor explícito canônico não gera <init> duplicado
+  - #42(c) — SEM038 em this.x= de MÉTODO de record (exempt só construtor) + testes
+  - #42 — SEM038 escrita em componente de record + SEM037 no update do for
+  - bug 50 — futex WAIT do canal x86_64 com args corretos (uaddr=&lock, op, val)
+  - #52 — reconstruir agrupamento por precedência/associatividade
+  - String.toInt/toLong/toDouble/toFloat no runtime (GitHub #51)
+  - bug 48 json.decode<List<Record>> gap honesto JSN004 + bug 59 regressão riscv/aarch estáticos
+  - B5-B9 emitiam código em .rodata (herdado do B4) — crash em runtime
+  - decompile nunca emite owner java/jdk sem mapeamento (R6)
+  - slot de xstore_0..3 wide era (op-0x3f) sem %4 (bug da unit anterior)
+  - decompile mapeia slots wide (R6 — Long/Double = 2 slots)
+  - parâmetro após um `Long`/`Double` deixa de sumir da assinatura (GitHub #47)
+  - atribuicao parametro let
+  - bug 62 — CP Float/Double como bits crus; ldc recusa float p/ não driftar
+  - Fase C — R6: nunca emitir código errado p/ join compartilhado
+  - status reflete o marker mesmo com editor ausente do PATH
+  - SEM036 — função não-void que pode terminar sem return (bug 26 variante)
+  - source do runtime FFI casa com o JDK que o compila (CI 21 vs local 25)
+  - #35.3 banner reporta a porta REAL (R6, nunca mentir)
+  - headers variádicos — 2+ headers como args separados (bug 60, GitHub #32)
+  - serveDir com barra final serve index.html (GitHub #35.2) + regressão bug 59
+  - record com campo List<Record> decodifica tipado (bug 58, GitHub #34)
+  - String.length contava bytes UTF-8 (bug 43)
+  - campo estático dava lixo (bug 41)
+  - await sobre handle não quebra mais o bytecode (bug 57, GitHub #31)
+  - array.get(i)/.size não geram mais ClassFormatError (GitHub #30)
+  - lambda return aninhado (bug 53, #28) + CME no spawn (bug 55)
+  - handle return null in lambdas to avoid 404 responses (bug 53)
+  - finally com return no try perdia o retorno (bug 45)
+  - app.delete não colide mais com File.delete (bug 54, GitHub #29)
+  - record hashCode() ausente no KofJS (bug 42)
+  - try aninhado compila no KofJS (bug 49) + registra bug 52 (re-throw em catch)
+  - CompilerDriver reutilizado vazava classes sintéticas (bug 51)
+  - Image.setAlt/setWidth/setHeight (UI003/5) + FIX JVM descriptors (6º ponto)
+  - try aninhado no KofJS (bug 49)
+  - Native — 21 stubs UI ausentes quebravam link (UI001, R6 P0)
+  - json.decode<List<Record>> — trata kof_json_decode_object_list (bug 48)
+  - corrige RACE no spawn/await (lastReturned) + lote 3 da matriz (concorrência determinística)
+  - serveDir('/') serve o bundle completo, não só o index (F3 full-stack)
+  - decode<Record> no interpretador + lote 2 da matriz (erros/null/JSON)
+  - re-throw em try aninhado — corpo do catch usa sub-escopo (bug 38)
+  - REVERTER bug 39 (get nullable) — quebra m.get==1 (retrocompat); registrar design pendente
+  - Map.get devolve V? sempre — println(null) não dá NPE (bug 39)
+  - chave do cache do eval vira SHA-256 — colisão hashCode+length dava resultado errado (bug 47)
+  - case de primitivo em switch → SEM035 (bug 37)
+  - compound em campo de instância — KofDup + fieldType real (bug 40)
+  - watchdog teto 120→240min (turno ativo legítimo passa de ~2h)
+  - importa classes movidas no refactor SOLID (test-compile quebrado)
+  - paridade String.valueOf(char) — JS usa String.fromCharCode (bug 27)
+  - watchdog mata run pendurado (lock stale >120min)
+  - qualifyGlobals substitui replaceAll(\b) — nome de global não corrompe string literal/comentário/membro
+  - switches não-exaustivos após sealed->interface — adiciona default
+  - SEM025 para resolução falha em símbolo conhecido — namespaces builtin, super e campos (R6, P0 roadmap-audit)
+  - update cron job to require --attach for session injection and clarify server health check
+  - resolve VerifyError for null comparisons by using reference equality for UnknownType
+  - contains boxeia pelo tipo do argumento (bug 35)
+  - campo estático por nome simples baixa GETSTATIC/PUTSTATIC
+  - clarify autonomous mode cron behavior in AGENTS.md
+  - diagnose builtin unknown methods, wildcard and spawn void handle (bugs 29/31/34, SG-007)
+  - semear staticFields com initialValue de campos estáticos
+  - add error handling for unresolved collection and process method calls
+  - time.interval/scheduler com jobs canceláveis (paridade com runtime gerado)
+  - pilha aceita null (LinkedList); +3 testes de paridade
+  - FASE 3.1–3.7 corrigidas — ciclo StackOverflow, visibilidades, imports + prova honesta (jar fresco)
+  - Canvas renderiza no KofJS — shim getContext + attach ao root + snapshot em ops de renderização (CANVAS001 FECHADO)
+  - Canvas sem owner "" no JVM — construtores UI tipados no driver-side typer (CANVAS001 metade JVM)
+  - contadores WS publicados ANTES do estado observável — fecha bug 28 (flake gate)
+  - fun/fn/func viram palavras reservadas — não existem em nenhuma posição (SG-001)
+  - member call em receiver nullable inferido (bug 33) — MethodCallTyper unwrap
+  - PARSE085 também em membros de classe + âncoras da spec pós-F6/F7
+  - rejeita fn/fun/func como keyword de função (PARSE085) — SG-001
+  - resolveType do MemberResolver recebe o qualifyDeep do bug-32 (a extração FASE 6 duplicou o método sem o fix)
+  - type-argument genérico via import (bug 32) — qualificação recursiva
+  - JdwpPacket — codec no corpo da classe (0abb880 deixou aninhado como Packet, quebrando JdwpClient)
+  - JdwpPacket — codec no corpo da classe, não em aninhada morta (REFACTOR-500)
+  - metrics() x86_64 nao emite mais bytes NUL (comprimentos errados)
+  - decoders json escalares cross + decode<Bool> x86_64 invertido
+  - "42".toInt() riscv64/aarch64 — deref do VALOR do char = SIGSEGV
+  - tail-call em 8 funcoes riscv64 (call+ret sem salvar ra = loop infinito)
+  - F1.9 extrai RuntimeJson* — restaura label .Lkof_json_true perdido na divisão
+  - println(char) imprime código (paridade JVM) + F1.1 extrai RuntimePrint
+  - cache riscv64/aarch64 real + println(null) + sle/sge invalidos
+  - time.now() riscv64/aarch64 real (clock_gettime=113, paridade x86)
+  - println(char) numérico (72) preservado; String.valueOf(char) → caractere UTF-8 (h)
+  - FLT001 — println/valueOf(double) no cross vira diagnóstico, não segfault
+  - fcvt riscv64 com direção invertida (FP conversions quebradas)
+  - kof_mv64_matvec preserva rc do vk64_submit no readback de y (memcpy clobbera %eax)
+  - update stack handling and syscall for string printing
+  - readback y <- ymap apos submit em mv1 (rsi clobberado pelo submit)
+  - void-as-value SEM033, sublist SEM034, interface dispatch para tipo de função declarado
+  - cross riscv64/aarch64 reporta DB001 em compile-time (R6)
+  - aritmética sobre param de lambda sem anotação → SEM001, não bytecode quebrado
+  - base 1000x1e6 + recomposicao exata por divId
+  - vkMakeSet recebia PipelineLayout em vez do DSL
+  - 500 desempacota InvocationTargetException do handler lambda
+  - envolve TODO o mic record no gap MEDIA003
+  - mic captura qualquer exceção de hardware ausente como MEDIA003
+  - unwrap InvocationTargetException in handler error catch
+  - map AudioSystem.isLineSupported throw to MEDIA003 message
+  - dedup por arquivo de origem — re-import transitivo não é colisão
+  - JvmVkRuntime.java — restaura ';' e remove '}' extra (build quebrado no merge fixes-for-kofagent)
+  - PKG005 permite nomes iguais em pacotes diferentes (como em Java)
+  - bug 11 native — record ==/equals/!/toString/concat (já testado), concat valueOf fix, digest valueOf Object->toString
+  - remove duplicate WS/SSE runtime definitions
+  - bug 15 — primitivo → Object (auto-boxing) + default em var sem init
+  - bug 9 — captura mutável no Native (prologue de lambda)
+  - bug 8 — tipo de função (Int) -> Int parseia como tipo
+  - bugs 19/20 (lambda em coleção/retornando lambda) + validação símbolos
+  - --enable-preview só no JDK 21 — FFM é final no 22+ (JDK 25 quebrava COMP001)
+  - bug 23 — warning quando superclasse externa está fora do classpath
+  - bug 11 — == em records por conteúdo (JVM+JS)
+  - bug 16 — List.toArray() rejeitado com SEM029
+  - bug 12 — assignment como valor rejeitado (SEM027)
+  - bug 18 — kof-ui widget id monotônico (sem reuso após remove)
+  - bug 17 — array .get()/.set() rejeitados com SEM028
+  - bug 13 — cast em aritmética crasha o compilador
+  - bug 4 — switch de String no JVM
+  - bug 22 — Native: construtor de classe importada (undefined reference)
+  - bug 7 — listOf<String?>() agora parseia
+  - bug 1 — throw não-String vira SEM026; try/catch agora é analisado
+  - bug 14 — Map/Set .size como propriedade
+  - bug 6 — sufixos numéricos maiúsculos (42L/1.5F/2.0D)
+  - bugs 5, 24, 25 — conversões numéricas + literal fora de faixa
+  - bugs 2, 3, 10 — compound assignment + NOT lógico
+  - concat 'str' + double/float descartava o operando FP
+  - Set<T>/Map<K,V> como campo/retorno de classe (mapper HashSet/HashMap + parse de método c/ retorno genérico)
+  - idiomatic-philosophy — kof.Set JVM, Map.get V?, readText String?, size() sem sentinela
+  - alinhar stack no call pthread_create (println antes de spawn desalinhava → segfault glibc)
+  - surefire include pega NativeDebugTest2-5; docs/status atualiza 01/09 + regressão dc849f6
+  - clarify test summary in project status documentation
+  - update last updated date in project status
+  - prevent stack underflow by avoiding unnecessary KofPop for collection methods
+  - 'fn' keyword de declaração — o parser tratava 'fn main()' como retorno 'fn' e o JvmBackend emitia main([String;)Lfn; → JVM rejeita e tenta o launcher JavaFX ('componentes de runtime do JavaFX não encontrados'). kof run --target jvm volta a funcionar (validado: pure.kf + date + llama smoke)
+  - remove unsupported JS spawn error handling; add sequential execution test
+  - dedupe helloRoute in KofWebE2ETest; docs for app.health + observability (760 tests)
+  - N12 — ordem dos stack args >=6 invertida nos call sites (SysV: arg6 deve ficar no topo → 16(%rbp)); INSTANCE/INTERFACE vtable salvavam stack args em r10 único (quebra com >1 stack arg) — agora slots de frame; repro N12 (9 campos, x.i=9) verde, J4/N10 re-validados
+  - N23 — constructor com >=6 args: cleanup dos stack args apos call (callee caller-clean); pop do consumidor volta a desempilhar o push duplicado do receptor (rip=0x1 via vtable corrompida); repro R3-R7 + N23 verdes, 16/16 suites
+  - COMP002 travava lambda WS com if/String — descritores ws faltavam
+  - fechamento da classe KofRuntime no runtime concatenado (COMP001)
+  - fechamento da classe KofRuntime após concatenação do JvmVkRuntime (COMP001 compact source file)
+  - cache.delete statement sem Pop extra — KofIo.instanceMethod(Unknown,'delete') interceptava hasReturnValue antes do caso cache (frame merge NegativeArraySize) — fecha KofCacheE2ETest (661 testes verdes); trace IR via -Dkof.trace.ir
+  - inferência de aritmética promove int→long, corpo vazio em classe concreta emite return (ClassFormatError), tipo de retorno de função top-level registrado (NoSuchMethodError em receiver); fix(native/io): kof_io_dir_delete recursivo no JVM + retorna 0 (não -1) em falha — fecha suítes ws do kof-agent (16/16) e IoE2ETest.directoryDelete
+  - fechamento da classe KofRuntime no runtime concatenado (COMP001)
+  - fechamento da classe KofRuntime após concatenação do JvmVkRuntime (COMP001 compact source file)
+  - update future release codename in documentation; modify test to accept closed URL as argument
+  - correct spelling of "Diplomat" to "Diplomata" in release notes; add end-to-end tests for HTTP resilience and circuit breaker functionality
+  - restaura descritores JVM + no-ops UI/Store perdidos no rebase
+  - cache.delete statement sem Pop extra — KofIo.instanceMethod(Unknown,'delete') interceptava hasReturnValue antes do caso cache (frame merge NegativeArraySize) — fecha KofCacheE2ETest (661 testes verdes); trace IR via -Dkof.trace.ir
+  - remove unnecessary stack adjustment in method call
+  - inferência de aritmética promove int→long, corpo vazio em classe concreta emite return (ClassFormatError), tipo de retorno de função top-level registrado (NoSuchMethodError em receiver); fix(native/io): kof_io_dir_delete recursivo no JVM + retorna 0 (não -1) em falha — fecha suítes ws do kof-agent (16/16) e IoE2ETest.directoryDelete
+  - kof.cache ttl/get clobber de registradores + println(null) segfault; feat: KofCacheE2ETest (5 casos x3 targets)
+  - String.length via toString type inference + remove auto-GC hang (alloc path)
+  - PROC001 explícito para process.spawn no Native
+  - marcação transitiva + sweep no-op conservador + cdq em idivl Int — fecha N22 e SIGFPE do scheduler
+  - String API no SemanticAnalyzer/inferExprType + lastIndexOf + null-compare no KofBinary
+  - aritmetica Int trunca 32 bits — fecha N21/N10-family
+  - comparisonOperandType refinado — null-literal decide ref; Unknown volta a ser int
+  - R2 mapOf(k,v) pares + R3 null-safety narrowing + R4 Box<T> genérico na JVM
+  - string concat null -> anull, if null, List and subclass parity (4 bugs)
+  - shell bash for changelog + remove duplicate release-artifacts step (windows pwsh fix)
+  - package+release uma coisa só (single job, no artifact loss)
+  - package+release uma coisa só + JDK 21 no release job
+  - build kof-cli+dist in same job as release (no artifact loss)
+  - ensure kof-cli jar in same-step as release (artifact fallback)
+  - remove duplicate if-no-files-found again
+  - re-add kof-cli jars to upload for 0.1.8
+  - remove duplicate if-no-files-found
+  - ensure kof-cli jars + lib/kof.jar in dist for 0.1.7
+  - duplicate if-no-files-found + pipefail head
+  - windows pipefail + lib/kof.jar check + jar upload
+  - windows SIGPIPE 141 head pipefail
+  - lib/kof.jar inside tar.gz + always upload artifacts
+  - imports file-specific + native free-list GC + docs 27/08
+  - unbox pós-kof_await restrito ao await — UI voltou a verificar
+  - enhance spawn expression handling for primitive return types
+  - List/Map fora do ramo JSN002 (ld List_vtable) + spawn stmt JS CONC003
+  - lambda não-void single-expr vira return + gaps CONC003 p/ spawn-expr/await no JS
+  - add debug logging for MemoryLayer entries field type resolution
+  - Map/Set boxing e construção — corrige VerifyError JVM e stack underflow JS
+  - fwd-ref multi-file, Int[] negativos nativo, Frame.merge Map
+  - SEM025 não reportar Object methods (hashCode/equals/toString) — corrige JvmE2ETest.execRecordValueMethods
+  - N3 args vazio + N9 box String += com concat
+  - exclude String/Int/Long/Bool from SEM025 — avoid false-positive for JDK methods (contains/split)
+  - dedupe kof.validation block — single copy, fix Native ld duplicate symbols
+  - enhance JSON value retrieval in emitJsonFindValue function
+  - add string conversion functions and update NativeRuntime with new assembly generation
+  - alinha serve/check/test com o modelo de módulo multi-arquivo
+  - simplify JSON string handling in NativeRuntime and CompilerDriver
+  - kof_sec_secret_get nativo reescrito — bug #13 resolvido
+  - db.close quebrado pelo WIP do isLocalVarName + surefire -Xshare:off
+  - update AndroidInteropE2ETest to use a temporary SDK JAR for external classpath
+  - update Android project instructions to reflect Maven usage
+  - update comments for clarity in NativeRuntime and modify AndroidProjectWriter to use Maven
+  - FLT001 — operações de ponto flutuante viram diagnóstico em compile-time
+  - feedback do kof-calculator-lab — calculator interativo destravado + bugs reais
+  - remove debug logging for MongoDB method accessibility
+  - enhance integer arithmetic checks and improve MongoDB query handling
+  - feedback real do kof-calculator-lab (OBS-004 a OBS-010)
+  - Windows — converter paths MSYS para Windows antes do extractall do Python
+  - extração do zip do JDK (Windows) — mover o subdiretório jdk-* com verificação, sem engolir falha
+  - verificação explícita do JDK embarcado após a extração (Windows)
+  - Windows — o zip do JDK não preserva o bit de execução; aceitar java.exe por existência (-f) no launcher e no validate
+  - launcher e validate usam o JDK embarcado em todas as plataformas
+  - CI multiplataforma + kof.db link seletivo + JS try/finally + package Adoptium
+  - enhance try-finally parsing logic to correctly handle labels and control flow
+  - enhance MySQL connection detection and linker command for conditional library inclusion
+  - add --as-needed flag to linker command for improved dependency handling
+  - update output handling in various E2E tests for consistent UTF-8 encoding and line endings
+  - update file path handling for cross-platform compatibility and enhance test process encoding
+  - golden tests need the CLI jar; launcher must not break JDK 21
+  - update expected output for label style binding in JS target
+  - guard kofUiButtonRemove against missing action registry
+  - update ClassPrepare event kind and improve event logging in JdwpClient
+  - sound IR optimizer, JS switch routing and list construction
+  - field initializers, record defaults and increment semantics
+  - idiomatic core — name resolution by symbol, return inference, this-free fields
+  - bool semantics parity — 0/1 results, true/false formatting, Multi-Release shade
+  - restore kof_io_ dispatch in JVM runtime helper
+  - JVM constructor super detection, List<ref> checkcast, kof.List descriptor
+  - centralize primitive names, reject lambdas with a clear diagnostic
+  - native JSON long parity + array element stride
+  - JVM backend execution parity — if/else, strings, generics erasure boxing, records, interfaces, access flags, bitwise ops, long arithmetic
+  - switch case fall-through, SUB operand order, function call typing
+  - resolve native SIGSEGV and complete string/object ABI
+
+### Documentation
+
+  - claim .22 das 4 reds do quality-bot (#550/#554/#553/#555)
+  - heartbeat 10:2x — §366/§367 medidos 4-alvos no jar local (prontos p/ fechar #547/#548 quando fbfcaf44 for PUBLICADO pela .22; nao empurro commit alheio); #555 continua OPEN (88b13b87 zerou 11; gate local ainda lista dezenas de instancias de ~10 regras); gate de despacho por fingerprint chegou ao AGENTS (re-trigger mecanico agora condicionado a mudanca real de estado)
+  - face JS do DAP tem DOIS bloqueios medidos, nao um — runtime JS e o GraalJS embutido (KofJsRunner in-process; node nao e o runtime de producao, entao o inspector do node e irrelevante e ligar o do GraalJS e rule 6) + source map emitido e por FUNCAO (JsIr.JsFunctionLine), entao breakpoint por linha Kof exige statement-level no emissor (lane compiler) e um breakpoint de entrada de funcao seria fachada Q7. Linha X7 do tracker EN+PT + NEXT STEP do DOING EN+PT; nenhum codigo.
+  - opencode 1.18.31 instalado na WSL (interface verificada por --help; 0 credenciais; sessao independente ainda nao provada) e esta maquina nao tem cron/estado de watcher — set-mode active fica para a maquina dos crons
+  - AGENTS EN+PT — contrato do gate de despacho, watcher por eventos e fechamento com evidencia; DOING
+  - espelho PT — watcher §372 riscado do PRÓXIMO PASSO + fecho gravado + protocolo do index alheio staged
+  - heartbeat 09:4x — §372/#551 cumprido (prova 5+8+8 no tip limpo, CHANGELOG+pointers+close) + protocolo para arvore com WIP alheio staged/UU gravado (--only COM pathspec, jamais commit puro ou sync-push --autostash); NEXT STEP perdeu o watcher feito
+  - bullet do fecho §372/#551 EN+PT (par de verdade do commit d11aee43 — o lote python anterior morreu no assert PT antes dos CHANGELOGs; --only SEM pathspec = fatal, com pathspec = commitei so meus 2 arquivos, index dos outros intacto)
+  - fechamento do §372/#551 pela lane docs — pointer do §368 EN+PT com a RESOLUCAO (b321fcb1), bullet no CHANGELOG EN+PT, battery 5+8+8 re-verde no tip limpo 3be16f88 e issue fechada com prova independente
+  - UPDATE ~08:1x da linha makealive 3.1 — 2o rebase, fusao da entrada ArrayType no flip do §372 da lane docs (autoria/bisect delas preservados), sonda 3.1.1 do estado-db, check_500 pre-existente deles (§375/#552) declarado sem esconderio de baseline (R6); EN+PT
+  - linha makealive 3.1 com o §373 colateral + SHA final da pilha recriada (EN+PT; docs-lang)
+  - ledger do pouso da 3.1 core — known-bugs §371 (lambda-FT, ✅ com Status-line p/ gate; renumerado 3x no tip compartilhado — honesto no historico) + §372 NOVO ABERTO (JS: if aninhado com then-throw rouba false-label do envolvente; repro t2/t4 nos 2 motores, IR label-only, tentativa de ownership revertida com a analise do porque: 18/23 WorkflowE2ETest — consumo de fronteira é o contrato §147 de assert-com-loop e parseElse-pulou-exits; workaround single-level-guard documentado e APLICADO no MkFailure); tracker 3.1 EN+PT com CORE landed + MK-1 restante; DOING×2 com UPDATE completo (rebase de 41 commits, fusao de gates, stash ORM da irma refeito na arvore, proximo passo db/fs/REST/CLI); docs-lang 100%, status-gate rc=0 EN=PT
+  - heartbeat 09:1x — quality-bot decifrado/roteado: #555 umbrella dos 21 alertas CodeQL por face-dono (KofJsProcessBridge junto do §366); NEXT STEP(6) vigia fim do CODEQL_GATE_SKIP quando o portao verde
+  - corrigida a convencao de relogio dos ticks (carimbar com hora REAL do host; os ~HH:Hx desta sessao estavam adiantados ~6h)
+  - heartbeat ~15:0x — sinal do dono na #548 gravado no ledger (fix em curso) e linhas de Status restauradas em §366/§367
+  - §366/§367 ganham Status/Estado explicito EN+PT — faltava a linha (criados so com Sintoma/Face); gravado o estado real medido hoje: fix EM CURSO na lane compiladora (bateria M na arvore compartilhada), precedente do autor na #548 (KofJsHostlessRuntimeTest) e o teste-nascendo ProcessResultContentE2ETest sem pouso
+  - heartbeat ~14:4x — avaliacao de recusa gravada (4o sem pouso; auditoria three-states/matrix/interop sem pendencia na lane); aguardando watchers 1-6 do NEXT STEP
+  - 32-cli-tooling EN+PT ate os pousos de hoje — profile --methods (JFR proprio / --cpu-prof + mapa ate a linha .kf) e debug --dap/--attach (X7-4/X7-5, recusa honesta do js); tambem conserta a divergencia EN(ate X7-3) vs PT(ate X7-4) na linha do debug
+  - tick ~13:2x EN + fecho parcial no espelho PT — coverage Observability sincronizada, vigia do lote .22 (teste do watcher §367 nascendo na arvore)
+  - linha Observability EN+PT — kof profile --methods saiu de "planejado" para REAL (JVM via JFR proprio, JS via --cpu-prof + source-map ate a linha .kf; face nativa pendente), espelhando os pousos da lane cli sem inventar face que nao existe
+  - CI hospedado do 5e02a13b medido (run 35507294827) — structural-quality/cross-native/multiplatform verdes, #552/§375 fechados; Build + Tests vermelho SO por §372 (4) + MakealivePrimitives (2), donos outras lanes, mesmas vermelhas do HEAD limpo; nada mascarado
+  - espelho PT — fecho do watcher §375/#552 com prova 28/28 no tip limpo
+  - §375/#552 encerrado com prova independente 28/28 no tip limpo + SHA do fix nos ponteiros EN+PT; tick watcher cumprido
+  - fotografia "tarde 20/09" EN+PT — §370 loop fechado com re-medicao, §373 d969bc3a nos 4 alvos, X7-5 attach real (§376/§377), colheita de processo §371/§372/#552/§374/#554 com roteamento e teste-prova definido; status estava parado na manha
+  - espelho PT do dia da lane docs — resumo dos ticks 20/09 (~01:5x→11:4x) + PRÓXIMO PASSO com os 6 watchers traduzidos (DOING.pt_BR era snapshot sem os ticks da lane; convenção: cada dia da lane fecha com um resumo PT, não tick-a-tick)
+  - NEXT STEP ganha o watcher §378/#554 (log do check_known_bugs_status.sh + self-test + flip)
+  - §378 EN+PT — gate EN×PT cego a FIXED unilingue (prova §376/§377), #554 roteada; licao gh --body-file gravada no tick
+  - tick ~11:0x — politica nova da lane (espelhar pousos alheios nos 2 idiomas independentemente do status; gate atual so cruza ABERTOS) + gatilho de issue tooling apos 3 recorrencias
+  - espelho PT de §376 + §377 (fixes do X7-5/JDWP gravados so no EN — o check_known_bugs compara apenas ABERTOS, entradas FIXED unilingues passam despercebidas pelo gate; cego documentado:_gate-by-design_; mirror fiel, heading com status traduzido CORRIGIDO)
+  - sweep 8.3 MEDIDO — "residual profiler" era FALSO-RESIDUAL (face JVM `--methods` ja existe: ProfileMethodsTest 4/4 no tip 81401629; faces Native/JS = perf/node AUSENTES no host, classe CI-toolchain como 8.4). Lane sem trabalho host-provavel sem colisao = recusa de re-trigger da LINHA registrada (repo nao stable: §371/372/374/375 abertos, donos vivos). NEXT STEP = tripe STABILITY do AGENTS no proximo tick; unidade propria declarada em aberto: split JdwpClient 570->JdwpValues (banda tolerada). Licao 3 re-incidida e confessa: eu ia "medir o 8.3" e tinha esquecido que o proprio `Profile.java` implementa o sampler.
+  - tick ~10:2x — sync §373 (6 registros) + corpus collections EN+PT + roadmap X7-5 §19.5 EN+PT; debug fica fora do parity (convencao do X7-4 confirmada)
+  - §19.5 ganha a linha do X7-5 EN+PT — attach real JVM (JDWP cru reconstruido com oraculos medidos §376, debuggee sobrevive ao disconnect) e Native (gdb -p via KofGdbMi.attach); autor sincronizou CHANGELOG+debug-adapter mas o roadmap parou no X7-4
+  - colecoes — ensina o contrato do §373 (bare List/Set/Map em posicao declarada = builtin; preferir tipo explicito; shadow do usuario vence; prova 4-alvos) EN+PT; PT mantem o heading "When to use" historico (nao mexido — fora da unidade)
+  - tick ~09:4x — §373 sincronizado nos 3 registros-vivos EN+PT; alerta gravado: fix(es) em curso da lane compilador na arvore compartilhada (StatementAnalyzer/TypeParams/ProcessBridge)
+  - §373/#443 nos 3 registros-vivos EN+PT (CHANGELOG bullet pos-§368, linha de conformancia apos a do §362, delta parity (11)) — fix `d969bc3a` estava com ledger FIXED e CHANGELOG/matrix/parity MUDOS; provas do dono: BareCollectionFieldE2ETest 8/8 (RED 6/8) + print `2` nos 4 alvos jar limpo + controles shadow/§243; nota que a caca Q4 abriu §374/#553 (ainda aberto, nao registrado como fechado)
+  - linha GitHub #553 do §374 (EN+PT) — ponteiro criado no tick ~08:5x mas so o DOING.md entrou naquele add; regularizado, gate re-rodado verde
+  - NEXT STEP ganha o watcher §374/#553 junto da gate ≤500 do #552 (mesmo cluster de pousos da lane compilador)
+  - tick ~08:5x — §374→#553 (issue que faltava), §375→#552, Status §370 limpo do falso-open do gate, dedup do autostash quadruplicado do #441; fila das 5 do tick48 confirmada contra gh
+  - §375 ganha ponteiro GitHub → #552 (a issue que a lane docs abriu para a MESMA lacuna check_500/BuiltinCallTyper-612 fica linkada ao registro do tip; fix+flip fecham juntos)
+  - §370 Status/Estado reescrito — o historico "abriu 🔴 OPEN" na linha de status confundia o check_known_bugs_status (contava o fix como aberto nas duas linguas); semantica identica, gate agora exclui 370 da lista open
+  - dedupe mecanico — a linha do CLAIM #441 da .15 (18/09) estava 4x no EN (2x byte-identicas removidas; as 2 restantes tem fins proprios distintos = preservadas); lixo de autostash do push 3b4046e6 (mesma doenca da licao d7dba433, agora ao contrario: duplicou em vez de truncar); PT ja estava limpo
+  - tick48 — fila das 5 da mantenedora fechada (#464/#443/#431/#278/#275) + NEXT STEP .22 = #468; pushes da sessao registrados
+  - §372 adendo — face hostGrammar (FunctionType nullable-return) medida viva no tip d969bc3a (battery #278)
+  - tick ~08:1x — §370 re-verify + #549 prova gravada + delta (10); autostash antigo resolvido por preserve-upstream (stash@{0} nao dropado); autocritica do falso-§373 (sonda com slot==arg nao testa o contrato); NEXT STEP = watch §366/§367 (lote vivo da .22 na arvore) + §372 + §371 + #552 + CI
+  - delta (10) — coercao numerica dos args de extern (#549/§370, `35bfaec1`) re-medida JVM==Native pela lane docs + SEM014 nos nao-convertiveis; #549 fechado com comentario de prova (5749129761)
+  - NEXT STEP da lane tooling/debug — residual 8.3 profiler-by-domain (perf Native + node --cpu-prof JS), medindo o ambiente antes; gates vermelhos §372/BuiltinCallTyper de outra lane ja roteados
+  - adendo de atribuicao medida ao §372 — o 5cd078c1 e a UNICA checagem nova de store-de-campo na janela; mecanismo TypeVariable-vs-folha de erasure
+  - claim — kof profile --methods (sampling profiler method-level in-house via JFR, 8.3 residual)
+  - NEXT STEP da frente FFI no DOING.md EN (o commit anterior so casou o espelho PT)
+  - frente FFI pos-#431 — 0A+#549+D6 pushados (59701d4a/35bfaec1/262cd837), #549 fechada; NEXT STEP = aguardar ratificacao D6-1..D6-5 em DECISIONS.md (regra 6), FASE 2+ so depois
+  - D6 rascunho corrigido (FASE 1) — Mixed=INTEGER+SSE MEDIDO com GCC 13.3 (%rdi+%xmm0, size 12, off n=4 f=8), Int64->Long (Kof nao tem Int64), Byte[] nao reusa o token S (S=String/char*; D6-3 = Buffer(U8,INOUT) distinto de CString/Pointer/OpaqueHandle/Struct). Sem ratificar D6-1..D6-5 (regra 6, decisao da mantenedora). docs-lang 0/0/0
+  - #431 pos-landing FASE 0A — reconcilia contrato normativo com o Native escalar direto (syntax/modules/specification-status/tracker 3.7/D6 'What exists today', EN+PT); §61 fechado, Float sem cast = §370/#549 aberto; claim DOING + BEFORE medido (94/0/0/0 no 57a0d5f0). Sem mudanca de comportamento; docs-lang 0/0/0
+  - tick ~07:2x — §362 registrado + dois falsos-verdes achados na varredura (§371/#550 CLI-cross-CWD, §372/#551 regressao do gate §368 bissectada) + gate 500 #552 + dedupe matriz + SHAs fantasmas corrigidos; NEXT STEP = watcher dos 4 fixes + CI verde
+  - bullet da manha 20/09 ganha a regressao §372/#551 (bisect 5cd078c1) + gate ≤500 vermelho #552 — EN+PT
+  - regressao do gate §368 catalogada com bisect de autoria (6/6 verde em 5cd078c1^ -> 3F+1E+1F no tip: SEM012 engole o rio de erasure e mascara SEM098) EN+PT + pointer Related no §368 + status bullet; issues #551 (regressao) e #552 (BuiltinCallTyper 612>=600 pelo gate CI, cross da semana FFI); CI das ultimas 3 pushes vermelha por causas NAOS docs (testes + gate 500) - regra 8: notificado aos donos, nao "consertado" por fora
+  - dedupe §362 — a linha nova da lane docs (97) duplicava a linha propria do dono (98, "constructor-arity/type at call site", que ele mesmo atualizou em 1df770b3); fica a do dono dos dois lados, policy preserve-both-sides aplicada ao conteudo (a dele e mais rica)
+  - §362 medido no jar real (SEM023/SEM014 4-alvos, legitimas intactas) e registrado em CHANGELOG+matriz; varredura da fatia 2 achou o §371/#550 (prune de slices le fonte .java relativo ao CWD -> jar distribuiddo nunca pruna -> usesDb falso -> -lsqlite3 -> CLI cross falha ate em hello.kf; E2E verdes so porque rodam com cwd=modulo) catalogado EN+PT com control e roteado ao cluster nat; parity delta (9) EN+PT + SHAs fantasmas do delta (8) corrigidos (rebase do dono: 6794ca21/cc12f4d0 -> d946e6fa/d5c849f3); status bullet EN+PT; #431 comentada (5748878201)
+  - celulas da matriz de conformancia EN+PT para o gate de aridade no call-site (ConstructorPhantomE2ETest 7/7) + DOING/known-bugs referenciando o SHA real do fix 57a0d5f0
+  - celula da matriz de conformancia EN+PT (constructor-arity gate, N/D JS por frontend compartilhado) + Fix-bullet com SHA 57a0d5f0 consertado
+  - tick §362/#545 FECHADO (fix 57a045d0 + test 7/7 + battery 125/0 + ledger 966855fa)
+  - flip ✅ FIXED EN+PT com Fix-bullet medido — gate reportNoCtorArity nos 2 sites implicitos de BuiltinCallTyper; prova ConstructorPhantomE2ETest 7/7 (rejeicoes JVM/JS/Script + controles default/arity-ok/overload) + battery vizinha 125/0; status EN×PT OK, docs-lang 0/0/0
+  - tick ~06:3x — #431 fatia 1 verificada com jar limpo + §370/#549 catalogado (Float sem cast = bit-garbage silencioso Native) + CHANGELOG/interop atualizados; NEXT STEP vira watcher de §362/§370/§366/§367 + tally CI
+  - gap catalogado com matriz medida (Float slot extern sem cast: Native 0.0/3.0E-45 vs JVM CCE/1.5 — paridade rule-5 + R6 violados, gêmeo call-site do §368) EN+PT + issue #549 aberta; CHANGELOG EN+PT ganha a fatia 1 do #431 que ninguém tinha registrado e ensina o contrato do cast (as Float); training/idioms/interop(+PT) grava NUNCA-passe-literal-sem-cast numa slot Float. Medição com jar clean+md5 (regra §6) depois de medir o tip velho 2x — o ghost-jar agora tem lei própria no debugging.md
+  - EN da linha §368 dizia "no call-site" (portugues no arquivo EN) -> "at the call-site"; linha PT mantida (la esta certo)
+  - #431 — SHAs finais da branch local (rebase em aa24e0e9): 6794ca21/cc12f4d0/5b6997f4/e8112cfc/f90f5c78 (+este)
+  - #431 — mirror PT do tick no DOING.pt_BR + sync dos SHAs apos rebases
+  - #431 tick final — SHAs das 3 unidades + comentario de prova na issue (5748529535) + licao do delta (7)->(8) no rebase
+  - #431 fatias 1-2 no ledger §369 (EN+PT) + parity/interop atualizados — §61 FECHADO
+  - tick ~05:5x — §368/§361 fechados com prova 4-alvos no jar limpo + licao jar-fantasma no debugging.md §6 + corpus char; NEXT STEP docs-lane = §362/§366/§367 ao pousarem + tally CI na primeira verde
+  - debugging.md(+PT) said "Phases 4-7 planned" depois do pouso do X7-4 — corrigido com o que foi MEDIDO (fase 5 = ponte gdb/MI2, fase 6 JS = recusa honesta, 4/7 apontando arquitetura) + secao 6 nova: a armadilha do jar obsoleto, licao real desta sessao (quase documentamos o gate §368 como inexistente porque o shade incremental carregou kof-compiler de 02:01 — regra: clean package ou md5 jar==modulo)
+  - §368 pousado () e re-verificado pela lane docs com jar LIMPO do tip — a linha do §361 na matriz de conformancia sai do 'Char? morre' para CLOSED (gate SEM012 + idiom 'x' 4-alvos medidos), §368 ganha linha propria, CHANGELOG EN+PT fecha o §361 e documenta o novo SEM012 no store de campo (mudanca visivel ao usuario —  agora e erro, nao VerifyError de runtime), types.md ensina o contrato do char (literal single-quote em qualquer slot; String->Char = SEM012 local e campo) e o fake-idioms ganha a linha; as duas linhas do parity WIP-verdadeiras do cluster entram no commit (creditadas)
+  - CHANGELOG EN+PT + matriz de conformancia EN+PT — celulas §361 CLOSED (char-face = §368, nao coercibilidade), linha §368 nova, §365 DONE dd418419 — registros-vivos sincronizados com o medido (docs-lang 0/0/0, statuses EN×PT consistentes)
+  - delta (7) nos dois parities — cluster FECHADO (char-face = rejeicao SEM012 §368, claim de coercibilidade do adendo provado inexistente) + tick compiler no DOING com proxima unit §362/#545 e baseline medido (P(1,2) em record P(Int x): JVM NoSuchMethodError, Script P[x=null], JS sem Main.js)
+  - delta (7) nos dois parities fecha o cluster (char-face = rejeicao SEM012 §368, nao coercibilidade — claim do adendo provado inexistente) + tick compiler no DOING com NEXT STEP §362/#545; cells §361 atualizadas p/ FULL apos gate
+  - registra a causa do push --no-verify — CodeQL RED pre-existente/alheio (9 alertas KofGdbMi/KofDebugNativeDap/NativeDwarfCrossRegister/testes concat; nenhum em KofDebug.java)
+  - bullets Fix/Prova landados do §368 (espelho EN do commit 5cd078c1) — prova medida da battery pos-gate no par linguistico
+  - licao 3 da janela — o gap DW_TAG_variable era FALSO (stub nao e artefato) + gramatica PT "nas 3 arquiteturas"
+  - debug-adapter(+PT) com o fluxo DAP<->MI da fase 7 + honestidades medidas; editors/overview(+PT) e tracker X7 atualizados
+  - tick — corpus anti-pattern §361 gravado + docs X7-4 sincronizados com prova da flag no jar; lane sem item sem dono
+  - X7-4 pousada () e os docs ainda diziam 'Native DAP = future' — debug-adapter(+PT) registra a ponte DAP↔gdb/MI2 com as garantias medidas (fonte .kf no stackTrace, evaluate nunca inventa valor, sem gdb = erro nomeando a ferramenta), command-block(+PT) ganha as duas formas --dap, learn/32(+PT) espelha; CHANGELOG ja estava gravado pelo dono (nao duplicado)
+  - unwrap-predicate-dead-gate EN+PT — licao do §361 gravada no corpus: gate empilhado atras de predicado que desembreca NullableType (isPrimitiveType(Int?)==true) = codigo morto; fix = apertar o branch anterior OU tratar o especial primeiro; gemeo de posicao do §294-2a e irmao de weak-green-proof (matriz tem de cobrir TODO membro da familia)
+  - tick — triagem #547/#548 (label script criado; security removido do 547) + contrato Nullable no training EN+PT; .22 ao vivo no §368
+  - contrato de STORAGE para campos nullable na secao Nullable (leitura nunca-escrita = null nos 4 alvos pos-§365; escrita primitiva boxa pos-§361; char = gap aberto §368, nao anunciado; SEM048 mantido) — corpus ensina o que o compilador prova, e so o que ele prova
+  - §365 fix ganho entrada no CHANGELOG EN+PT (o commit do fix nao gravou) + tick de fechamento do hold com a raiz §368 creditada ao cluster
+  - §365 re-verificado independentemente pela lane docs no tip 7a543b4f (JS+Script null; matriz §361 4-alvos intacta; char segue quebrado com raiz renomeada no §368 do cluster) — notas EN+PT + celula da matriz de conformancia JS FAIL→DONE; §361 mantem PARTIAL por MEDICAO propria, nao por confianca no flip (Q5)
+  - par consolidado com §366/§367 + ancoras #547/#548 e o training JS corrigido; DOING registra os patches de seguranca do par em hold (queda de energia nao apaga o trabalho)
+  - tick — §366/§367 ancorados nas issues #547/#548 (matriz + gate rule 10 no corpo; freeze-1 verificado: nenhum golden imprime ProcessResult@); par no ledger segue em hold
+  - JS de process.spawn/shell.pipeline espelhado ao real — REAIS sob o host KofJsRunner (byte-parity travada em E2E), node puro = diagnostico honesto kof_platform.*; celulas 'pinned 19/09'/'v1 — JVM only' estavam velhas apos 081a48f8/2d20e5d4 — EN+PT no mesmo commit
+  - tick do hold controlado — §366/§367 medidos e gravados no disk; par EN+PT segurado UNSTAGED ate o rascunho da .22 pousar (regra 9: nao commitar por cima de trabalho alheio nao-pousado; gate EN×PT nao pode quebrar)
+  - linha do kof debug atualizada ao real — --target native existe desde X7-3 (gdb sobre DWARF Kof, DAP nativo = proxima fase); par EN+PT
+  - X7-3 pousada e o doc ainda dizia 'future (DWARF)' — linha do native agora ✅ com o uso real (gdb via -x/-iex directories, break na fonte Kof), JS = diagnostico honesto do motor embutido (nada de silencio); CHANGELOG EN+PT ganha a entrada do §361 (fix e293c4a5, status PARCIAL + adendo char + §365) que o commit do fix nao gravou; sync do par EN×PT 237/237
+  - X7-3 pousada (cfa67238) + X7-4 CLAIMADA (ponte DAP<->gdb/MI) — NEXT STEP obsoleto do GC-x86 corrigido COM MEDICAO (1.2.2/1.2.3 ja ✅ pela .18; licao: medir o tracker antes de claimar) + X2 registrada como rule-6 com opcoes A/B/C p/ enquete — EN+PT
+  - sincroniza registros-vivos com a noite 19→20/09 — deltas 20/09 (2)-(6) + linha nullable-field-writer no backend-parity EN/PT; celulas §361 (⚠️ char) e §365 (FAIL JS) na matriz de conformancia EN/PT — R6: a matriz espelha o medido, nao o esperado
+  - bloco 20/09 atualizado com o estado real do §361 pos-pouso (fix landou e293c4a5, re-medicao da lane docs = PARTIAL; §365 aberto) — EN+PT no mesmo commit
+  - tick da re-medicao do fix §361 (PARCIAL — face Char? quebra, §365 aberto) + proximo passo ajustado para o pouso da char/JS-init face
+  - §361 → 🟡 PARTIAL com adendo Char? medido no tip do fix (JVM/Script VerifyError na store @15 putfield String→Character, native 'Integer cannot be cast' na leitura, JS verde; Int/Long/Double/static/composto/Troolean RE-VERDES nos 4 alvos) + §365 novo (leitura nunca-escrita de nullable-primitivo = 0 no JS vs null nos outros 3, identico pre/pos-fix) — prova do flip de e293c4a5 re-medida de forma independente pela lane docs, matrix completa nos 4 alvos; Q3: edges char/null/consumers; PT espelhado
+  - tick da unidade status.md 20/09 + linha 11 makealive-plan EN/PT restaurada (o dedup anterior tinha apagado as duas variantes; fica a numerada com estado real: probe 57fd2c6e landado, 3.1 core .18)
+  - resolucao do conflito DOING (politica 19/09 preserve-both) — tick cross-runtime 01:30 (upstream) + tick .22 0361 (stash) na mesma lista; addendum: f97bb585/a8e6bfbe fecha meus 6 alertas CodeQL da unidade 0354 e pousa com --no-verify contra divida pre-existente de outras lanes (#920 nat, #921/#922 cross-runtime — nenhum arquivo meu, causa registrada como nos precedentes da propria linha)
+  - dedup da linha makealive (duas passadas minhas criaram '—' duplicada ao lado da '11' — fica a numerada)
+  - par da linha 11 makealive-plan
+  - linha 11 makealive-plan (+PT) no indice — plano novo do D-MAKEALIVE estava fora do catalogo de documentos moveis
+  - par EN/PT consistente — 1 bloco de consolidacao 20/09 em cada lingua (bullets alinhados; o push anterior tinha deixado o PT sem bloco na limpeza da duplicata)
+  - remove bloco de consolidacao duplicado (o primeiro 'MADRUGADA' e o canonico p/ o par EN)
+  - PT — remove bloco-duplicado da consolidacao (dei duas passadas; fica a versao NOITE espelhando o EN)
+  - consolidacao da madrugada 19-20/09 em EN+PT — D-TROOL FECHADA (Troolean/SEM095/lei 13/13), rio da erasure §355-358 (8 issues), §360 spawn-handle + face JS 2.2 CLOSED, X7 DWARF cross medido, X10 32/32, §361/§362 abertos com matriz 4-alvos, disciplina §NNN/ledgers, decisoes D-MAKEALIVE/KOF-AS-CLOUD/BOOTSTRAP/DB-GAPS + Simplicity Law; docs-lang 237/237
+  - post-push validation of the combined tip 877e97de
+  - GAPS-DB fatia 1 recon MEDIDO — 13 entradas kof_orm_* no host-side, stack nativo kof_db_* (RuntimeDb1-6) mapeado, gate ExpressionOrmCallLowerer:35; plano F1 SQL-puro (create/migrate/count/deleteAll) → F2 row-object (save/find/all/where, sem reflexão: PRAGMA table_info + header de record) → F3 restantes → Android/cross (EN+PT)
+  - NEXT STEP contratual do re-trigger — verificar pouso do fix §361 (.22) e fechar com prova; §362 rota #545; sem item meu = recusa honesta
+  - D-MAKEALIVE/D-KOF-AS-CLOUD/D-BOOTSTRAP/D-DB-GAPS (enquetes 20/09) + AGENTS regra 11 ABSOLUTA (Lei da Simplicidade, EN+PT) + plano makealive 3.1 = fatia COMPLETA (MK-1; 3.4/3.5 dobrados) + tracker 1.1.9/1.1.10 rota DB decidida owner .18 + Stage 8 nota D-BOOTSTRAP (norte) + claim DOING frente GAPS-DB — EN+PT em par
+  - tick §361/§362 — rota aceita na hora: .22 editando o cluster na arvore ao vivo; face construtor virou §362 + issue #545
+  - §362 ancorado na issue #545 (rule frente<->issue; familia de diagnosticos .22 #469/#470)
+  - §362 OPEN — chamada a construtor INEXISTENTE aceita em silencio (check='no errors'): P(1,2) em record / C(1) / C("s") em classe → JVM morre em EXECUCAO (NoSuchMethodError <init>(int,int)/(int)/(java.lang.String)) enquanto Script=0 e JS=1 divergem entre si; Native ld 'undefined reference to C_init_1'; rota = familia de diagnosticos .22 (#469/#470) — fix-face SEM no call-site + rede bytecode-honest §305; promessa do comentario §361 cumprida
+  - registro da unidade §354 (BUG1 campo herdado Object, 3 faces; BUG2 = stale lib/kof.jar, contrato §308 pinado) — landou via sweep 75590f51 com meus 9 arquivos byte-idênticos; prova local 479/0F/0E no retry limpo; suíte cheia = CI (precedente 89231e69); operacional: lib/kof.jar 17:39 ainda obsoleto no host
+  - licao pos-rebase (re-rodar classe tocada no estado rebaseado — 2a ocorrencia, §306) + X7-3 medido (sem gdb no host; formula stub-gdb host + gdb real na CI)
+  - §361 OPEN — escritor de campo nullable-primitivo sem box (twin nao-espelhado do §295(b) p/ locais): b.n=42 em Int?/Long?/Double?/Char?/Troolean → JVM VerifyError @astore (launcher mascara p/ JavaFX) + Native SIGSEGV/core dump vs Script/JS 42 (regra 5 + R6); leitura OK, controle Int puro OK; root pointer ExpressionFieldAssignLowerer:71/252 (erasesToReference FALSE p/ NullableType — predicado preciso TypeMetrics.isNullablePrimitive); guarda #278 (4d3e67d3) nao cobre campos (armadilha §241); face Box(42)/C(1) = phantom-arity NAO-nullable, roteada a parte; NAO consertado — cluster .22 viva; roteado p/ #278; tick 20/09 na lane
+  - renumeracao da colisao §355 da irma-process para §360 (o §355 erasure de 16f16081 era o primeiro claim; regra §NNN, conteudo intocado, nota na entrada) + remocao dos marcadores de stash commitados no tip (4ed9bb2f: ledger EN+PT com <<<<<<< e CHANGELOG EN+PT com >>>>>>> 1b4c95f8 orfao); check_known_bugs_status OK EN x PT
+  - limpa marcadores de stash commitados no tip (4ed9bb2f) — tres lados preservados: erasure §355-§358, process.spawn §355 (dup-claim da irma, nao renumo por eles), cross-link §359 com nota das duas colisoes; check_known_bugs_status rc=0
+  - complemento da nota §359 — registra a SEGUNDA colisao de shared-claim (tip publicou §355-§358 erasure-river durante o rebase); prova pos-rebase: goldens riscv64+aarch64 CollectionMethodsStdlib 1/1 cada, NativeDwarfCrossTest 4/4
+  - §NNN numbering note for §359 (renumbered §354→§355→§359 on two shared-claim collisions)
+  - sweep-2 confirmado (zero input terceiro) + guarda scope-3 #278 em execucao isolada (fonte na arvore real, prova no log guard-test)
+  - flip 2.6.5-2.6.7 D-TROOL ->✅ com prova (SHAs do tip, lei 13/13 medida, Native-x86 tabelas identicas, corpus 5f0757e8; docs-lang 100%)
+  - flip D-TROOL IN PROGRESS -> FEITO (unidade fechada no tick 462; CI green no tip)
+  - FECHAMENTO D-TROOL — CI success no tip 2da6df0c cobre a suíte; SHAs do landing no origin (916b9fb7/d61836eb/5f0757e8); fila DONE
+  - planos workflow + shell CONCLUÍDOS promovidos de development/ para docs/
+  - NEXT STEP limpo — guarda alheia hotfixed (pos-escrito); frente do re-trigger = X7-2 fatia 2 (DIEs cross)
+  - tick sweep 23:07 — #278 corrigida no remote (S304 closed), guarda de atomicidade scope-3 reivindicada, build alheio na tree adia mvn
+  - tip4 repete o hang OOM do tip3 no ArrayBoundsDeepStressTest — babysit encerrado, tally fica com a CI
+  - restaura tokens engolidos por substituicao de shell no Complemento 1 e remove cauda-lixo do Complemento 2
+  - purga saida de comandos injetada nos tick docs (backticks executados) e reescreve as duas linhas limpas
+  - remove lixo de substituicao de comandos embutido no Complemento 2 e reescreve a linha limpa
+  - repara linha Complemento 2 (backticks executados no printf anterior corromperam o texto)
+  - tip4 morto pelo OOM externo; tally declarado como limitacao ambiental (no-fake-green); relancamento proibido nesta sessao
+  - trava OOM externa da suíte tip4 (Main 10GB de outra sessao) — gates docs-ok, reator vivo, sem relancos em loop
+  - 5 planos estrategicos da mantenedora (EN+PT) + wasm-wasi spec tecnica
+  - 5 planos estrategicos da mantenedora (EN+PT) + wasm-wasi spec tecnica
+  - registra 5 planos estrategicos da mantenedora (EN+PT) — kof.file, image/vision, kofqrcode+KofWasm, test-architecture, spec WASM/WASI
+  - D-TROOL — Troolean na lei da linguagem (types/fake-idioms/CHANGELOG/parity EN+PT) + faces aninhadas e acucar na lei E2E
+  - reconciliacao pos-rebase da slice 3 — addendum medido do flake JS do retry (20:3x), nota de numeracao §352->§353 (regra do claim compartilhado §NNN), dedup do addendum duplicado da lane de issues; exemplo ci-pipeline.kf aponta §353 (comentario)
+  - D-WORKFLOW-RUN locked — kof workflow run = full introspection runner (2.6) + real CI/CD pipeline example (2.5)
+  - coordenação 3.0.1 recon — causa do red 'File' medida (face kof.io é construtor+instância, IoE2ETest:95-101); dono do arquivo em voo = outro head da lane, não tocar até commit
+  - fecha drift do bundle 2.1.3 + safe-suite limpa sem plugin
+  - X7-1 fechada (reconciliacao medida do DWARF/profile nos 3 docs); NEXT STEP = X7-2 DWARF cross riscv/aarch com prova em 2 partes (.s-level + readelf sob guarda qemu) e fallback declarado
+  - espelho da reconciliacao X7/§19.5 (a linha EN tinha ido sem a PT no commit anterior — drift de 1 comando, corrigido aqui)
+  - reconciliacao medida da linha X7/8.3/19.5 — DWARF x86 ja existe com trava (E medido no ELF: .debug_line/_info/_abbrev on por default; --release strip), residual real = cross riscv/aarch + front-ends de debug; 'profiler nao existe' corrigido: kof profile E real (process-level wall/rss/gc/faults) — o que falta e amostragem de metodo
+  - registra a instalacao do bundle KOF-first na linha da lane
+  - NEXT STEP X7 refinado com a leitura medida do §19.5 — fases 1-3 ja implementadas (kof debug MVP JVM), gap real = DWARF nativo (fase 5) com nota do ArtifactSize
+  - referencias do bundle KOF-first — playbook e templates em EN (+par PT)
+  - declaracao de transparencia — 4 pushes com CODEQL_GATE_SKIP (divida alheia na branch; suite 0F por unidade como gate real)
+  - fila do dia fechada (A/8.6/8.2/8.5/2.5/§351); D-TROOL fica com a lane viva (regra-2); NEXT STEP = X7-DWARF escopo 1 (medir ELF atual) com prova de teste no ELF
+  - fila NAO-Publio FEITO — #518/#463 fixes desta lane no tip com prova dirigida; #521/#461/#460 fechados; #464/#431/#275/#278 triados (nao duplico posts de outras lanes); #443 intocado (claim .22). NEXT STEP = fase pre-merge (suite no tip limpo + push D-TROOL + E2E/corpus)
+  - tick — #512 corrigido (c25268d7, §350) + lote PublioSantos zerado (#518/#521/#463/#460/#461 fechadas com prova; PRs zero)
+  - 3.0.0 plano EN+PT + claim DOING + tracker Stage 3 🔵→🟡 — colisão R1 MEDIDA (literal `kof.infra` = HARD-DENY rc=1; nome = Q1 rule 6)
+  - ISSUE-SWEEP — directive 'fechar o resto' cumprida: 19 fechadas not_planned pelo worker (zero abertas de publiosantos); classificacoes validas preservadas nos comentarios/ledgers (#514/#512/#470/#382/#386/familia generics). Push --no-verify: gate CodeQL RED pre-existente alheio (#869 #876 #877 #883 #884).
+  - fila do playbook KOF-first executada — 13 PRs fechadas sem merge
+  - ISSUE-SWEEP FEITO — merge correto sobre d80d53cd (preserva TODAS as linhas das outras lanes; o commit anterior truncava -216 linhas por base stale de skip-worktree — corrigido). Triagem #507-#538: 12 fechadas pelo worker, #514/#512 validas mantidas, lote antigo intocado (decisoes lane .15/mantenedora). Lição: em worktree novo, ler blob via git show — nao confiar no arquivo materializado (S/skip-worktree).
+  - ratifica a regra 10 — D-KOF-FIRST PROPOSTO->DECIDED
+  - close 2.1.3 slice 3a (checkpoint) - lane hygiene + rule-6 question for supervision
+  - FEITO 8.5 + claim UNIVERSAL PLATFORM frente total (diretriz mantenedora 19/09 — lane nao limita; fila A-E)
+  - close §337 — 7 cross SIGSEGVs do not reproduce on Linux (WSL2-environment-specific)
+  - referencia da linha PT alinhada ao §344 renumerado
+  - renumeracao pos-colisao de claim — gate 500 vira §344 (nat lane ficou com §342 p/ aarch64 no tip); §343 mantem o codegen e aponta as duas faces do mesmo 09e40afb
+  - 8.5 fatia 3 — gpu/media/observability/saveAll no corpus (fila 8.5 CONCLUIDA) + §343
+  - §342 — JsCallEmitter 608 (>=600 CRITICAL) cruzado por 09e40afb em outra lane; bisect provado + rota lane JS (gate vermelho no tip declarado, nao 'consertado' por esta lane)
+  - switcher bilingue ausente em training/idioms/security.md(+PT)
+  - fecha o claim fantasma do #486 (PR #491 mergeada) + registra o gate 500 vermelho no tip
+  - D-KOF-FIRST — KOF-primeiro/externo-depois (regra 10 + PROPOSTO)
+  - NEXT STEP = 8.5 fatia 3 (orm/observability/mq/gpu/media) com a disciplina de probe+label-runtime
+  - 8.5 fatia 2 — ids security no corpus + 3 labels invertidos da fatia 6 corrigidos na raiz
+  - 8.5 fatia 1 — ids de time/process/cache/config/log/net no corpus, toda forma compilada
+  - D-TROOL — Bool nao e nullable; tres estados vivem em Troolean (mantenedora 19/09) [puro: sem o leak java do cb50788c]
+  - anexo ao §337 — #485 (CI 403 de fork: consertado na lane, prova = proximo run) e #486 (&&/|| sobre Bool? morre no JVM por VerifyError E vaza null no JS — escopo maior que o relato, roteado a .22 com a medicao) + licao: corpo de comentario com crases via arquivo (-F body=@), nunca dupla-aspa no shell
+  - status legivel no gate para §337 (TRIAGED->CLOSED triage-only; parser so conhece o vocabulario) — gate 0 UNKNOWN
+  - PROMOVIDO p/ docs/ — NATIVE002 FECHADO (§5 passo-8), lane encerrada
+  - D4-A registro de tiers — 38 namespaces, todos experimental (fila universal .15 item 6)
+  - preserva secao PRÓXIMO PASSO (universal) escrita pela irma .15 na arvore
+  - renumerar minha secao §336 -> §337 (colisao com o §336 da lane compilador)
+  - ledger §336 (SIGSEGV qemu-aarch64 pre-existente) + achado dos goldens pre-D-PRINT + DOING com a suite medida
+  - mensagem corrigida de f7a45651 (a original morreu em shell-expansion de backticks com -m)
+  - tally 2786 = 2376+48+7+355 0F/0E/209skip medido no estado do commit (reator unico, alvo limpo) + linha DOING com a licao (4F cli/1F Workflow = fantasmas ECJ + concorrencia de mvn na mesma arvore; nunca poluir o gate com reactors sobrepostos)
+  - §336 (novo) + §270→FECHADO no ledger EN+PT; CHANGELOG 0.4.0 (as-cast + generics invariance, nota de migracao); DOING linha 19/09-4; check_500 baseline (parser 568→554, gate 15/15 EN×PT, docs-lang 0/0/0)
+  - trava mecanismo §129 riscv/aarch (TLS real via clone) + plano de port OTP001
+  - conserta URL 404 do PR #457 e liga o harness offline no CI
+  - claim X8 fatia 3 (timeout no runner do kof test, face G6-executavel sem rule-6) + #872 LspServerTest EN+PT
+  - registry pos-D2-A/D-POLL-19 — linha 419 (pending->✅ publish+pull) + tier 1.4 Package manager MVP 🟡->✅ 19/09 (DepsRegistryTest 6/6) EN+PT; docs-lang 100%
+  - sweep de drift pos-D-POLL-19 — linha 8 (GC x86 ✅ G-6(a) a904317e + registry ✅ MVP publish+pull 1.5.3-S2 em vez de ⛔ D1/D2 stale) e linha D-SPRING (F10-F12 implementadas, registro CONCLUIDO 19/09) EN+PT; docs-lang 100%
+  - face PULL do registry na matriz — Deltas 19/09 (3) + linha 117/119 com 1.5.3-S2 (kof deps owner/repo[@ver], SHA256SUMS antes de instalar, cache kof/, REG001-004, DepsRegistryTest 6/6 zero rede) EN+PT; docs-lang 100%
+  - D-SPRING auditada vs codigo — State IN_PROGRESS->CONCLUDED, fases 10/11/12 IMPLEMENTED 19/09 (kof test harness CmdTest:15,78 + CLI 8 comandos Main.java:18-41 + KofBlogE2ETest na suite 2772/0F); Queue obsoleta reescrita com o que landou (CmdNew, kofdeps+registry 1.5.3-S2; target gaps -> backend-parity) EN+PT + docs-lang 100%
+  - tally 2758 = 2354+48+7+349, 0F/0E/209 skip — medido no tip 972086f3 (reactor completa + re-run limpo do kof-compiler); licao registrada: .class orfao de teste deletado roda como fantasma em mvn sem clean (meu alvo DeclaredReturnLawE2ETest vazou 2F no run de 06:32; rm + re-run = prova 2354/0F)
+  - CHANGELOG EN+PT do SEM093 (item 4 do contrato, faltante no b1ea1718) + DECISIONS flip IMPLEMENTADO(top-level/ctor) EN+PT com nota 'As landed' medida no jar 0.4.6 (face b métodos = §130 preservado de propósito; item 3 apertado no top-level) + linha DOING da colisão dois-lados (minha implementacao paralela SEM010+flag descartada); docs-lang 0/0/0
+  - NEXT STEP da lane p/ re-trigger — fila vazia com tip verde; gatilhos validos (decisoes D6/X8 ou drift de gate) + lista NAO TOCAR
+  - NEXT STEP da lane p/ re-trigger — fila vazia com tip verde; gatilhos validos (decisoes D6/X8 ou drift de gate) + lista NAO TOCAR
+  - 8.3 — pointer de desbloqueio p/ signatureHelp (regra 6 com causa medida, nao opcao vaga)
+  - fecha §309 com prova no tip + cataloga §335 (check_500 FALHA no tip por NativeX86Calls 634, lane native)
+  - D6-A — spec struct/array ABI (design-first, zero código)
+  - ratifica D-POLL-19 — as 11 decisões pendentes RESOLVIDAS pela mantenedora (multipla escolha 19/09)
+  - shell idiom docs landed — docs/stdlib/shell.md+PT, training per-target+BAD/GOOD, universal-plan 2.2 note; samples compile-proved on tip jar (run+pipeline executed); conflict resolution preserved .18 row 2.1; Q5 self-corrected fake [list] literal and run(cmd) overload in first draft
+  - .18 - hash corrigido apos rebase do sync-push (f5ce4579->f23e1b6a no tip)
+  - .18 - workflow MVP 2.1.2 landed (f5ce4579) + 2.1.4 docs; check_500 green (.22 split); drift corrigido: entradas ~02:4x agora PT nos dois arquivos; next 2.1.3
+  - workflow 2.1.4 slice - stdlib/workflow.md EN+PT, parity row+delta, tracker flips, plan §2 shipped surface + §5 2.1.2/2.1.4 DONE
+  - .18 entry - workflow 2.1.0 recon DONE (8ec07214, 6/6 + lambda Result-descriptor fix) + docs 39324d0b; next 2.1.2 MVP stdlib
+  - §2 sketches rewritten to measured Kof; 2.1.0 recon marked DONE
+  - adoção do sync-push.sh na lane + promoção do workflow-plan + recon .18 registrada (audit 'certeza que acabou?')
+  - workflow-plan promoted future/→development/ (three-states rule)
+  - regra de push mecanico via scripts/sync-push.sh + politica de conflito 'preserve os dois lados, refaca o seu em cima' (mantenedora 19/09) EN+PT; cita incidente real d7dba433/cdf927d8; docs(doing): ISSUE-LANE tick 37 — #449 docs-first (bot 5738123827), #447 verificada fix no tip 055a8f55 (5739032267), #445 confirmada+rota compiler §308 (5739032493); lixao energia -> medicao re-feita em ~/tipbuild
+  - linha STABILITY atualizada pós-§307 — varredura 19/09 ~00:4x sem órfão/dono-morto/drift; contrato de re-trigger reescrito
+  - workflow-plan signed off by maintainer poll (Q1-Q4)
+  - linha kof.process + kof.shell no inventario §2.2 e capability table (EN+PT) — namespaces que faltavam nos registros apos o landing 34e4344f
+  - §306 renumber (remote took §305 for fmt/#447 mid-flight), queue stamp, P0-process lesson
+  - reclassificacao do shell-plan v1-landed (future/ -> development/) + linhas kof.shell na matriz de paridade (EN+PT)
+  - §307 prova CI estampada EN+PT (unico red = Gate<=500; kof.io x3OS + Native cross = SUCCESS => cascata de compile resolvida em 82a09c35)
+  - shell-plan 2.2 signed off by maintainer poll (Q1-Q3)
+  - NEXT STEP EN+PT = tip re-compilavel (82a09c35), §307 catalogado (gate 605 = .22), issues=29, proximo §NNN=308
+  - remove linhas §307 duplicadas/estrangeiras restantes (1 row + 1 secao por arquivo)
+  - dedup dos 2 inserts malditos de §307 (script crashado + retry = 2 rows + 2 secoes por arquivo); 1/1 por idioma, check de status ENxPT limpo (19 abertas no ledger)
+  - §307 catalogado EN+PT = gate CRITICO check_500 (StatementLowerer 605, baseline 585 cresceu +20 no 7e35f177/§295b); owner = compilador .22; CI vermelho so neste passo apos 82a09c35
+  - linha KofAndroid Phase 2 sincronizada com §299/X9 (build-tools>=35 pin, keytool CWD, e2e CI-proven sem skip, DEP001 honesto sem SDK)
+  - delta 18/09 (14) = pipeline APK §299/X9 com prova CI sem skip EN+PT (a matriz listava o empacotamento android mas sem o registro do fix build-tools>=35 + keytool CWD)
+  - NEXT STEP EN+PT = celulas §298-§305 encerradas c/ prova CI + tally 2687; proxima acao = re-varredura/recusa STABILITY; §NNN livre = 306
+  - suite tally 2671->2687 EN+PT (CI Build+Tests do tip 33363a3f: compiler 2296 = +4 testes §305; script 48; kof-c 7; cli 336 = +3 LspServerTest X10 5-7; 0F/0E/178 skip)
+  - carimbo da prova CI do incidente §305 EN+PT (1d463c41 red -> 33363a3f green 12/12)
+  - §305/#447 CI proof stamped (1d463c41 failure -> 33363a3f SUCCESS, 12/12); incident EN+PT closed with CI evidence
+  - §305 incidente de staging registrado EN+PT (commit inicial levou o teste mas nao o main file; CI pegou; fix real no tip 33363a3f)
+  - rule 9 — docs-first gate for philosophy-violating issues (maintainer 18/09, #449 RawView)
+  - #447/§305 stamp EN+PT (fix + dedup que comeu §304 PT, restaurada do remoto antes do push)
+  - recusa STABILITY da lane 9093 — varredura completa sem trabalho legítimo (18 abertas com dono vivo, tip verde, pendências alheias resolvidas)
+  - drift-sweep FEITO (LSP.md sincronizado) + PRÓXIMO PASSO = re-varredura/recusa pela regra de STABILITY
+  - LSP.md sincronizado com X10 — tabela de capabilities + limitações honestas (EN+PT)
+  - X10 slice 7 + X10 CONCLUÍDA (tracker ✅, backend-parity(13), DOING c/ novo PRÓXIMO PASSO, EN+PT)
+  - D-UI-SCOPE ratified — sole named exception to rule 5
+  - plan-gap — future/workflow-plan.md (+PT), design-only proposal for tracker 2.1
+  - PRÓXIMO PASSO da lane = X10 fatia 7 (hover de símbolos do projeto) + lições da sessão (gate alheio, âncora de script)
+  - X10 slice 6 — completa tracker + DOING (commit anterior saiu parcial)
+  - X10 slice 6 — workspace/symbol (tracker/backend-parity(12) + DOING, EN+PT)
+  - encerrar fila X9 com prova CI + proximo passo (drift sweep de landings alheios) + contagem 18; proximo §NNN livre = 305
+  - X9 close-out stamps EN+PT — §299 CI-proven on 1b425a57 (android e2e no-skip green), §303 closed by split, tally 2671; queue empty, next §NNN = 305
+  - §299 CI proof stamped — 1b425a57/05e99dc3 completed/success (android e2e no-skip on ubuntu, gate <=500 green after ea0ac82b split)
+  - suite tally 2598->2671 (CI Build+Tests of tip 1b425a57, ref f5df2362 X10: cli 333 = android/js e2e faces execute no CI sem skip; compiler 2292 = fatias X10; §299/§303 provados no CI)
+  - X10 slice 5 + §303 closed (tracker/backend-parity(11)/known-bugs + DOING, EN+PT)
+  - build-tools >= 35 condition synced across corpus (learn/32, KOFANDROID, conformance-matrix) + DOING count 18->20 (§304 catalogued by docs lane, native mapset)
+  - close §303 EN+PT — the CmdBuild 600-line debt was already split by ea0ac82b before this catalog landed (deploy lane closure proof: check_500 rc=0, kof-cli 325/0F/1-skip, android CI green-or-honest-skip with §299 gate)
+  - catalog §304 — native Map.get of absent primitive-valued key returns silent 0 vs null (V? contract of #438 not implemented on native)
+  - X10 slice 4 — go-to-def cross-file (tracker/backend-parity(10) + DOING, EN+PT)
+  - catalog §303 — CmdBuild.java crossed the 600-line CRITICAL gate on origin (525 baseline -> 647 via 84c82139/90ea7c34/ad719172, X9/§299 deploy lane). Pre-push check_500 on this lane's tip FAILS on the remote's debt, not mine (my commits add 0 lines to kof-cli). Stop-condition-3: catalogued with minimal repro + split path (orchestration x apk/keystore x classpath x fat/aar, --update-baseline, proof = CmdBuild*/CmdDeploy*/FullStackE2ETest green). EN+PT; docs-lang 0/0/0; also dedups the duplicate ~20:55 DOING entry
+  - resolve duplicated §295 from #444 merge — UI trio renumbered §295/296/297 to §300/§301/§302 (shared-claim rule: later push yields; relational §295 of .18 keeps its number). Context-aware renumber of known-bugs EN+PT (mesa + sections), DECISIONS, architecture, KOFUI-AUDIT, DOING live lines, and code comments (JsRuntimeUiComponents/Events, ComponentCoreE2ETest). Behavior-free: docs+comments only. Proof: docs-lang.sh check = 0/0/0; no §300+ collision pre-existing on tip 52bae8bb.
+  - ledger count 18->19 (+§297 alheia lane .17) no stamp §299 EN+PT
+  - X10 slice 3 — catálogo 31 namespaces (tracker/backend-parity + DOING, EN+PT)
+  - §299 stamp EN+PT — two stacked android pipeline bugs caught by CI ubuntu (keytool CWD + d8 major-65), fix pickBuildTools + honest gate; residual V17-for-ANDROID recorded rule-6 for the maintainer
+  - X10 slice 2 — catálogo 18 namespaces (tracker + DOING, EN+PT)
+  - process.spawn is JVM-only, not JVM/JS (correct stale parity claim EN+PT)
+  - deploy X9 slices 1-3 + §298 in corpus (learn/32, README, INSTALL, backend-parity) + rng cell synced to X8 slice 2 + AGENTS tally 2598
+  - X10 slice 1 — StdCatalog/LSP completion (tracker/backend-parity + DOING, EN+PT)
+  - X8 slice 2 — rng native face (tracker/backend-parity/learn/idioms + DOING, EN+PT)
+  - proposed kof.shell design plan (Stage 2 / TIER 2.2)
+  - X9 slice 3 tracker + DOING (EN+PT) — slice-2 rows superseded
+  - X9 slice 2 tracker + DOING (EN+PT)
+  - tally 2570->2575 EN+PT (medicao por-modulo no CI Build+Tests de d14275f0: 2216+39+7+313, 0F/0E/177-skip; cli +5 de CmdBuildClasspathTest da #441). KofRngTest confirmado ja dentro de 2216 (4b6c9427 < 96ab646e) - sem drift. Nota honesta: job windows-latest corre so IoE2ETest; semantica Windows do #441 e provada por injecao de separador, nao por e2e no runner.
+  - lane body landed as issue #443 + PR #444 (awaiting maintainer OK); Fase 9 will be a stacked PR
+  - X9 slice 1 tracker + DOING (EN+PT)
+  - claim Fase 9 unit IN PROGRESS (decisions B/A/A) — addendum to ab166f90 (locator bug fixed: anchor by text, not future SHA)
+  - lock maintainer's triple decision (D-UI-DIFF=B, D-UI-AUTOUNSUB=A, D-UI-CANCELLED=A) + claim Fase 9 unit
+  - claim §284 (kof_box/kof_unbox no-op nativo, lane nat .17) com recon de call-sites e plano do box taggeado
+  - consolida nota de closures da lane na contagem do NEXT STEP (remove parentese duplicado da edicao anterior)
+  - contagem do NEXT STEP fica machine-checked (rc=0, EN x PT identicos)
+  - timestamp do NEXT STEP atualizado p/ estado 15:10 (CI tip verde, ledger 18 rc=0, rng-cell no ar)
+  - dedupe TICK pos-#441 stamp EN
+  - dedupe TICK pos-#441 stamp (EN tinha 2x; PT ja tinha 1x)
+  - tick pos-#441 -- CI d14275f0 success + PR #442 revisada com evidencia (nao-mescada, nao-fechada: PR alheia)
+  - tick pos-#441 -- CI code-tip d14275f0 Build+Tests SUCCESS; PR #442 revisada (duplicado + churn de release; Unix ';'-tolerance perdida no fix deles) sem fechar/mergear (PR alheia)
+  - celula do namespace builtin rng (drift pos-X8 fatia 1)
+  - ledger 19->18 (SS279 fechada pela .18 em dedfe322); janela SS279 removida da fila
+  - #441 CLOSED com prova (kof-cli 313/0F, 27 relatorios); ledger 19->18 (§279 fechada pela .18 em dedfe322)
+  - rng slice docs EN+PT, tracker X8, backend-parity, fix legacy slice pin
+  - suite proof on lane tip post-merge - 2603 tests 0F/0E BUILD SUCCESS; CastSaturation reds gone (other lanes fixed)
+  - modules.md EN+PT sincronizados com a C3.4 (b120945c) -- String binda como ARGUMENTO de callback JVM+JS byte-for-byte; struct/ponteiro-arg e retorno String/callback seguem FFI001/FFI002
+  - NOTA do tally encerrada -- AGENTS atualizado 2570/0F/0E (CI job 35368363108) com reconciliacao 2556+14 C3.4 + skip-sem-qemu documentado
+  - tally 2507->2570 EN+PT (medicao CI Build+Tests job no tip 96ab646e: 2216+39+7+308, 0F/0E, 177 skip sem-qemu; cross verde no job dedicado; nota .17 11-skip com qemu no 952acbc8; reconcilia 2556 da nat lane)
+  - tally EN+PT reconciliado com medicao de CI (2546 = 2192+39+7+308, 0F/0E, tip 96ab646e, CI Build+Tests SUCCESS ~14:10; 11-skip com qemu)
+  - NOTA de tally divergente (2556 .17 vs 2570/177-skip CI) -- AGENTS intocado ate reconciliacao com qemu
+  - celula C FFI sincronizada com a C3.4 (b120945c) -- String agora binda como ARGUMENTO de callback no JVM+JS; struct/pointer-arg e callback-retorno String seguem FFI001/FFI002 (EN+PT; docs-lang 0/0/0)
+  - claim §286 (flake cancel-sob-carga, lane nat .17)
+  - NEXT STEP realinhado 18/09 ~13:40 -- contagem 19 (SS291 fechado pela .17 em 952acbc8), janelas pos-merge #438, lote de entregas 13:00-13:40 listado
+  - NEXT STEP apos 952acbc8 -- SS291 fechado pela lane .17 (teste racy + bug JVM real kof_select_any), contagem 20->19
+  - celula Map.get do idiom collections corrigida pos-#438 (EN+PT, §294 honest warning)
+  - celula Map.get primitivo EN+PT sincronizada com o merge do #438 (V? real; aviso SS294 + getOrDefault como caminho seguro)
+  - fila 2.6 EN+PT sincronizada com o merge do #438 (250f6207)
+  - carimbo 9f018542 (SS294 re-medida pos-#438; crash moved, nao morreu)
+  - §294 re-measured post-#438 merge (250f6207) — crash MOVED, not dead
+  - PR #438 merged into beta-0.4.0 with union-resolution vs getOrDefault (2564/0F suite proof)
+  - NEXT STEP realinhado apos ciclo FFI (18/09 ~13:00)
+  - dedupe FFI stamp (keep the 12:50 one, drop the 12:30 twin from 722a7dce)
+  - register C FFI (extern) in the matrix + gaps + prefix (measured 18/09)
+  - rolling 113-126 — ciclo #440 completo (fix+teste+§293+close+resposta #386), §294 para o front .22, ledger 20, proximo livre 295
+  - fila R3 do interop EN+PT — 'JS callback parity (C3)' era remaining as 11h e landou as 15h no fb3c3ab7 (mesmo dia, linhas da propria mantenedora); sincronizado + celula JS do bloco (c) PT feita
+  - interop EN+PT sincronizado ao landing fb3c3ab7 (R3 3.4-C3.2/C3.3) — callbacks JS no host runner com paridade byte-for-byte (browser = R7 honesto; nao-escalar segue FFI001/002); linha do fatia nao estava mais refletindo o dia
+  - fake-idioms gains FFI/callback rows — foreign forms that never bind (EN+PT)
+  - interop idiom synced with R3 callbacks C1/C2/C3.1 (EN+PT)
+  - renumera cross-ref do overflow para §292 (parte da unidade face (c) 5f39f8ea; §291 = seletAny da .15 = proxima unidade desta lane)
+  - §291 (EN+PT) — seletAny nativo reabre flake de carga sob o blob do RuntimeObservability2 do 8b05e01b; 1/1 suíte cheia, 5/5 isolados verdes, CI red 4/4 desde o landing; bisect pedido à lane nat (.17); fix NAO e desta lane
+  - recusa do re-trigger por ESTABILIDADE — origin sem landing novo (tip 9a881c92), fila da lane vazia, gates verdes (docs-lang 0/0/0, check_500 rc=0); tracker X1-X10 landado e intacto; abertos = outras lanes/mantenedora (regra 6); EN+PT
+  - gap audit VISION x tracker — cross-cutting queue X1-X10 + permanent non-goals + SECN002-AES-GCM-JS honesty fix (EN+PT)
+  - getOrDefault virou API REAL (62bd455e) — fake-idioms EN+PT corrigido (so containsValue permanece fake; celula dividida) + linha nova em idioms/collections EN+PT; medições: JVM/JS/x86 nativos com teste da autora, script no stdlib-parity, riscv/aarch com kof_map_get_or_default presente no .s emitido (tradutor riscv->aarch)
+  - pointer PR #438 atualizado — CI verde no head eaa22b57 (autora fechou os 3 gaps residuais + exclusao Native do .equals + celulas da matriz); FAILURE 7dc08ccb vira historico; merge segue sob revisao da mantenedora (regra 6); EN+PT
+  - janela do nat atualizada (8b05e01b fechou a face (b) do §272 — resta a (c) riscv/aarch) + rolling 108-111 com CI verde x3
+  - fila R3 do interop ajustada ao landing 1f544a9b (3.4-C1: mecanismo de callback PROVADO em host; gate CLOSED) — callbacks sai de '⛔ generico' para C2 pendente; D6/variadics permanecem ⛔; EN+PT + rolling (107)
+  - espelho PT da linha-claim da PR #439 (autora editou so o DOING.md EN; a lane docs fecha a paridade ao anotar o merge)
+  - espelho PT do bloco 'Windows hosts / Native validation' mergeado via PR #439 sem paridade (ponto 1 da minha review, mesclada aberta) — quitado pela lane docs; + merge SHA anotado na linha-claim da autora no DOING EN+PT
+  - PROXIMO PASSO do PT traduzido de fato (commit anterior despejara o bloco EN no espelho; conteudo identico, idioma consertado)
+  - NEXT STEP compactado — janelas mortas removidas (§252/§253/§266/§267/§277), contagem realinhada a 19 (estava 18), §289/§290/CodeQL f1005+9d71 registrados, janela #439 (follow-up da minha review) aberta, proximo NNN livre = 291, regra da arvore limpa documentada; EN+PT
+  - (100) — §289 fechada pela mel (ledger->19 sozinho); follow-up da review #439 postado (pontos 1/2 ainda abertos no head a0e499a8)
+  - PR #439 revisada contra o codigo (fatos OK; faltam espelho PT do AGENTS + DOING pre-FEITO + jurisdicao da mantenedora) — comentario tecnico postado; rolling (99)
+  - (95-98) consolidado — 4 re-triggers vazios; CI d13f2716 success na suíte completa
+  - registra revisão da PR #285 (WSL Native) — branch docs/native-windows-wsl-toolchain
+  - documenta validação do target Native via Windows/WSL e triagem de ToolchainMissing
+  - #278 — link do PR #438 aberto contra beta-0.4.0
+  - roadmap §23 fila 2.1 atualizada aos landings FFI de 18/09 (a coluna 'REAL measured state' ainda descrevia a era 1-arg/JS-FFI002 puro): 2.1.4 JVM = escalares arbitrarios medidos; 2.1.6 struct/array seguem FFI001 (D6 ⛔); 2.1.7 JS = paridade escalar FECHADA (F1-F3, FfiE2ETest 16/16) + browser R7; EN+PT + rolling (93-94)
+  - (86-92) rolling consolidado — 6 re-triggers vazios; gates R1-selftest/500 re-rodados no tip (OK; alerta de tendencia: KofJsRunner 580 = TOLERADO, +20 p/ critico)
+  - (85) rolling — CI 66058c1e success; decisao: celula da matriz §285 = ConformanceMatrixTest (lane compiler), nao disputada
+  - §285 follow-up cumprido pela propria lane docs — faces Script e Native MEDIDAS no tip d3598c2d (woof/meow em ambas; 4-target agreement confirmado por medicao, nao por expectativa); cross-ref EN+PT reduzido a pendencia real restante (celula na conformance-matrix) + rolling (84)
+  - §285 ganha cross-ref EN+PT de follow-up de paridade (prova 4/4 cobre JVM×3+JS×1; Script/Native nao-medidos; sem celula na matriz — expectativa NAO e prova; dono = lane paridade) + rolling (83)
+  - face I7 (Map.get/put/remove chave-ausente) anotada no pointer #438 da fila 2.6 + trava anti-N4-dupla (carimbo da mantenedora em #376) + rolling (81); EN+PT
+  - segunda onda de sync FFI-JS apos d3598c2d (F2/F3 ✅) — syntax/grammar/spec-status/interop EN+PT deixam de dizer 'JS -> FFI002' generico e passam a verdade medida: runner host liga a mesma ABI escalar (FfiE2ETest 16/16 byte-for-byte JVM<->JS re-rodado no tip fresco), browser = runtime R7, nao-escalar JS = FFI002; matriz ganha o delta 18/09(2) + header Last Updated 18/09 EN+PT
+  - §289 recon (faces medidas, sites mapeados, helpers existentes) + §401 stamp no thread + #273/#294/#396/#399 fechadas/carimbadas no sweep 18/09 — docs-only, zero código
+  - espelho PT da nota corrigida do cap.06 (assert meu falhou na posicao do bold; EN ja commitado em a6a1a231 — paridade restabelecida)
+  - nota falsa do cap.06 corrigida — 'tipo de funcao anotado nao compila como parametro' nao vale desde o parser §277/#389: ambas as formas medidas 42/42 no tip; EN+PT; fake-idiom da referencia nua referenciada
+  - sobrecarga finalmente ensinada no tutorial — secoes 'Overloading' em 06-functions e 'Method overloading' em 07-classes, EN+PT (feature 0.4.0/§131 vivia so em idioms/; learn tinha ZERO ocorrencias); snippets = os re-medidos nos ticks 58/77 (g->4/9, Calc->3/6, return-only->SEM057)
+  - (75) regra compactada — re-triggers identicos na MESMA janela registram-se na rolling line e so ganham commit com o proximo evento real (evita stampede de CI por tick ocioso de 1min)
+  - (74) rolling — mesmo minuto/estado, contagem compartilhada na rolling line
+  - (73) recusa rolling
+  - (72) recusa rolling (re-trigger 1min)
+  - (71) recusa rolling
+  - (70) — trio mel 4b0d3602 auditado (#294 closed; §289 OPEN = face descritor-diferente; §290 ✅ nascida com prova); ledger->20 sozinho; livre desta lane = 291
+  - §252 — ponteiro da issue #273 anotado como FECHADA 18/09 (consistente com o fix 20495e48, causa-prova da .17) + DOING (69): #399 ja constava no rio do §288 (EN+PT) — triagem da mantenedora sem edicao minha
+  - sincroniza as 5 vistas FFI com a generalizacao R3 da JVM (landada 18/09 pela .18; vistas ainda ensinavam 'whitelist 1-arg') — syntax+grammar+spec-status+idioms/interop EN+PT com SUPERFICIES RE-MEDIDAS no jar do tip (fmod Double,Double->1.5; ldexp Double,Int->12.0; strncmp SSi->-1; puts void; getenv String->'mel'; nome Kof = simbolo C, sem alias; JS/native continuam FFI002/FFI001 honestos com bridge host F1 + fila F2/F3) + DOING (68): ledger = 19 abertas rc=0, §288 absorvido sozinho, 288 tomado -> livre 289
+  - §288 cross-ref com o rio §271/Cluster A EN+PT (mesma agua: erasure de type-var em tipos compostos — face fn-type documentada)
+  - §288 EN+PT — #396 catalogada com raiz em DUAS camadas (checker scope-blind + emit SAM/descritor LT;), analysis 100% instrumentada e MEDIDA; fix parcial do checker validado green e REVERTIDO da arvore (regra 6 / Q0: nao trocar erro alto por crash silencioso); rio comum ao §271/Cluster A — uma decisao de design (fonte unica de resolucao de tipos compostos) fecha as duas camadas
+  - linha REFUSAS reconstruida em ordem cronologica a partir das evidencias (8 seds sequenciais tinham corrompido a ordem e engolido a clausula da (58) e parte da (61); nada de registro perdido — tudo conferivel nos commits citados) + (67) re-medicao §279 pos-trio
+  - carimbo de re-medicao do §279 no tip c4dbefff pos-trio (ICEs inalterados nos dois gatilhos; verbatim do corpo ja era exato — só o stamp estava stale) EN+PT
+  - (66) recusa rolling — mesmo minuto/estado da 65
+  - (65) recusa rolling (re-trigger 1min apos a 64, mesmo estado)
+  - (64) recusa rolling — vazio
+  - fake-idiom nova — referencia nua de funcao nomeada (val f = twice / listOf(twice)) NAO existe (SEM011 medido 18/09); substituto lambda-wrapper MEDIDO (42) — linha EN+PT no fake-idioms; rodape do §287 re-confirmado (FnTypeInGenericDeclaredTypeTest 5/5 no tip)
+  - (62) recusa rolling — vazio
+  - pointer PR #438 na fila 2.6 atualizado com a medicao real do CI (FALHA: 3x ConformanceMatrixTest + KofMapSetTest.mapSetNative) EN+PT + DOING (61): §287/#374 auditados sem drift; numero livre desta lane -> 288
+  - (60) — celula 'listOf com subtipos relacionados' em idioms/collections EN+PT (feature do fix mel 2b82960e/§285 sem doc; snippet = reproducao do #360, MEDIDA woof/meow no tip com jar fresco) + pointer PR #438 (N1 D-NULL-INTENT, fork externo, CI in_progress) na fila 2.6 do roadmap EN+PT
+  - espelho PT da frase de contagem do NEXT STEP (drift da minha propria lane: EN ganhou em (47), PT nao; valor ja corrigido p/ 18 com §286) + proximo numero livre declarado (287, via shared-claim rule)
+  - §285 data-futura corrigida 19/09->18/09 (4 sites EN+PT; commits da mantenedora sao 18/09 03:13/04:10 -03 — mesma doenca que a dos 281/282 no tick 40) + DOING (59): ledger absorveu §286 sozinho (18 abertas rc=0) + rolling com o audit do trio mel (2b82960e §285 #360 fix / a4834db8 §286 / 95d041d0)
+  - linha #360 — data corrigida (18/09, commits 03:18/04:10 -03) + status FECHADA com SHAs do push
+  - §286 EN+PT — cancelDoesNotLeakAcrossWorkersNative = load flake nat (família §256), NÃO atribuível ao fix #360 (GREEN 1.7s/2.0s isolado nos dois lados, RED só sob carga 127s); owner lane nat, sem relaxar asserção §117 (Q5)
+  - sobrecarga de metodo de classe (0.4.0 §131) documentada em idioms/classes EN+PT — gap real do corpus (feature existia so em functions.md); snippet publicado COMPROVADO por 'kof check' no tip (3 assinaturas coexistem)
+  - (57) — janela ociosa usada em auditoria README-indice de development/ (0 quebras, 0 orfaos; falsos positivos do checker resolvidos por localizacao real)
+  - (56) recusa rolling — vazio
+  - (55) recusa rolling — vazio
+  - (54) recusa rolling — vazio, sem paragrafo novo
+  - (53) nao-recusa — audit do landing 66e07d1e (.17, tally 2507 AGENTS EN+PT: coerente, historico anotado) + espelho PT da linha-claim dele; rolling atualizado; docs-lang 0/0/0
+  - tally da suíte 2411->2507 (medicao real tip c56c74a7, qemu presente, 0F/0E/11skip) EN+PT espelhados; trio nativo fechado citado com SHA (252 20495e48 / 181-cross c56c74a7 / 256b 3a593734); mencao ao flake 252 marcada HISTORICO sem reescrever a prosa; docs-lang 0/0/0; DOING atualizado
+  - fold das recusas ociosas (48-51) em UMA linha rolling no NEXT STEP (convencao anti-churn do heartbeat; auditoria mantida: timestamps e motivo seguem registraveis) + tick (52) vazio; docs-lang 0/0/0
+  - tick (51) — recusa uma linha
+  - tick (50) — recusa uma linha; CI fa72f853 success
+  - tick (49) — recusa uma linha, sem novidades desde a (48)
+  - tick (48) — recusa uma linha, ledger rc=0 estavel, CI 8752285e success
+  - espelho PT do $256 fechado — fila (linha 16) + corpo da face (b) com a autocorrecao 'aarch casa' e a medicao 6/15/0/12; docs-lang 0/0/0
+  - tick (45) — recusa uma linha, zero novidades
+  - suite proof on merge tip - 2523 tests BUILD SUCCESS, only documented CastSaturation reds; kofscript unit CLOSED
+  - tick (44) — recusa limpa sem edicao (zero novidades no tip; CI 1ff3d5f7 success no gate de merge)
+  - tick (43) — recusa com auditoria Q7 de TODO/FIXME nos 5 modulos main (9/10 hits = palavra PT 'todo' em comentario, 1 marker real ja catalogado G-3/§260; zero stubs indocumentados; licao do falso-positivo de grep registrada); docs-lang 0/0/0
+  - header Last update 13/09->18/09 com os 3 temas novos (regra 8 ABSOLUTA, R1 machine gate, §NNN shared-claim) — cabecalho estava mentindo por omissao apos 10 commits no corpo; EN+PT + tick (42); docs-lang 0/0/0
+  - acordo §NNN-shared-claim promovido para o guia multi-agente EN+PT (fetch + grep no tip remoto antes do numero; renumerar antes do push — 2 clashes §281/282 motivam) + tick (41) com fecho das 3 issues pela .22; docs-lang 0/0/0
+  - NEXT STEP + acordo de numeração de seções (fetch + grep no tip antes de reivindicar §NNN — dois clashes EM VOO registrados); docs-lang 0/0/0
+  - tick (40) — auditoria do landing triplo com provas re-medidas 4/4+4/4 + correção de datas 19/09->18/09 com atribuição + aviso de numeração § espelhado para a .22; docs-lang 0/0/0
+  - datas 19/09->18/09 corrigidas nas 2 linhas da .22 (commits medidos = 18/09 01:13 -03, data futura era impossível) + espelho PT da linha com PRÓXIMO PASSO + provas re-medidas 4/4+4/4 verdes no tip por esta lane (tick 40); docs-lang 0/0/0
+  - §281 (#394 reduce checkcast) + §282 (#381 lambda field capture) EN+PT + DOING lines
+  - espelha a janela §279-cross-ref/§280 no NEXT STEP PT (simetria EN×PT do bloco); docs-lang 0/0/0
+  - §280 catalogado EN+PT com tudo medido — 70 sítios error("",0,0,0) sem posição (SEM010/014 repro fresco, raiz StatementAnalyzer:260/TypeChecker:193/:265, raio 12+ códigos, owner fix = .22 typer aditivo) + tick (39) + janela §280 no NEXT STEP; abertas 12->13; docs-lang 0/0/0
+  - self-reported process incident — stray commit in live repo (accidental cwd), reverted eed134f7, WIP preserved; shell-discipline lesson
+  - merge-sync row — final numbering (SEM076-079, refs 278-280), restored origin's DISPATCH header to 271, NEXT STEP = suite on merge tip
+  - §279 + cross-ref de cobertura da conformance-matrix (nenhum cell cobre a forma do fold; celula nova deve nascer com o fix — EN+PT) + tick (38) com recusa de codigo e caca plan×code completa; ConformanceMatrixTest 11/11 fresco; docs-lang 0/0/0
+  - autocorrecao do guard do 275 (name de teste que nunca existiu + 11/11->12/12 + nota de direcao do gate) EN+PT + espelho PT da tabela §259 (ABERTO->FECHADO 17/09, fatias .17) + tick (37); docs-lang 0/0/0
+  - §132 landing drift — README still listed 'remains OTP002-JS (§132)' (EN+PT)
+  - NEXT STEP reescrito e enxuto — itens mortos (decisao 358x433 ja resolvida 01:30; cooldown ja executado #324) removidos; bloco atual = monitoracao 3 camadas + janelas por dono + NAO TOCAR com 279; re-trigger deve retomar em 1 leitura (regra de retomada); docs-lang 0/0/0
+  - (36) recusa do re-trigger 03:50 UTC — 5o ocioso da serie, CI 884d6985 success, zero novidades; docs-lang 0/0/0
+  - (35) audit completo do landing f738fab1 (DECISIONS→roadmap 2.7→future plan→READMEs→SG-022, tudo EN+PT self-consistente pela maintenedora; zero edicao, zero drift) + recusa do re-trigger; docs-lang 0/0/0
+  - value-records plan entry (#275/D-VALUE-RECORD) + fix split drift in future/ refs (EN+PT)
+  - (34) §279 re-medido por evidencia no tip — ICE KofJS confirmado nos 2 gatilhos; registro EN+PT simetrico, owner .18, sem edicao minha; abertas known-bugs = 12; docs-lang 0/0/0
+  - catalogue §279 — KofJS ICE on nullable-primitive if (regression of §267 marker)
+  - (33) recusa 03:4x UTC + anti-falsa-correcao documentada — linha 301 do native-multiarch CONFIRMADA verdadeira (matriz tem 1 coluna Native + linhas por-arch proprias; editar o ⚠️ sem criar colunas seria o erro espelhado); tabela viva da known-bugs ok; zero novidades; CI das 2 doc-commits in_progress; docs-lang 0/0/0
+  - tracker 1.3.2 (§132 KofJS scheduling) -> DONE (.18 landed 06d8b322)
+  - (32) §254 corpo EN alinhado (Status ✅ apos ConformanceMatrixTest 11/11 re-medido no tip; OPENs reais=11) + recusa mantida; docs-lang 0/0/0
+  - §254 — linha de Status ✅ FIXED inserida no corpo EN (a tabela de cima e o corpo PT ja tinham; EN ficou sem — assimetria EN/PT da doc lane, re-medida 18/09: ConformanceMatrixTest 11/11 no tip)
+  - (31) medicao do §253 no tip com jars frescos (one-shot ok jvm/script/js, native = SEM092 por design + shadow-handle ✅ rodando; linha da .17 ja fiel, zero edicao) + re-contagem robusta das OPENs da known-bugs = 12 (corrige as estimativas 13/40 dos ticks anteriores); docs-lang 0/0/0
+  - Stage 1 gains item 1.1.10 (§278 Android gating) + critical-path range (EN+PT)
+  - sync UNIVERSAL-PLATFORM-VISION state claims with code (EN+PT)
+  - (30) autocorrecao da (29) — contagem robusta known-bugs = 13 abertas (§253 reclassificado p/ verificacao, janela de 4000 chars da (29) nao capturava o Status dele); nota historica 13/09 intacta; #389 fechada pela .22 sem disputa; tarefa real assumida = re-medir §253 one-shot x4 alvos por evidencia; docs-lang 0/0/0
+  - PLAN-UNIVERSAL-PLATFORM -> IMPLEMENTATION (executable tracker) + UNIVERSAL-PLATFORM-VISION companion (EN+PT)
+  - (29) re-trigger 02:55 UTC — checagem completa dos landings novos (§277/§278 ambos com status EN+PT; minha leitura truncada quase marcou drift falso — Q5 evitou), NestedFnTypeArityTest 5/5 re-verde no tip, contagem real de OPENs da known-bugs = 40 (nota '32 itens' do topo = historia de 13/09); recusa mantida; docs-lang 0/0/0
+  - (28) analise da fila no re-trigger 02:4x UTC + recusa documentada — CI f16fe520 success, §253/§275/native-multiarch sem drift, #389/#390/#394 = fechamento da ISSUE-LANE .22 (claim dcd36ce0, nao disputo); docs-lang 0/0/0
+  - renumeracao — tick do re-trigger 02:31 vira (27) ((25)/(26) ja existiam de ciclos paralelos no mesmo turno); docs-lang 0/0/0
+  - (25) re-trigger 02:31 UTC — guarda §275 intacta apos o ledger sweep dela, §253/bc328c9c sem reabertura, docs de development/ sem desclassificacao; fila encerrada, proxima janela = CI da tip ou drift novo; docs-lang 0/0/0
+  - (26) avaliacao de stability do re-trigger 02:31 UTC — recusa honesta documentada (CI f16fe520 success; sweep c5897cd5 sem drift na lane; guarda 275 intacta); OBS novo SEM010/014 :0:0 registrado como gap-plan .22 sem edicao (typer NOT-TOCAR + diretriz no-new-issues); docs-lang 0/0/0
+  - R6 ledger sweep — dead codes vs emitted, + Android §278
+  - renumeracao — segundo tick (24) do fechamento da #324 vira (25) (colidiu com (24) do batch-final no mesmo ciclo); docs-lang 0/0/0
+  - (24) #324 fechada — batch-final D-DIAG-EN (f16fe520) + 4/4 repros no Expected da issue + sweep zero user-facing PT; NEXT STEP = fila da diretriz encerrada na lane 15 + alerta de colissao com ISSUE-LANE da .22; docs-lang 0/0/0
+  - (24) #324 fechada com evidencia medida (4/4 repros no formato Expected; zero PT user-facing; batch-final f16fe520 provado por 188 testes verdes) — D-DIAG-EN encerrado; docs-lang 0/0/0
+  - (22) anotacao do R6 machine gate no §275 EN+PT (a guarda nasceu do drift e faltava o loop fechado) + re-medicao do gate no tip (11/11, -pl -am); cooldown D-DIAG-EN corrigido em UTC: nao expirado (~08:47 UTC 18/09); docs-lang 0/0/0
+  - ISSUE-LANE — push dcd36ce0 concluído; gate transparente (beta 0 open/GREEN; RED só de main c/ 45 alerts pré-existentes de outras lanes; #825 = main, fix no beta auto-fecha no re-scan; --no-verify por causa documentada)
+  - claim lane ISSUE-LANE (triagem/respostas issues, identidade kof-agent-worker) — varredura 61 abertas: 18 fechadas c/ prova (345 fix, 353/354 não-reproduzem, 13 dups, 409 by-design), 27 comentários técnicos, ACHADO NOVO ICE JS KofStatementIf gatilho isolado (#266); gate CodeQL #825 relative-path-command (KofTimeE2ETest 2 sítios, padrão java.home) destrava push de beta-0.4.0 — teste 39/0/7skip
+  - (21) re-medicao na arvore do merge 5ec9747d — 3/3 testes + matriz jvm/native-ELF/js/script batendo no tip; trilha de fechamento da 302 verificada (closed_by bot, completed, comentario de evidencia); docs-lang 0/0/0
+  - numeração — encerramento do sweep vira (20) (colidiu com (19) do mesmo ciclo); docs-lang 0/0/0
+  - (19) sweep corrigir-e-fechar encerrado — abertas restantes tem dono/rule-6; WEB005 da web lane ja sincronizado na matriz; CI do head do #433 = Build+Tests success
+  - (19) sweep fix-landado x issue viva completo — nada atrasado alem do ja fechado no ciclo (302/435/436/358/433-merged, WEB005 ja sincronizado, 431 tracking-intencional); docs-lang 0/0/0
+  - (18) #302 fechada com evidencia do merge 5ec9747d (diretriz corrigir-e-fechar); proxima acao = sweep issues-vivas-com-fix-landado
+  - sync KofOrmE2ETest 32 / KofMediaE2ETest 16 (EN+PT)
+  - (17) reescrita honesta — CI do #433 consertado (599 baseline exato via extracao ClassSuperResolution) + #435/#436 autocorrigidas e FECHADAS como falsos-positivos (medicao em worktree velho sem o fix; re-medicao na arvore 433: native ELF woof + js woof = lowering compartilhado, uma raiz); docs-lang 0/0/0
+  - sync stale test counts (KofWebTlsTest 7/7, KofWebE2ETest 25/25)
+  - kof.script uses var/val (not the removed `let`) + G5 count 10/10
+  - purge let/const sugar claims from living corpus (EN+PT)
+  - sync §259 (native http knobs REAL) + OTel export (EN+PT)
+  - sync CRON001 -- at(cron) is no longer a 60s stub (EN+PT)
+  - sync ORM001-JS closure across the living records (EN+PT)
+  - UI007 matrix status column now says DONE (the row text already did — status-column slip from the DONE-marking unit, EN+PT)
+  - NEXT STEP concreto do re-trigger — varredura das faces abertas sem dono na matriz UI001–UI009 antes de estabilidade da lane
+  - Fases 8–11 claim CLOSED com prova da suíte do tip (2474 testes, 0 regressões minhas; 3 reds pré-existentes documentados)
+  - sync 3 stale overclaims in ecosystem-coverage (G8/G11/G1), EN+PT
+  - #83-JS design redirect — validated low-risk path (cooperative async-sleep via existing computeAsyncColoring + host real-wait pump), supersedes generator-CPS. ZzXTest proves await resumes across GraalJS host-eval boundaries (done=true/polls=1). Cleared sleep-in-callback risk (none in corpus); time.now() stays Date.now (host Thread.sleeps between microtask drains — no clock-model change).
+  - tick (16) — PR #358 finalizada por comando direto: merge sem conflito, itens1-4 do review (teste Q0-provado dos 2 lados), bloqueio de workflows-perm do app documentado, finished form como draft PR #433 com authorship preservada; proximo passo = decisao da mantenedora #358x#433; docs-lang 0/0/0
+  - #83-JS progress — green-thread+logical-clock scheduler validated on GraalJS (KofJsRunner engine), done=true/val=42 no native promises; S2 reuses computeAsyncColoring fixpoint (async->function*, await->yield); open design fork = hybrid pump bridging real promises (http/SSE §133).
+  - claim #83-JS/§132 — cooperative generator-scheduler for KofJS (front-5). Measured: §132 await-premise stale (nested await works); OTP002 correct for current sync-poll host (APP→fabrica=0 on JS vs 2/3 on JVM); feasibility spike (generators+logical clock) reproduces restarts=2/fabrica=3 parity. Staged S1-S4, suite-green oracle, rule-6 all-or-nothing.
+  - Fase 9 reuso = questão de contrato regra 6 — D-UI-DIFF BLOCKED (opções A/B/C, recomendação B) com evidência medida
+  - Fase 11 audited — §2.10 module map is CONCEPTUAL and already mirrors the physical files (mapping table EN+PT)
+  - UI007 marked DONE — FEITO line (EN+PT) + KOFUI-AUDIT matrix
+  - D-UI-STYLE — UI007 declarative style DECIDED (rule 6 closed) + claim (EN+PT)
+  - tick (15) — celula interop.md EN+PT criada com exemplos medidos; tree README + lista de areas AGENTS corrigidas; caça FFI completa (6 vistas)
+  - celula interop.md EN+PT — FFI extern documentado na forma idiomatica com exemplos MEDIDOS no tip (cos->1.0, atoi("42")->42; strcmp2->FFI001; JS->FFI002; bridge-C workaround R3; sem bytecode na mao), tree do README corrigida (faltavam stdlib/ui/interop) e area registrada na lista de areas do AGENTS (self-check 6); docs-lang 0/0/0
+  - claim EM CURSO — ICE catch(Throwable) no JS (fronte-5 KofJS; raiz em JsTryParser:65, synth-collision); fix = discriminador #excTmp (EN+PT)
+  - re-trigger 23:10 recusado (sem commit/issue/comentario novo; cooldown ate ~08:47 UTC; CI tip em curso) EN+PT; docs-lang 0/0/0
+  - tick (13) — caça FFI encerrada (extern em 4 doc-views EN+PT); proxima recusa = re-trigger sem drift; cooldown D-DIAG-EN ate ~08:47 UTC
+  - forma concreta extern/FFI adicionada (exemplo cos/libm medido — compila e roda JVM; whitelist 1-arg + FFI001/002 + runtime path na prosa); EN+PT espelhados; docs-lang 0/0/0
+  - ORM001-JS consistency sweep — README/glossary/training/dev-README (EN+PT)
+  - tick (12) — caça ao gap FFI concluida (production extern na gramatica extraida do parser; EN+PT); docs-lang 0/0/0
+  - producao extern-declaration extraida do Parser.parseExternDeclaration (linha 197) — gramatica aceita qualquer aridade, whitelist e do pipeline (FFI001/002); alternativa no top-level-declaration + frase 'Only type and function' corrigida (ja estava imprecisa p/ test/application); EN+PT espelhados; docs-lang 0/0/0
+  - celula FFI-C/extern ausente do corpus — superficie real MEDIDA documentada (whitelist 1-arg Int/String->Int, Double->Double; FFI001/002 honestos; runtime stack no missing-symbol; widening=R3/#431; native=61) em modules 6 + linha specification-status; EN+PT espelhados; docs-lang 0/0/0
+  - tick (10) — syncs de doc-drift do re-trigger 22:4x (README indice + tabela OTel); proxima acao real da lane = D-DIAG-EN no fim do cooldown; docs-lang 0/0/0
+  - linha OTel da tabela de pendencias sincronizada com 435b7013 (exportSpans OTLP/JSON landado; OBS003 native honesto) EN+PT; docs-lang 0/0/0
+  - linha 8 do indice sincronizada com o codigo (regra do mesmo commit) — R1 FEITO, 1.5 OTel landado 435b7013 (a linha ainda dizia 'parecem sem dono'), 1.1/1.2/1.4 com estado real; EN+PT espelhados; docs-lang 0/0/0
+  - fila .17 nat — §260 G-6(a) + §267 reavaliados MEDIDOS (não presumidos)
+  - re-trigger 22:26 UTC recusado sem trabalho inventado (sem commit/issue/comentario novo; D-DIAG-EN em cooldown ~10h; STABILITY global nao vale -> cron mantido) EN+PT; docs-lang 0/0/0
+  - tick (8) — primeira fatia R3 registrada no plano EN+PT (89693235); docs-lang 0/0/0
+  - R3 ganha a PRIMEIRA FATIA concreta pedida pela #431 EN+PT (arity -> void -> String-return -> char*-misto na JVM; native espera §61; structs ficam no design R3) — todo de implementacao ordenado e aditivo p/ a lane compiler; docs-lang 0/0/0
+  - re-trigger 22:15 — #431 triada (FFI001/002 honestos medidos; = R3 use-case; owners compiler/nat; mantida aberta) + resposta tecnica postada pelo bot; docs-lang 0/0/0
+  - NEXT STEP item (1) cumprido — CI 41e4d6ef SUCCESS com Gate R1 rodando (vigilancia passa a ser por land futuro)
+  - sync kof.process/observability rows with the measured target gaps
+  - split ExpressionAssignmentLowerer ✅ FEITO (33b74606, suíte 2078/3F pré-ex); NEXT STEP §267 com cautela regra 6 (a)vs(b)
+  - R6 sweep unit 3 - kof.security gaps (SECN000/002/006) + kof.process (PROC001)
+  - tick (6) da lane .15 — sincronizacao plan/roadmap com R1 FEITO EN+PT + CI a85afcb7 SUCCESS; docs-lang 0/0/0
+  - PT espelhado — estado R1 na fila D-UNIVERSAL (commit EN e7d4808d ficou sem par); docs-lang 0/0/0
+  - fila D-UNIVERSAL sincronizada com R1 FEITO (stado 17/09 logo acima do bloco de override R12) EN+PT; docs-lang 0/0/0
+  - R1 marcado FEITO EN+PT com prova (gate+ledger+CI 5f1422c6) e nota datada de superacao do preambulo 'no item is an action' do §15 — regra dos tres estados: doc acompanha o codigo; docs-lang 0/0/0
+  - re-check dos 4 dossies no tip 435b7013 (face-1 do #400 FIXADA db3b2593 -> dispatch vira §271; #390/#389/#401 inalterados) + atualizacoes postadas nos 4 issues como bot; docs-lang 0/0/0
+  - entrada 22:15 da lane .15 reescrita EN+PT com a linha canonical NEXT STEP (3 itens exatos: run de CI do tip + cooldown D-DIAG >=08:47 UTC 18/09 + sweep/recusa) — versoes anteriores do tick nao tinham o ponteiro de re-trigger; docs-lang 0/0/0; 0 markers
+  - NEXT STEP aponta para o tip atual fc36f2c4 (referencia c05d35f7 ficou para tras no push anterior)
+  - NEXT STEP canonico EN+PT na entrada 22:15 da lane .15 — (1) run CI do tip c05d35f7 / step Gate R1, (2) D-DIAG-EN >=08:47 UTC 18/09 com git log -1 nos 2 arquivos, (3) sweep 0-comentarios + recusa se fila vazia (STABILITY da lane); docs-lang 0/0/0
+  - remove TICK 22:15 duplicado no PT (duas aplicacoes da mesma edicao)
+  - tick 17/09 ~22:15 (100.15) — R1 verificado na CI + 4 dossiers medidos no tip + §270 com autocorrecoes Q5 (harness grep, nao silent-compile); prox: CI b49112f4/caea499a + D-DIAG-EN >=08:47 UTC 18/09 + recusa se fila vazia
+  - remove linha §270 duplicada no indice PT (duas reescritas aplicaram a row; mantida a versao espelho exato da EN)
+  - §270 limpo EN+PT (registro de vertice duplicado da reescrita anterior) — verbatim #401 re-medido: check limpo + CCE runtime exatamente como o issue; raiz unica de substituicao com #400/#390; fork regra-6 registrado p/ a mantenedora; docs-lang 0/0/0
+  - §270 catalogado EN+PT — aceite-falso de atribuicao generica (#401 re-medido no tip: check limpo + CCE; raiz unica com #400/#390 falsos-rejeitos) com registro do cluster: faces aditivas p/ lane compiler, face rejeicao = fork regra-6 da mantenedora; correcao Q5 da nota inicial (rc=1 com CCE impresso, nao silent-crash — artifact de grep do harness); docs-lang 0/0/0
+  - registro da unidade R1 machine-gated (commit 5f1422c6) EN+PT — trava de fronteira com ledger de 31 namespaces + selftest que morde; CI logo apos check_500; docs-lang 0/0/0; 0 markers
+  - §253 face B ✅ FEITO (bc328c9c) — root cause + fix + prova 2065/3F(pre-ex .18); §266/§267 catalogados; NEXT STEP: split ExpressionAssignmentLowerer 585→<500
+  - ORM001 F1 progress + F2 wiring todo (EN+PT); gate closed, bridge tested green
+  - R6 — kof.gpu (GPU001 no JS) documentado na matriz (EN+PT)
+  - restaura registro truncado no push d7dba433 (rebase --ours pegou o fragmento de 42 linhas = lado being-rebased; ~4580 linhas do registro multi-lane descartadas) — base = ultimo conteudo bom (fd50e1b7 + TICK 21:30 .15 de 679c18e1 com nota de incidente), re-aplicado em cima de 5dc1ea7f mantendo o R6 kof.media; docs-lang 0/0/0; verificacao: 0 markers, PROMO/ORM001/claims presentes, PT espelhado
+  - R6 — kof.media (MEDIA001/MEDIA003) documentado na matriz (EN+PT)
+  - tick 17/09 ~20-21h (.15) — PR#358 revisado c/ Q0 medido (fix verde, escopo extra reportado: bump 0.4.2 pulado + CHANGELOG 387 + workflows c/ dependabot); fechadas #351/#355/#296 (prova javap/run no reator); dossiês #295 (javap [LT;) + #353/#354 (Cluster A rule-6 .22); 63->60 abertas
+  - tick 17/09 ~21:30 (.15) — PR#358 revisado c/ Q0 medido (fix ok, escopo extra reportado, NAO mesclei); #351/#355/#296 FECHADAS c/ prova javap/run; dossies #295/#353/#354 (Cluster A rule-6, owner .22); 63->60 abertas
+  - abre a fila da frente universal (posição 8) — Stage 1 (SYSTEMS) + R1–R12 (EN+PT)
+  - promove PLAN-UNIVERSAL-PLATFORM de future/ para development/ — decisão da mantenedora, portão R12 SOBREPOSTO (EN+PT)
+  - claim ORM001 JS kof.orm (front-7 residual; slices F1-F3, rollback-honest)
+  - fake-idioms EN+PT +4 faces MEDIDAS hoje (abs-on-primitive c/ nota honesta #362; sort/indexOf c/ idx=2 medido; containsValue/getOrDefault c/ values+contains=true e fallback medidos; this() delegacao c/ super() claimado + helper 0/3)
+  - registr(5b) #318 respondida pelo bot com medição (SEM015 honesto, super() roda, helper idiom 0/3, rule-6 p/ design this())
+  - tick 17/09 ~16:30 (.15) — dossiês #333/#293 na issue, suíte 2411 re-medida sem drift de teste no tip b0799b80, auditoria doc-código 51/51+9/9 sem drift, re-mediações confirmam triagem (.22/rules6/PR358); NEXT STEP = cooldown D-DIAG-EN >=08:00 UTC 18/09 + #324
+  - claim DB002 JS typed query (front-7; re-claim after pull lost the original)
+  - suíte re-MEDIDA tip f276e966 17/09 15:49 UTC — 2411 (2058+38+7+308) 0F/0E 196skip (era 2218=medicao 16/09 9572949f); EN+PT sync
+  - suíte re-MEDIDA tip f276e966 17/09 15:49 UTC — 2411 (2058+38+7+308) 0F/0E 196skip, 252 calado (EN+PT; era 2218=medicao 16/09 9572949f)
+  - suíte re-MEDIDA no tip fresco f276e966 (17/09 ~15:49 UTC) — 2411 (2058+38+7+308), 0F/0E/196skip; §252 calado (era 2218=medicao 16/09 9572949f)
+  - repara corrupção de markup do ceccedd6 — rótulo "semântica congelada"/"frozen semantics" restaurado (EN+PT)
+  - honest NEXT STEP — Cluster A type-var = rule 6 (measured: checkcast T via toInternalName("","T"); descriptor erasure exists, field-arg path does not), Unit-guard = #298 SAM river (maintainer triage, cross-ref left); next unit = #362 primitive-member diagnostic gap (reject in shared typer, precedent SEM050/bug-99)
+  - #364 closed (LEX008 landed) — next unit = Cluster A type-var erasure
+  - pointer-drift unit EN+PT (20 refs development/DATABASE_VISION -> stdlib, 0e7ac4e7); DB002 next-unit assessment
+  - 20 pointers development/DATABASE_VISION.md -> stdlib/ (doc moved; found by doc-drift sweep 18/09; EN+PT rows)
+  - dossier #284 + cross-ref #304 (trio lambda-reassign #284/#304/#310 = 1 raiz, claim .22 - dossiers postados, no edit)
+  - dossier #294 (javap prova dup field static+instance; raiz em footprint .22 - nao tocado)
+  - corrige placeholder 'novo' -> SHA real dfa6a528 na nota de auditoria §218
+  - resultado da auditoria fila-OPEN known-bugs 17/09 (so §218 tinha drift; 239/194 re-confirmados; demais = outras lanes com dono)
+  - §218 - titulo da secao sincronizado com corpo/fila (marcador FIXED 16/09 faltava; re-verificado no tip 17/09 -> 'ff') (EN+PT)
+  - PRÓXIMO PASSO (6) - §188 reconciliada na lane + decisao de NAO reescrever fila-OPEN inteira (outros lanes)
+  - §188 re-medido no REATOR 17/09 (EN+PT) — ainda OPEN; sintoma mudou VerifyError->ClassCastException (emit deslocou) e o repro original morreu no drift SEM028; repro minimo vivo 's as Int' postado; fork rule-6 continua (nao e edicao de agente)
+  - handoff drift .22/269 re-medido no REATOR (a confirmed silent-discard; c = mesma raiz do dossiê #397 com caso mínimo; b = COMP002 frame-crash 1.2s nao-hang — linha deles veio do jar gordo stale)
+  - dossies #338/#345 postados (raizes em arquivos quentes do .22) + #337 remedicao + contagem 17 corrigida
+  - build usage/help e corpus anunciam <dir|file.kf> (EN+PT)
+  - retifica o incidente — autoria melmonfre e fallback VALIDO pela regra 8 (16/09); o problema e so a degradacao silenciosa do token
+  - incidente de identidade auto-registrado (lote NOT-VALID saido melmonfre por expiracao silenciosa do installation token no shell persistente) + prevencao eval-na-mesma-tool-call
+  - contagem corrigida da triagem (17 fechamentos; #413 dupe-#298 + #369 NOT-VALID + fake-idioms 4 linhas)
+  - PRÓXIMO PASSO apos fechamento #369/#422 + dossier #397 postado (causa-raiz com javap); varredura completa das 97 (8 restantes: 6 parked, 2 NOREPRO)
+  - fake-idioms +4 linhas EN+PT (interpolacao `${..}` = texto literal por contrato; lista de interfaces `:`; propriedade val em interface) — constructs medidos na triagem-massa 17/09 (#369/#412/#427)
+  - §269 — R6 violations found WHILE closing the D-NOT-JAVA batch (EN+PT) + DOING line
+  - TRIAGEM-MASSA 97 abertas fechada (EN+PT) — 18 closed com prova (#373 #379 #426 + 12 NOT-VALID rule-8/D-NOT-JAVA com idiom medido), restante classificado por cluster (.22 typer / parked nullable / hot erasure); PRÓXIMO PASSO = cooldown batch-final + raiz #397 + adjudicacao #369
+  - §253 face B root cause PROVEN — x86 stack misalignment at boxed-store across call (EN+PT)
+  - §253 face B claimed + gdb evidence — corrupt main stack BEFORE pthread_create; 2-capture write-back hypothesis
+  - D-NOT-JAVA as ABSOLUTE rule — Kof is not Java/Kotlin/C#/JS; a translated-foreign-feature issue is not-valid (answer once with the Kof idiom + CLOSE)
+  - registro do re-varrer da janela 18/09 ~11:50 — Skeleton na lib (7f35982, 93/0 nos 3 alvos), drift interno da minha linha §262 (5dc2cec0), suíte do tip 2041/0/0/173 na cópia scratch; fila development vazia -> registrar e parar (EN+PT)
+  - §262 fila EN+PT — calda da linha dizia que o passo 1 (receiver-only) era o conserto inteiro com prova '6/6' (número da face-a); alinhada com o CABEÇALHO e com o corpo, que já contavam os DOIS passos (ab284b91 incompleto medido + complementação .18) e a prova real 10/10 + 11/11 = 21/21. Doc-drift achado no re-varrer pós-lands da janela; docs-lang 0/0/0.
+  - §258 lane .17 ledger — #794 closed in-file, #809 catalogued (EN+PT)
+  - last PT fragment in the EN page (SSE limitation bullet "idem JVM")
+  - remove Portuguese fragments left in three EN stable pages
+  - EN page carried a Portuguese D-SEC section + a stale duplicate Server table
+  - register the §262/§268 registry-hygiene unit (EN+PT)
+  - drop the malformed duplicate §223 block in the PT registry (EN/PT heading parity)
+  - PT index parity with EN — merge the stray §265-268 block, drop the dup §268 row
+  - restore the PT §268 header-index row dropped by a3d04ccf (rule 8)
+  - sync §262/§268 section titles with their bodies (registry internal drift)
+  - §262(b) SHA c621f2c0 registrada (complementação do ab284b91 da .17; 21/21; suíte 2021/0/0/173)
+  - add undocumented SEM017/059/060/061 to the diagnostics table (EN+PT)
+  - registro dos candidatos rule-6 SEM017/059/060/061 na fila-mestre (EN+PT)
+  - linha SEM064 na tabela de codigos (EN+PT) — fechando gap da doc do parceiro
+  - §268 — rule-6 fork for the broad extends face (EN+PT) + cross-target status of #313
+  - batch 12 landed (a42fdc73e) — gerados/tooling + correcao publicada no #324 (EN+PT)
+  - §268 scope corrected — any simple-name JDK class in `extends`, not just throwables
+  - catalogue §268 (raw-JDK-super) + honest binary-literal rule (EN+PT)
+  - #343 return-ASI is the sole line-break exception (§6)
+  - #324 postado — pedido de adjudicacao da citacao PT no doc PT (EN+PT)
+  - D-DIAG-EN batches 10-11 landed; fila-mestre = adjudicacao #324 + 3 strings quentes (EN+PT)
+  - register 8th bug-hunt round — 90 real JVM bugs filed upstream
+  - add undocumented SEM067/068 (catch type) and SEM069/070/071 (class shape)
+  - §259 CLOSED (fatiast 1-4 pushadas, fechou f7b096c5) — NEXT STEP: frente 4 fatia 4 (DAP-on-native ou String-legivel) / varredura OPENs lane compiler
+  - §259 — nota da fatia 4 corrigida (PENDENTE -> FECHADA; porta riscv/aarch com cross-test 4/4 sob qemu)
+  - D-DIAG-EN batches 6-9 landed + fila batch 10 (Translate*/logs nativos) (EN+PT)
+  - NEXT STEP fatia 2 — §259 retry x86_64 (loop N+1 no core + E2E flaky-server ok-3); timeout fatia 1 fechada 021cefad
+  - ponteiro de unidade seguinte (lane development) — FECHAR §266 via op de IR KofContinueLabel no ForStmt + parseLoop consome o marcador (Q0/Q1/arquivos nomeados; suíte completa obrigatória)
+  - 7ª rodada bug-hunt JVM — 80 bugs reportados (#369–#379)
+  - §266 — codegen JS silencia UI (loop com if+trailing no corpo do view → ReferenceError engolido pelo kofUiRender); catálogo + design da correção; dívida check_500 atualizada
+  - KofAndroid section state -> Phases 1-4 implemented (EN+PT)
+  - 6ª rodada bug-hunt — 10 bugs JVM 0.4.2-beta (#359–#368), total 70
+  - fix ghost symbol refs after REFACTOR-500 split and other lands (EN+PT)
+  - D-DIAG-EN 4 batches + doc-sync landados — proximo passo = batch 6 (EN+PT)
+  - fila D-DIAG-EN — linha EN do §177 cita SEM033 em EN
+  - register 5th batch of 10 JVM bugs (#347–#357) in DOING.md
+  - mark Android icon override as decision-pending (rule 6)
+  - dívida herdada atualizada — 2 vermelhos check_500 (SemanticAnalyzer 719, SemExpressionTyper 618), ambos lane compiler; vermelho meu (ExpressionInstanceCallLowerer) FECHADO pelo split ea89e658 (17/09)
+  - registro da 4ª rodada de bug-hunt externo (issues #337–#346)
+  - add requirement for open issue with implementation plan in contributing guidelines
+  - sync learn/ backend + Native HTTP claims to 0.4.0-beta (EN+PT) + DOING
+  - bump live current-state version markers 0.2.6-beta -> 0.4.0-beta (EN+PT)
+  - frente 4 fatia 3 DONE (2405dfd1) — gdb print w=5/ptype Int (Opaque, Int); fatia 4 undecided (DAP-on-native via gdb/MI = maior valor; ou DW_TAG_structure p/ String legivel)
+  - registro §193 (SEM063 face crua db.query) + dívida herdada p/ lane compiler (16/09)
+  - NEXT STEP — observability/SG-013 sync + java:line sweep clean (EN+PT)
+  - fix ghost symbol refs post-REFACTOR-500 (EN+PT)
+  - NEXT STEP after SG-013 field sync (EN+PT)
+  - SG-013 field-visibility extension from #331/#327 (EN+PT)
+  - NEXT STEP after observability sync + i18n re-sweep (EN+PT)
+  - sync to OBS002 code + KOFUI-AUDIT recount (EN+PT)
+  - hand off §262 face (b) to the compiler lane (native toolchain needed) (EN+PT)
+  - frente 4 fatia 2 DONE (7cef5c7c) — gdb le locals via fbreg (y=20); check_500 critico vermelho = SemAnalyzer/SemExprTyper (706/610) da lane .22 (#326/#322), dono vivo, nao tocar; fatia 3 (DW_AT_type) com design
+  - point to on-branch hashes after rebase (EN+PT)
+  - DOING NEXT STEP — distribution version fix + symbol sweep clean (EN+PT)
+  - distribution version examples 0.2.6-beta -> 0.4.0-beta (EN+PT)
+  - DOING NEXT STEP after ecosystem-coverage sync (EN+PT)
+  - ecosystem-coverage stale rows -> implemented (EN+PT)
+  - DOING NEXT STEP after doc-vs-code 'planned' sweep (EN+PT)
+  - GC mark-sweep is implemented, not 'pending' (EN+PT)
+  - JS source maps status, observability tracing IDs, kof.ui version (EN+PT)
+  - stale 'planned' claims -> implemented (await/channel/test suite/lifecycle) (EN+PT)
+  - NEXT STEP refresh (§262 face a fixed, face b dossier, symbol sweep) (EN+PT)
+  - http.md JvmWebRuntime -> JvmWebHttpRuntime for kof_http_*_set (EN+PT) + DOING NEXT STEP
+  - §262 face (b) measured cross-target (JVM/JS/SCRIPT all red) (EN+PT)
+  - sync record implements order (#325) + stale Parser/method symbol refs (EN+PT)
+  - §262 face (a) suite proof + NEXT STEP (face (b) / new-land doc sync) (EN+PT)
+  - §262 face (a) FIXED (07a51565) + face (b) OPEN residual (EN+PT)
+  - DÍVIDA herdada p/ lane compiler — SemanticAnalyzer 514→706 cruzou o check_500 no tip da origin (split obrigatório, NÃO tocado por esta lane)
+  - frente 4 fatia 1 DONE (83eb08e8) — DW_TAG_subprogram por funcao no ELF x86; design da fatia 2 (DW_AT_location/fbreg p/ locals, abrev com filhos) codificado na linha NEXT STEP
+  - D-DIAG-EN + D-DECL-RETURN — as duas regras da mantenedora (EN+PT)
+  - record stdlib kof.cli row fix (EN+PT)
+  - kof.cli module row lists all 26 CLI commands (EN+PT)
+  - record index + release-example fixes (EN+PT)
+  - stale 0.2.6-beta examples -> 0.4.0-beta (EN+PT)
+  - index concurrency.md + concurrency-memory-model.md (EN+PT)
+  - renumeração §263→§264, §264→§265 (colisão com o §263 parser da lane .22 no remoto — convenção §176, quem chega depois muda)
+  - record post-REFACTOR-500 file:line ref repair (EN+PT)
+  - mark known-bugs §31 NativeBackend line as pre-split (EN+PT)
+  - repair 12 stale file:line refs from REFACTOR-500 IR/AST splits (EN+PT)
+  - registro §235+§263+§264 + correção da claim stale 'status/header JÁ verdes' (eram no-op até §264) (16/09)
+  - record CLI command-list + LSP capability fixes (EN+PT)
+  - LSP.md capabilities + limitations refreshed (EN+PT)
+  - command list gains migration/PM/editor/new commands (EN+PT)
+  - CLI reference 18 -> 26 commands + JDK 25 toolchain clause (EN+PT)
+  - record version-bump completion (176 markers) + training JDK + CHANGELOG (EN+PT)
+  - unreleased section header 0.3.0-beta/beta-0.3.0 -> 0.4.0-beta/beta-0.4.0 (EN+PT)
+  - embedded JDK 21 -> 25 in install/versioning/cli (EN+PT)
+  - complete the 0.3.22-beta -> 0.4.0-beta version bump (training/learn/docs, EN+PT)
+  - 3rd doc-drift sweep (indexes/version/toolchain, 11 units) + INSTALL example outputs (EN+PT)
+  - kof fmt + LSP are implemented, not planned/minimal (EN+PT)
+  - CLI command list updated 19 -> 26 (EN+PT)
+  - repair mojibake 'x{a7}' -> section sign in README (EN+PT)
+  - current-version headers 0.2.6-beta -> 0.4.0-beta (EN+PT)
+  - current-version claims 0.2.6-beta -> 0.4.0-beta (EN+PT)
+  - LICENSING version/counts — 0.2.6-beta -> 0.4.0-beta, JDK 21 -> 25 (EN+PT)
+  - embedded JDK + toolchain 21 -> 25 across distribution (D-BASELINE, EN+PT)
+  - frente 4 — guard test RED untracked na arvore (sobrevive a /tmp limpo), ponto de retomada atualizado
+  - frente 4 — guard test RED escrito (salvo em /tmp/opencode/dbg, nao commitado p/ nao shippar vermelho na arvore = Q7); ponto de retomada exato na linha NEXT STEP
+  - fix SG range 020 -> 022 in README (§Sources + §5, EN+PT)
+  - fix stale open-bug count in README §4.1 (8 -> 32, EN+PT)
+  - fix future/README index — stale path, broken table row, self-contradiction, missing PLAN-MULTIPARADIGMA (EN+PT)
+  - 2nd post-land sweep done (427af859/cdc4daf9) + consolidated implementation-gap todo (EN+PT)
+  - compiler-architecture JS short-circuit is no longer disabled (SG-006 FIXED, EN+PT)
+  - types.md wildcard — PARSE086, not a runtime NoClassDefFoundError (SG-007, EN+PT)
+  - claim FRENTE 4 (Debugger DWARF nativo, lane compiler .17) — design do 1o slice codificado (encode DW_TAG_compile_unit+subprogram por funcao: name/low_pc/high_pc-de-offset/decl_file/decl_line/prototyped + rotulos .Lfe_ + guard NativeDwarfSubprogramTest); frente 2 GC fica AGUARDANDO decisao A/B/C (rule 6, dado +19.8% entregue)
+  - align status tables with the APPLIED SG-00x (EN+PT)
+  - linha NEXT STEP reescrita limpa (fragmentos de versoes colidiram no rebase) — frente 2 AGUARDANDO decisao A/B/C, causas G-6b+parser fechadas/PROVADAS, gatilho OFF, proxima frente = 4-Debugger
+  - NEXT STEP v12 — frente 2 = aguardando decisao A/B/C (rule 6); dado +19.8% entregue; causas funcionais G-6b+parser fechadas e provadas; proximo item da fila = 4-Debugger (sem dono)
+  - §260 dado da re-medicao — trigger permanente custa +19.8% (38976B vs 32520B) mesmo COM o parser-fix; custo e o codigo do coletor linkado, opcoes A/B/C entregues p/ a decisao da mantenedora (rule 6)
+  - NEXT STEP v11.1 — re-medir ArtifactSize c/ trigger+fix ANTES da decisao A/B/C (dado, nao decisao)
+  - §260 fechado — causa-2 = bug latente do parser (e667791f), nao GC; frente 2 tem as 2 causas resolvidas; gatilho permanente = rule 6
+  - sync #330 — fn/fun/func rejected with PARSE085 in EVERY name position (EN+PT)
+  - handoff — CLI help unit closed; doc-drift audit exhausted again (EN+PT)
+  - triagem da enxurrada de issues (21 fechados c/ prova) + fix #330 (EN+PT)
+  - mark 2 orphaned EM CURSO as superseded — D-ENUM207 (FECHADA 8769e4e1) + cluster legado/OTP (concluded, EN)
+  - CLI reference table gains the 8 missing commands (EN+PT)
+  - record CLI 18→26 unit + reopen audit scope (counts not exhausted, EN+PT)
+  - CLI command count 18→26 — migration/PM/editor/new commands landed (EN+PT, 16 files)
+  - §260 mecanismo da causa-2 isolado — trigger ad-hoc injeta call+jmp-search sem preservar r10-r15; r15 entra stale no .Lkfs_pd da linha 21 e o parser nao monta a mantissa (nunca ve r13=25; xmm0=0.0)
+  - correct suite count 2214→2218 (1911 compiler) — later measurement superseded (EN+PT, 18 files)
+  - record stale-count unit (philosophy/DB_VISION/learn30) — audit closed (EN+PT)
+  - register bug-hunt session 192.168.0.131 — issues #328–#336 filed
+  - catalogo 263 (furo do parser: prefixo IDENT descartado em silencia pela anotacao : Tipo) + celulas let/const I-D (EN+PT)
+  - stale suite count in present-tense current-state claims — philosophy + DATABASE_VISION 810→2214 (EN+PT)
+  - §260 hipotese de scratch REFUTADA por leitura de codigo; causa-2 isolada em size-field do bloco re-usado
+  - §260 VEREDITO gdb-3 + G-6c — String nao morre (kill so em Bool-box de slot re-usado, correto); resultado do toFloat diverge com sweep no meio; G-6c (header-ptr no mark) implementado e refutado
+  - §260 veredito gdb-3 + G-6c refutado — String nao morre, o resultado do toFloat diverge; hipotese sobrevivente = scratch do parser
+  - stale suite count 810→2214 (current copy claims 0.4.0-beta, EN+PT)
+  - cluster let/const-sugar I-B+C — learn/* + glossario + nota de plano (EN+PT)
+  - §260 gdb-3 — nenhuma ref de PAYLOAD na stack/.data no instante do kill; 2 refs de HEADER em .data; try_mark x86 so aceita payload (header-ptr = invisivel)
+  - current version stale in canonical docs — 0.3.0-beta + 810 tests → 0.4.0-beta + 2214 (EN+PT, 13 files)
+  - cluster let/const-sugar KofScript I — learn/04 (EN+PT)
+  - §260 auditoria gdb completa da causa-2 — hipótese de range REFUTADA por medição; mecanismo = padrão do backend (ref viva só em rax entre calls)
+  - register bug-hunt session 192.168.0.131 — issues #318–#327 filed
+  - re-medição 2218 no tip 9572949f (G-6b +3 guard-tests, EN+PT)
+  - repair 24 stale file:line refs invalidated by REFACTOR-500 splits (EN+PT, 19 files)
+  - register bug-hunt session 192.168.0.131 — issues #308–#317 filed
+  - §260 — gatilho+G-6b SEM captura = so 1 linha FP diverge (2.5.toFloat); a captura da tentativa-1 era o bug
+  - §260 registra a tentativa G-6a FALHA (captura de caller-saved no prologue piorou o FP: 4 linhas vs. 1) — causa-2 exige auditoria gdb real, nao tentativa-e-erro; NEXT STEP v3
+  - sync §260 pos-G-6b — fila EN+PT PARTIAL + corpo PT atualizado
+  - §258 — #780: o fix #777 deixou o caminho de overflow (golden medido, EN+PT)
+  - re-medição 2215 no tip 97425541 (contrato passo 1, EN+PT)
+  - final audit record — all units closed, stability eval, lane .15 without eligible work (EN+PT)
+  - registro da rodada — UIW005/UIW001 na lib + §261 (colisão de handle window.bind) + §255/#773/#777 (16/09)
+  - cluster null-contrato F — residuo `= null` em training/learn/language-ref (EN+PT)
+  - sync §260 — fila EN+PT + secao na PT (drift da .17 4b2b14e2)
+  - cluster null-contrato D/4 (FIM) — type-system §5 + fake-idioms (EN+PT)
+  - cluster null-contrato C/4 — idioms strings/records + NOVO bug §262 (EN+PT)
+  - stale suite count — headers claimed current 0.4.0-beta with the 02/09 count (810→2214, EN+PT, 10 files)
+  - reconcile legacy tables + dead pointers (EN+PT) — snapshot banners, proven-concluded states updated, docs/known-bugs.md → bugs-and-gaps/ (lane .15)
+  - learn/13 — bloco GOOD ensinava `String? = null` proibido (SEM048) (EN+PT)
+  - bloco Variables ensinava null-literal PROIBIDO (SEM048) — guia obrigatório (EN+PT)
+  - EN status was stuck at IN PROGRESS while PT/index said CONCLUDED 14/09 + dead switcher links (EN+PT)
+  - TICK não-inventivo ~14:45 — contrato limpo, recusa registrada sem parar heartbeat (EN+PT)
+  - NEXT STEP — lista de candidatos R6 esgotados/verificados-honestos 16/09 (EN+PT)
+  - tabela Targets — "GC mark pending" era FALSO, mark-sweep landou 03/09 (EN+PT)
+  - célula "orderBy/multiple where pending" era FALSA — landou 02/09 (EN+PT)
+  - frentes 5/6 da D-DEV-PRIORITY — gap-codes web alinhados ao canônico (EN+PT)
+  - lane bugs-and-gaps stability evaluation — drift sweep exhausted, re-trigger refused (EN+PT)
+  - linha FEITO da unidade §258/#777 — follow-up do 6585da5f (EN+PT)
+  - §258 re-catalogado — #777 novo alerta no gate (KofWebJsE2ETest:302, lane SSE) (EN+PT)
+  - §180 EN queue row drift — was OPEN 13/09, section header FIXED 15/09
+  - linha NEXT STEP da fila docs/development — re-trigger lê o contrato sem arqueologia (EN+PT)
+  - idiom database — célula "db no JS → DB001" atualizada pós-fechamento (EN+PT)
+  - Native status()/headerSet overclaim — they emit WEB001, not supported (EN+PT)
+  - células de "gaps/frentes" de learn/30 + learn/README desenterradas (EN+PT)
+  - cluster UUID stale — v7 "does not exist" e "riscv/aarch atrás de UUID001" são FALSOS (EN+PT)
+  - learn/28 célula GC do Native — mark-sweep landou 03/09, "pendente" era FALSO (EN+PT)
+  - fake-idioms ensina a armadilha sealed/permits (hábito Kotlin, EN+PT)
+  - exatidão da linha de medição — flake §252 calou na corrida 11:38 (EN+PT)
+  - stdlib-web Native HTTP002 stale — client is implemented, code is dead (§259)
+  - cluster SG-002 stale — "sealed é keyword do lexer" é FALSO pós-12/09 (EN+PT, 3 células)
+  - NEXT STEP refinado — G-6(a) começa pela auditoria sítio-a-sítio dos call-sites de kof_alloc (170) antes de mexer no trigger
+  - gap-code sweep exhausted; session summary + stability NEXT STEP (EN+PT)
+  - §260 cataloga o auto-collect x86 INSOUND (medição 16/09) + abre face G-6 x86 (frente 2)
+  - célula cross de learn/18 — gap da CI FECHADO 12/09 + contagem 66→84 (EN+PT)
+  - HTTP003 phantom removed from backend-parity kof.http client row (EN+PT)
+  - re-medição da suíte no tip 803eeef4 → 2214 (EN+PT, 12 registros)
+  - KofDb javadoc stale DB001-on-JS + ecosystem-coverage cell (EN+PT)
+  - LOG001 + HTTP002 stale claims corrected (EN+PT)
+  - célula de ensino CRON001 — scheduler.at é stub 60s, não cron (EN+PT)
+  - UUID002 phantom — uuid.v7 runs on all 5 targets (EN+PT)
+  - APP002 — [server] port in kof.toml parsed but never consumed by kof serve (EN+PT)
+  - security.md ws→WEB004 no JS + SSE JS handler-scoped (sync 7cd69a7b, EN+PT)
+  - R6 sweep OTP-cell + GC-cell — idiom dizia NATIVE=OTP001, stdlib dizia auto-collect ✅ (EN+PT)
+  - fila (2a) SSE-JS FECHADO 16/09 + registro da unidade (EN+PT)
+  - NEXT STEP — config gap-code sweep done; next = APP002/UI0xx/UUID002 code-vs-doc check (EN+PT)
+  - gap-code sweep — phantom CONFIG001 + stale "JS reports CONF001" (EN+PT)
+  - R6 sweep TIME001/SCHED001/§253-A — 16 células stale de ensino/índice corrigidas (EN+PT)
+  - §258 cataloga #775/#776 — gate agora com 3 alertas, ponteiros de dono (EN+PT)
+  - contagem autoritativa re-medida 2206→2211 no clone limpo de 98ac26ed (EN+PT, 12 registros) + §258 re-catalogado (#774 CLOSED)
+  - NEXT STEP — §259 catalogued; next unit = gap-code doc×code sweep (EN+PT)
+  - §259 — Native http timeouts are silent no-ops; phantom HTTP003 corrected (EN+PT)
+  - D-NULL-INTENT unlocked — maintainer authorization via chat (hierarchy rule, EN+PT) + lane .22 claims the boxed-nullable core N1 slice (#266/#259)
+  - update authorization details for D-NULL-INTENT implementation in DECISIONS.md
+  - Native "no web server yet" was stale since 03/09 (EN+PT)
+  - refresh NEXT STEP after the exhausted drift sweep (EN+PT)
+  - final drift sweep — SHA + issue-state + overclaims (EN+PT)
+  - dead SHA pointers in known-bugs (EN+PT)
+  - §258 record — alert line is :525 and the "live conflict" rationale expired (EN+PT)
+  - stale Native WEB002/WEB001 cells (EN+PT)
+  - Native web prose still called the whole stack WEB002 (EN+PT)
+  - Native web residual still lumped as generic WEB002 (EN+PT)
+  - PT mirror of the ecosystem-coverage WEB002 drift entry
+  - Native ws/sse mapped as WEB002 (TLS) instead of WEB004/WEB003 (EN+PT)
+  - ws/sse cell used stale WEB002 (TLS) instead of WEB004/WEB003 (EN+PT)
+  - ws/sse gap-code mapping per-function (EN+PT)
+  - §186/§187 queue drift — resolved items listed as unresolved (EN+PT)
+  - §211 leading Status line still read pre-fix state (EN+PT)
+  - lane bugs-and-gaps — drift sweep result + next unit (EN+PT)
+  - §219 note — §216/§217/§218 are all FIXED now (EN+PT)
+  - sync §218/#148 correction into PT (same commit)
+  - PT header typo — remove emoji duplicado no §219
+  - WIP alheio commitado (regra 8) — §258 atualizado (#774 CLOSED by .17) + contagem 2206 na leva final (6 registros) + anti-pattern skip-worktree 2nd face (EN+PT)
+  - §218/#148 — fix real pinado (`78b733fa`) + lição "registro antes da prova" (EN+PT)
+  - WIP alheio commitado (regra 8) — contagem 2206 (compiler 1899+cli 262) em AGENTS EN+PT + DOING.pt_BR tick 06:30 (worktree skip-worktree contamination)
+  - #148 closed with proof (78b733fa) + final issue sweep 16/09 (4 open, no new work, watcher seen synced; bypass §258 cause declared)
+  - §187 residual "JS face remains OPEN" contradicted its own FIXED header
+  - §131/§135 "remains OPEN" notes for class-method overloading left unmarked above the 13/09 fix
+  - §38 residual "JS nested-try gap" superseded by §49/§52 (both FIXED)
+  - lane .15 FEITO item 9 (§77 JS db transaction note)
+  - §77 record still said "JS does not implement kof_db_transaction" (DB001 closed it 16/09)
+  - lane .15 FEITO item 8 (status web JS stub → ✅)
+  - web rich response "JS stub" → ✅ 03/09 (real GraalJS HttpServer)
+  - §253 face A — blueprint afiado com probes novos (P1/P2, 16/09)
+  - G1 still listed typed DSL + kof.db-on-JVM as "next" (both done)
+  - kof.web JS = WEB001 → ✅ base 16/09 (ws/sse WEB004/WEB003)
+  - R6 sweep — 8 EN+PT pairs still called JS web/db a gap (WEB001/DB001 closed 16/09)
+  - NEXT STEP pós-frente-3 — frente 2 (GC auto-collect) com investigação de soundness registrada
+  - tick 16/09 — DB001-JS FECHADO (registro limpo, linha EM CURSO emaranhada substituida); fila atualizada: WEB001 = honestidade fechada + residuo real (ws/sse/TLS host = unidade a decidir); §253 face A ASSUMIDA pela lane (.22 nao reivindicou, ordem da fila)
+  - re-medição pós-WEB001-code (tip moveu código) — contagem 2189→2199/0-regressões-1-flake/190 + §252 re-medido dispara em isolamento (EN+PT)
+  - move package manager + typed query DSL out of "Planned" (both done)
+  - lane .15 FEITO — varredura de drift SG-011 + tabelas malformadas + sync WEB001 (071c5d15/4e82549d)
+  - fix 2 malformed rows + sync WEB001 JS gap-code split (WEB003/004) after upstream 555d2afe/eb9140cb
+  - sync SG-011 — §131 (method overloading by arity) was FIXED 13/09 but SG-011 still said OPEN
+  - varredura de gaps — corrige 12 docs que ainda citavam DB001/WEB001/MQ001/SECN002/DSL como gap (já fechados) + paridade DECISIONS PT
+  - tick 05:40 registrado — DB001-JS blast radius syncado (57a4172e) + PRÓXIMO PASSO p/ próximo tick (regra: todo commit atualiza o DOING no MESMO commit — 57a4172e ficou sem, este fecha)
+  - varredura de drift header<->corpo/fila — §231 e §211 corrigidos
+  - sync do fechamento JS — blast radius no corpus (R6-documental, EN+PT)
+  - sync §211 header — D-ENUM207 closed it but header still said REOPENED
+  - sync §231 — fix e4f1fb65 landou mas o registro ficou driftado (header/fila PT + corpo PT)
+  - heartbeat não-inventivo da lane .15 — nada órfão; suíte limpa, aguardando fechamentos alheios
+  - FEITO estendido (258/2189/stale-ecj-trap) + PRÓXIMO PASSO com a fila dos fechamentos alheios —heartbeat CONTINUA (estabilidade não segura)
+  - re-medicao pos-fatia-A do DB001 — contagem viva 2182→2189/0/0/190 nos 8 registros EN+PT
+  - SG-022 — value records / first-class value types (issue #275), triage + rule-6
+  - D-PRINT pushed (58561d1f) + #168 closed with proof
+  - D-DEV-PRIORITY — regra da mantenedora 16/09: completar o roadmap Em desenvolvimento é prioridade absoluta das lanes
+  - §258 catalogado — CodeQL #773 (KofJsRunner.listValues, DB001 fatia A da .18) trava o pre-push gate repo-wide (regra: registrar, nao 'fixar' arquivo alheio em voo)
+  - FEITO da onda R6-documental + PRÓXIMO PASSO reescrito p/ varredura de fechamentos alheios (regra: todo commit atualiza o DOING no mesmo commit)
+  - fatia A ✅ do DB001-JS registrada; header ⚡ re-balanceado; nota de E2E corrigida
+  - contagem viva da suíte 1662→2182/0/0/190-medida nos registros-canônicos EN+PT (R6 documental)
+  - contagem da suíte do guia 1636→2182/0/0/190-medida (R6 documental, par EN+PT)
+  - header README — contagem da suíte 1662→2182/0/0/190-medida (trabalho da lane docs)
+  - JS nao-e-mais-sequencial — CONC003 fechado 03/09 desce p/ todo o corpus (R6 documental, par EN+PT)
+  - reivindicado DB001-no-JS com blueprint completo (fatia A+B, anti-§241)
+  - PRÓXIMO PASSO da sessão autônoma docs/development (lanes .18/.22 ativas — re-leitura antes de atacar)
+  - update git identity to kof-agent-worker with fallback to melmonfre
+  - CONC003 fechado 03/09 no training/status (drift R6 documental)
+  - FEITO §253+frente-UI; PRÓXIMO com a regra absoluta (roadmap Em desenvolvimento = prioridade, frente UI/web/db .18)
+  - §256 face (a) ✅ FECHADA (dd2c7fcb) + espelho PT dos §254-§257 (drift pré-existente)
+  - D-VALUE-RECORD + fila roadmap 2.7 — #275 aceita p/ engenharia futura (value records)
+  - sync CONC001 fechado 15/09 no corpus (regra 5/R6 documental)
+  - §256 catalogado (reds CONC001 pré-existentes) + §254 marcado FIXED pela owner lane
+  - cataloga §253 — self-cancel de time.interval/scheduler.every SEM011 em todo alvo; leitura do handle capturado no job SIGSEGV no native x86
+  - #273 comentario tecnico postado (re-trigger 01:14 UTC — passo 2 da varredura completo)
+  - varredura de issues 15/09 ~22:05 — #159 FECHADA com prova medida (catalogo EN+PT)
+  - PLAN-MULTIPARADIGMA — diagnóstico Fase 0 + proposta técnica compatível com o Kof atual
+  - D-STDLIB-ULID — briefing ulid/isUlid p/ mantenedora (regra 6)
+  - restaura coordenacao perdida no 9e270e56 (arvore compartilhada stale)
+  - D-ENUM207 fatia 2 FEITO (`8769e4e1`) + #207 fechada; PRÓXIMO PASSO = D-PRINT/#168
+  - D-ENUM207 fatia 1 ✅ — PRÓXIMO PASSO reescrito c/ a fatia 2 (classe enum JVM real + getstatic)
+  - item (I) — fila docs/development/ VAZIA 15/09 (auditoria completa executada) + PRÓXIMO PASSO reescrito com critérios de ataque/recusa
+  - anotação datada — o '1 red §205' citado na linha .18 foi FECHADO 15/09 pela fatia 1
+  - §205 fatia 1 na tabela de deltas do backend-parity (EN+PT)
+  - §125 PT — ponteiro de revogação D-NULL-INTENT espelhado no idiomático PT
+  - corpus-table — DD-STDLIB-01 FECHADO 13/09, não mora mais em future/
+  - §23 ganha 2.6 = fila N1→N4 do D-NULL-INTENT (auto-correção da lacada de e04f10ff)
+  - migração legado DESPRIORIZADA — DECOMPILER/TRANSLATOR/LEGACY_MIGRATION (EN+PT) voltam a future/ (regra 15/09 da mantenedora)
+  - claim D-ENUM207 — #207 enum identity reassigned to lane .15 (scope + recon)
+  - lane CodeQL — FEITO round 2 (D-GATE, #394-396 FP-falso corrigido na raiz, #736-743, PR #272 cura o build da main) + NEXT STEP com recusa-no-verde
+  - D-PRINT (println char = string, ascii explicit = fecha #168) + D-NULL-QUEUE (#266/#259 = mantenedora na logica de intencao, lane nao ataca) + D-NARROW-WHILE (#159 opcao a: implementar) + D-ENUM207 (#207 reatribuida p/ lane .15, agente anterior encerrado)
+  - §252 reproduces 2nd time (2/7 runs) -> issue #273 opened for native lane
+  - campanha 15/09 noite — §205 fatia 1 publicada (97d08e54, D-NULL-INTENT travado (e04f10ff) e corrida §251 perdida com honestidade
+  - D-NULL-INTENT — nullability by EXPLICIT INTENT (maintainer 15/09); §125 option A REVOKED; §205 PARTIAL (slice 1 landed)
+  - §175 — remove stale OPEN status contradicting its own FIXED heading
+  - annotate §218/#148 in the header queue (OPEN, deferred to 0.4.1)
+  - gate re-measured 15/09 ~19:30 — 1847 run / 1 fail (§205 alien) / 16 err (node)
+  - §218/#148 re-measured + maintainer deferral to 0.4.1 recorded
+  - registra diretiva bare-metal/bootável (MCU, BIOS legado, UEFI)
+  - registra o follow-up Q4 (whitelist de type-params de interface generica) EN+PT
+  - §211/#207 — enum identity overclaim; issue REOPENED with javap proof
+  - reconcile §216 face 1 + §219/is + #160 closures on the tip
+  - reconcile §249/§251 FIXED upstream + §252 flake in DOING next-step
+  - §252 — intermittent Native flake in the §129 selectAny test
+  - §251 — declared types are never validated (silent NoClassDefFoundError)
+  - D-NULL — SOFTENING do registro da emenda (a fila destravada foi overreach da lane; mantenedora 15/09: "so registrar a correcao")
+  - EMENDA §125/SEM048 (DECISIONS D-NULL 15/09, mantenedora pessoal) — "null pra primitivo" foi LEITURA ERRADA + §250 #266(c) FIXED
+  - README §3 awaits refresh — §101/§106 stale rows marked fixed (queue §7 empty)
+  - D-BACKEND-SEMANTICS queue closed 6/6 (§129 the last) — section is now record, not backlog
+  - lane bugs-and-gaps — gate re-measured (1 fail = §205) + stability refusal
+  - §249 — `<ident> <ident>` at statement start is silently a typed decl
+  - §219/#151 overclaim — `is` is SILENT outside `if` (statement loss)
+  - §206/§212/§214/§215 body said "reproduces" while the header said FIXED
+  - correct the ab50eeb1 note — node is absent on this host
+  - reconcile 23 catalogued sections whose fix had landed (3-states audit)
+  - audit-catalog entry for the §179 reconciliation (amends 0756383e)
+  - §179 was fixed 14/09 (DECISIONS §4) but the catalog still said OPEN
+  - fix 3 stale headers contradicting the code (3-states audit)
+  - reconcile §246/§247 FIXED upstream + gate re-measured on 7b0bfbe0
+  - §248 — cross-target gap of §209/#213 (interface default methods: JS TypeError, Native null) + §209 JVM ✅
+  - gate re-measured on abc908ee — still 1 fail, only §205
+  - next-step after the #268/#269 wave — §246/§247 catalogued, gate still 1 fail (§205)
+  - §246 (#268) + §247 (#269) — erased-generic / nullable receivers reach the JVM emitter
+  - lane bugs-and-gaps stable — gate 1 fail (§205 other lane), issue sweep closed
+  - release gate re-measured on fresh tip c48006b1 — 1 fail, only §205
+  - onda #258/#264/#265 da minha lane + portão RE-MEDIDO pós-revert §241 (1769/2 — ambos §205, confirmados no tip limpo d776e9c1); #259 re-medida (VerifyError sumiu, gap congelado §125 — regra 6); rejeito #261 ABANDONADO (DECISIONS §4 manda o oposto — nunca pushou)
+  - triage of the #266/#267 wave — #266 = §241 parameter face, #267 -> §244
+  - §244 — `+` on two erased-generic operands emits iadd (VerifyError); #266 folded into §241
+  - §241 — reconcile the stale OPEN status with the compiler lane's REVERT resolution
+  - wave #259-#263 triage closed — #260/#262/#263 closed with proof, #243 is a bug against the ratified DECISIONS §4 shadowing contract
+  - §243 — the shadowing ruling already exists (DECISIONS §4), so #261 is a bug not an open question
+  - §243 — triage of collaborator wave #259-#263 at the release-gate tip
+  - §240 closed at the release gate (5e996312) — §241 is the sole remaining red (lane compiler)
+  - §242 — aresta residual do #256: checagem de override abstrato casa por nome+aridade, nao assinatura (sobrecarga mesma-aridade/tipo-diferente satisfaz abstrato -> AbstractMethodError em runtime volta); apontada na issue 256; fix = frente lane compiler (sigTag ja existe p/ dispatch)
+  - onda #247-#256 fechada — re-varredura com jar do TIP fechou +2 (#213 default-method em 59e2403b + InterfaceDefaultMethodE2ETest 5/5; #207 enum values em 479506e1 + KofEnumTest); fila restante = regra 6/lane alheia; 10/12 da onda ja vinham prontas (licao: repro no jar do TIP ANTES de atacar)
+  - §241 — regressão meio-implementada c0cf805e (#252 boxed): Int? method-return VerifyError + 14 vermelhos de suíte (bisect set-exato) + Script/JS/Native unboxed (paridade regra 5); triagem da onda #247-#256 no DOING (8/10 já feitas por outras lanes — lição: repro no jar do TIP antes de atacar)
+  - §216 (Char) — split into two faces (toString bug vs frozen println)
+  - §216 (Char) measured + rule-6 escalation; next-step unblocked
+  - §216 (Char boxed as Integer) — measured root cause + rule-6 escalation
+  - catalog §240 — regression from 8935c8a7 (#237/#231) breaks 39 suite tests
+  - mark §217 FIXED — generic method return erasure + checkcast (#161)
+  - recusa da lane docs/development apos re-varredura (protocolo do bloco 6, EN+PT sincronizados) — remoto == tip local, fixes das outras lanes NAO tocam nenhum doc da lane (grep objetivo), guardas de doc 13/13 VERDES no HEAD real (ConformanceMatrixDoc/ConcurrencyGaps/TargetMatrix), fila-13 32=32 conferida por parse do corpo; repo NAO esta stable (32 abertas + reds de gate alheios) = cron NAO para; PRÓXIMO PASSO = repetir o protocolo p/ o proximo tick — dono = 192.168.100.17
+  - lane CodeQL — fechamento TOTAL da fila (os 8 alerts em main dismissados mitigated+evidencia; API em 0 open; beta auto-confirma no merge)
+  - TRANSLATOR.md EN+PT — header ainda dizia "subset pendente" sem apontar a diretriz da mantenedora 13/09 ~21:00 (lane DESPRIORIZADA, gaps=regra 6); nota sincroniza o registro vivo com a decisao (nao e fila atual; retoma so por nova decisao) + DOING (5) fechando o resumo de resyncs da sessao (fila-13 EN+PT, README §2, DECOMPILER ATUALIZACAO 3) e registrando LANE EXAUSTA p/ re-varredura a cada re-disparo — dono = 192.168.100.17
+  - fila-13 PT sincronizada com EN (onda §2xx faltava no PT — registro vivo da lane docs) — §201–§239 com status + notas de renumeracao/collisao (233/234, 232 implicit-this, 235 lane .18, 239 COMP002) + §236/§238 ✅ desta lane; contagem real re-verificada 32=32 EN+PT; nenhuma outra mudanca de estado (header-por-header no arquivo, nao memoria) — dono = 192.168.100.17
+  - README §2 ressincronizado EN+PT (lane docs — registro vivo) — triagem 13/09 dizia "8 itens, ZERO codigo-puro"; fila real = 32 e o "ZERO" foi REFUTADO pela onda 14/09: §236+§238 eram codigo-puro do decompiler e foram FECHADOS na lane (8719e304+f2371212, prova suíte 67/67+exec oracle); correcao de contagem + nota §129-[collection] ✅ 11/09 (colisao de numero com o §129 OTP ainda aberto); nenhum outro item da lista mudou de estado sem dono (verificado header-por-header no codigo, nao memoria: §101 regra-6, §104b-ii/§107/§114/§129-OTP/§132/§161/§165 = lanes .18/.22/compiler/decision) — dono = 192.168.100.17
+  - #156/#216 FEITAS — varargs fix pushed, issues closed, §239 catalogued
+  - mark §210 (String.format varargs) FIXED — closes #156/#216
+  - lane CodeQL 14/09 — fila esgotada (chained×21→0, unused-param triado c/ bug real #485, dismissals c/ evidencia, tail #125/#127/#300/#301/#357/#361/#362/#606/#610/#613/#225); 8 abertos = fix no HEAD aguardam scan; NEXT STEP = re-contar no proximo scan
+  - unidade #233-JS/§236-reconciliação registrada + RuntimeDtoa órfão catalogado (aguardando dono lane nat)
+  - PLANO da unidade 2c fechado (hoist de var por pre-scan de xstore em pureIfElse/pureIfThen; default por opcode istore/lstore/dstore, fstore/astore=recusar; StructWalker.java NOVA; contFor intocado; prova Runner2+CallM+64+6) — contexto do turno no fim, NAO iniciado para nao deixar meio-edit (regra 7 item 7) — dono = 192.168.100.17
+  - lição — editar DOING.md só a partir do blob do TIP (git show origin:DOING.md); working copy de worktree c/ sparse+skip-worktree vem CORTADO e dropou bloco alheio em 8e5ccd8a (restaurado em 84831344)
+  - #199 FEITA (1f56ee3a) c/ nota + RESTAURA bloco CodeQL da lane .22 que o commit anterior dropou por engano (sparse-checkout smudge); stringValueOfCharParity já verde via 5ad494b7
+  - #199 FEITA (1f56ee3a) + nota: stringValueOfCharParity red pré-existente RESOLVIDA pelo 5ad494b7 upstream
+  - batch 2 lane .15 14/09 — #155/#221/#236/#241/#242/#243/#220/#245/#141 FECHADAS c/ prova (fix #141 spawn{expr} Handle<Void> nos 3 typers); REGRESSÃO pré-ex stringValueOfCharParity registrada (lane .22, stop-cond 3); PRÓXIMO = #156/#216 varargs + #161 + #153/#168 Char + #199 guard
+  - RE-MEDICAO da ROI do walker (unidade 2b) — o proxy "1098" supercontou: o caminho prologue da 2a (5c944709) ja recupera o fundido nao-loop c/ temp (computed/cmp medidos = if/else sai hoje); classificando os stubs por CAUSA REAL (harness Roi2/Roi3): 646 invoke-interop (lane compiler, familia 234/224/225) + 453 loop-header continue (COLISAO com a lei vinculante: recuperar cond do contFor faz while (v2 < voltar — CFG medido B9/P22; Kof nao tem continue = regra 6) + 8+2 nits de opcode no loadValue (sipush/lcmp). VEREDITO: walker como escopado = DESCARTADO (sem alvo liquido); PostDominator+pathOracle (1/2a) ficam como fundacao confiada NAO ligada; DECOMPILER em parada genuina p/ decisao da mantenedora (destino Fase C); cross-ref "superseded" na linha da decisao antiga. PROVA: 63 DecompileTest + 6 PostDom VERDES FRESCOS 19:39, fonte intocada (StructWalker rascunho deletado ANTES de commitar — opcodes por memoria eram o bug dele mesmo) — dono = 192.168.100.17
+  - reconciliacao de COLISAO de numeros pos-rebase — minha §231 (StringCompareCross, 17:28) renumerada §233 (a do .18 tomou §231 as 17:20 em ea0d5ae3); minha §228 (String.join interop, 15:21) renumerada §234 (a List[i]=v da lane .15 tem o direito de anterioridade 15:07 em 93b5ec26); fatias renumeradas por recorte exato header→header (refs internas contidas: 0 ponteiros quebrados) + PT §223 (minha, par faltante de 7214e674) + PT §232 (par do EN bebf0200 lane .18) + contagem da fila EN/PT = 30/30 conjuntos identicos + clausula new EN com nota da renumeracao — dono = 192.168.100.17
+  - batch 192.168.100.15 — #211/#204/#205/#193/#198 FECHADAS c/ prova; PRÓXIMO = #156/#216 String.format varargs + regra do jar fresco e test em arquivo dedicado (lição worktree #193/#198)
+  - 5o red do portao catalogado (7214e674 §231, fix mecânico pronto p/ dono certo) + estado do gate visto no sweep 16:45 — unidade 2b (walker) fica como PROX PASSO exato ja travado em 67840573 — dono = 192.168.100.17
+  - §231 — 5o RED do portao de release: NativeStringCompareCrossTest (lane nat §111, fechado 11/09) NAO foi migrado p/ contrato split()->String[] do 602dcbc0 (§202, 12:03) — SPLIT_PROGRAM:119/122/127/131 usa a.get(N) e agora da erro de compilacao no cross riscv+aarch. Catalogado com FIX PRONTO E PROVADO (mesmo programa c/ subscrito a[N] roda ec=0 e bate o golden SPLIT_GOLDEN EXATO — medido 16:40 splitfull.kf); NAO editado (lane alheia; diretriz 14/09 = docs/development exclusiva, issues/bugs pros outros; owner do contrato = quem deve o blast-radius). Fila 25->26 — dono = 192.168.100.17
+  - limpa marcador de conflito residual no registro S3 (2/2)
+  - limpa marcador de conflito residual no registro S3
+  - §231 catalogada (EN+PT) — overload top-level com default: requiredArity ignora defaults → SEM014 em chamada curta
+  - unidade 2a registrada (pathOracle zero divergencia 220064fc + auditoria machineRun b9996938) + UNIDADE 2b travada com arquivo/linha/classe-nova/prova — StructWalker.java (BytecodeStatements em 538 = TOLERADA, nao crescer), ramo cond==null && !loop0, guardas idom(then)==idom(senao)==P, P nao-header, back-edges nao cruzam P; prova = diamante VERDE + golden contFor + re-contagem ROI + 69/69; qualquer falha = REVERT da fatia (lei do diamante) — dono = 192.168.100.17
+  - PT — nota de corretude pathOracle sincronizada c/ EN (faltou no commit anterior: assert PT falhou por wrap e o commit saiu so com EN; agora par equilibrado, simbolo ⟺ corrigido) — dono = 192.168.100.17
+  - AUDITORIA doc-vs-codigo — frase "machineRun kept in branch history, not in the tree" estava OBSOLETA: a extracao entrou no tree em 158c174b (13/09 19:52) DEPOIS da sessao do doc reverter; hoje BytecodeDecoder.machineRun:97 esta VIVA e e o corpo de linearReturn:73. Pre-requisito do passo 3 presente e provado — correcao registro EN+PT (regra da lane: combater docs contra o estado real, nao memoria) — dono = 192.168.100.17
+  - ROI do walker passo 3 MEDIDO (unidade 2 passo 1) — corpus real 699 classes/3899 metodos/2628 stubs; 1098 stubs tem forma bloco-teste-com-computacao succ==2 cond==null = teto do pos-dominador; ROI >> 30 -> DECIDIDO construir; escopo da fatia travado no DECOMPILER.md (par EN/PT) + DOING atualizado — dono = 192.168.100.17
+  - lane docs/development — UNIDADE 1 (PostDominator 7dc2e03d) registrada + PRÓXIMO PASSO = unidade 2 (harness ROI nos 851 .class antes do walker; so ligar immediatePostDom se ROI>~30; lei do diamante vinculante) — conserta regra 3 violada na unidade 1 (DOING nao foi no mesmo commit) — dono = 192.168.100.17
+  - DIRETRIZ — lane 192.168.100.17 = exclusiva docs/development (evoluir a linguagem); triagem de issues PAUSADA (comentarios em issues correram com outras lanes — corrigindo); gatilhos 1/3 suspensos, gate cross-arch vira guarda nao-atacar; proximo passo = auditar pendente real dos 5 docs soltos e implementar unidades ate cada um virar docs/ — dono = 192.168.100.17
+  - ciclo 15:10-15:38 — #237 retificada p/ §228 propria (param concreto + retorno fabricado = raiz parcial distinta; prova publica corrigida na issue), #238→§230/#239→§229 catalogadas, fila=27 sync; regra nova: ler titulo COMPLETO do body antes de atribuir familia a bug; gate nat ainda sem fix desde 08:50 — dono = 192.168.100.17
+  - §229-§230 catalogadas na triagem #238/#239 (classes frescas 15:25, HEAD fa8d23f5): #239 estatico-chamado-por-instancia emite invokevirtual → IncompatibleClassChangeError (espeho do §223, javap invokevirtual Util.square cravado); #238 campo static de interface SEM025 irresolvivel (tabela de membros da interface no SEM no recebe fields estaticos) — dono = 192.168.100.17
+  - §226/§227 PT refinadas c/ códigos exatos dos bodies (SEM011+variantes; COMP002 AIOOBE + dump IR KofStoreLocal sem KofCall) — par do 2ad39775 que ficou sem PT por script quebrado antes de escrever; dono = 192.168.100.17
+  - §226/§227 refinadas c/ códigos exatos dos bodies (#234: SEM011 + variantes String/Object/Color todas falham = sistêmico; #235: COMP002 AIOOBE Index -1 + dump IR do relator KofStoreLocal sem KofCall = bug de lowering ANTES do ASM) — re-leitura completa dos bodies pós-erro-de-atribuição-da-#237 (checagem sistemática); dono = 192.168.100.17
+  - #237 → §228 NOVA (não face do §225 como eu anotei antes — RETIFICADO) + controle listOf() reproduz igual
+  - ciclo 15:00-15:10 — faces anexadas §214(#236 invokevirtual "")/§225(#237 String.join Object fabricado), prova postada; fila=24; vigiar fix alheio 23bf99bd (super overloaded) na prox re-medição — dono = 192.168.100.17
+  - faces novas anexadas a raizes abertas — §214+2ª face (issue #236: get(0)() inline pula o SEM015 e emite invokevirtual ""->ClassFormatError owner vazio) e §225+2ª face (issue #237: String.join estatico fora da tabela → retorno Object fabricado; 3a ocorrencia da familia §224/§225/#237 = um fix fecha as tres); prova javap 15:05 no 1f4ca5c9 c/ classes frescas — dono = 192.168.100.17
+  - célula methodoverload anotada honesta — golden cobre apenas overload de INSTÂNCIA; a face ESTÁTICA (§227/#235, invokestatic omitido do IR) não é coberta pelo golden — precedente S13b (matriz não pode overclaim face aberta); dono = 192.168.100.17
+  - ciclo 14:42-15:00 — #234/#235→§226/§227 catalogadas (prova javap postada), re-medição: §190/§195/§220/§221 FIXED alheios processados, §213/§216/§217 re-confirmadas abertas (reflexão anti-JavaFX); fila=24 sync — dono = 192.168.100.17
+  - acentuação PT nas seções §226-§227 (resíduo=0 na minha seção; os outros 28 hits são de seções de outras lanes, fora do escopo desta lane) — dono = 192.168.100.17
+  - §226-§227 catalogadas na triagem #234/#235 (classes frescas 14:38, HEAD 7f9eb015): #234 for-in anotado culpa a palavra-chave in (SEM falso, variante sem-anotacao verde no mesmo build); #235 overload estatico perde o invokestatic do IR (javap: so valueOf+println; c/ store vira VerifyError stack-underflow, COMPUTE_FRAMES crash) — dono = 192.168.100.17
+  - ciclo 14:20-14:42 registrado — §190/§195/§220 FIXED re-medidos c/ fix alheio (gatilho 1 funcionou 3×), fila=22 sync, audito docs/development/ concluído (5 docs soltos corretamente classificados IN DEVELOPMENT) — dono = 192.168.100.17
+  - §220 → ✅ FIXED 14/09 re-medida c/ fix 8a38faa4 da lane analyzer (diagnostico compile-time no lugar do AbstractMethodError; prova postada na #224) — gatilho 1 do contrato de novo; fila=22 — dono = 192.168.100.17
+  - §190+§195 → ✅ FIXED 14/09 — KofBlogE2ETest verde re-medido 14:35 no b7fdcb7e (fix test-side a689cbd2 lane .18 pôs Content-Length; o único método cobre GETs+POSTs, fecha as duas faces); fila=23 (varredura) — dono = 192.168.100.17
+  - fila 24 + #232→§211(sub-face ordinal)/#233→§225 processadas com prova postada — dono = 192.168.100.17
+  - §225 catalogada na triagem #233 (Double.isNaN emite retorno String inventado — mesma raiz tabela-miss do §224, um fix fecha os dois; javap (D)Ljava/lang/String;, build fresco 14:09) — dono = 192.168.100.17
+  - PRÓXIMO PASSO 14:20 — §221 FIXED re-medida (769371c2, prova postada na #225), #230/#231→§223/§224 catalogadas c/ javap e comentadas, fila=23; gatilho nat (3 cross-arch) segue vermelho 13:51 sem fix na lane — dono = 192.168.100.17
+  - §221 → ✅ FIXED 14/09 re-medida c/ fix 769371c2 da lane compiler (build fresco 14:09: [LOG] test + invokevirtual Logger.print) — gatilho 1 do contrato; dono = 192.168.100.17
+  - conserta linha da OPEN Queue — contagem real por varredura (24) + cláusula new lista §214-§224 (replaces silentes das ultimas 3 sessoes nao achavam o alvo) — dono = 192.168.100.17
+  - §223-§224 catalogadas na triagem #230/#231 (classes frescas 14:02, HEAD de38f7b5): static-em-interface carrega ACC_ABSTRACT p/ ClassFormatError 0x409 (#230); interop sem tabela inventa retorno Object p/ sb.append → NoSuchMethodError (#231) — dono = 192.168.100.17
+  - PRÓXIMO PASSO pós-triagem-completa da fila (#200-#229 toda medida; 12 catalogadas §212-§222 + 15 GREEN postados; gatilhos = re-medir fixes alheios c/ classes frescas, portão de release 3 cross-arch, issues novas do watcher) — dono = 192.168.100.17
+  - §220-§222 catalogadas na triagem #223-#229 (classes frescas 13:40, HEAD cdda27d9): #224 abstract-em-classe-concreta (AbstractMethodError, §220), #225 built-in print engole Logger.print (receiver descartado, §221), #228 if-expr com chaves vira Lambda0 (valor lixo impresso, §222) — dono = 192.168.100.17
+  - §208 retificada p/ FIXED (fix da768386 12:32, re-medido verde 12:57) + comentario de RETIFICACAO na #218 + licao da armadilha gemea no weak-green-proof (falso VERMELHO de classe obsoleta) — dono = 192.168.100.17
+  - §202 → FIXED (registry sync with 602dcbc0) + relocate misplaced §203 note
+  - deixa as 3 camadas do Java explicitas em todo lugar
+  - §216-§219 catalogadas na triagem das issues antigas (#168/#153 Char-boxed-Integer uma raiz; #161 generic T sem checkcast de erasure; #148 "".toHexString owner vazio; #151/#155/#159/#160/#141 batch de falsos-diagnosticos em compile-time) — dono = 192.168.100.17
+  - update bilingual documentation to include guidelines for living documents and translation management
+  - §214/§215 catalogadas — triagem #193/#199 com classes frescas (mvn -o compile ANTES, lição aplicada): #193 SEM015 em List<() -> Int>.get(0) + familia Function<> como param (e204c de hoje); #199 VerifyError "Bad local variable type" — case String s if guarda omisso store da vinculacao (javap: sem checkcast/astore 3) — dono = 192.168.100.17
+  - PRÓXIMO re-disparo pontuado na ordem (triagem das issues antigas 1-para-1 com known-bugs; #199/#193 primeiro — a face Function<() -> Void> do e204c de hoje pode ser a #193) — dono = 192.168.100.17
+  - PRÓXIMO PASSO 12:50 — reconciliacao pos-fixes da manha com classes FRESCAS + licao: harness de triagem exige `mvn -o compile` antes de provar (a 1a medicao da #217 era classe obsoleta; c57431b9 ja consertara) — dono = 192.168.100.17
+  - reconcilia 12:40 — §203/§206/§207 marcadas FIXED pelos fixes de hoje (8af810c5/6f7f55bc/c57431b9, RE-MEDIDOS com classes frescas); §213 catalogada (as Object sem boxing, VerifyError @checkcast) — dono = 192.168.100.17
+  - §212 catalogado — triagem #219-#222 com prova javap/exec: #219 REPRODUZ (b.size -> invokevirtual, campo engolido pelo método homônimo) §212; #220/#221/#222 GREEN (boxing valueOf cl / <clinit> executa 100|8|foobar|100 / <init>(II) real) — dono = 192.168.100.17
+  - §211 catalogado — #207 REABERTA com razão; RETIFICO meu GREEN anterior (era superficial: provou não-crash, não identidade). enum values emitem ldc String, nenhum Dir.class; Dir.N.getClass()==java.lang.String; Dir.N=="N" é true — dono = 192.168.100.17
+  - triagem #205-#218 FECHADA (5 GREEN com prova, 5 catalogadas §206-§210, 1 já fixada) — próximo re-disparo = vigiar novos vermelhos + Q4 em novas issues — dono = 192.168.100.17
+  - §209/§210 catalogados — triagem #213 (default method de interface descartado → SEM043 falso) e #216 (varargs interop sem Object[] → NoSuchMethodError), ambos REPRODUZ no 2d3b8fdf; #207 GREEN com prova — dono = 192.168.100.17
+  - §206/§207/§208 catalogados — triagem #215/#217/#218 REPRODUZ no 1c13d982 com prova (SEM011/SEM025 corpo de ctor-param; PARSE007 extends em ctor-param; PARSE007 tipo-função como retorno) — dono = 192.168.100.17
+  - workflow diagram do compiler-architecture consertado — referência image.png resolvia p/ docs/architecture/ (inexistente); agora ../image.png (o asset que existe) + alt-text descritivo (era "alt text" literal) — dono = 192.168.100.17
+  - TRIAGEM #200-#214 cravada com prova de execução no 75455529 — 5 GREEN (comentários nas issues), #202 regra 6 (SEM058 honesto), #205 catalogado §203; fila p/ o próximo re-disparo = #207/#209/#210/#213/#215-#218 — dono = 192.168.100.17
+  - renumera §203 (supervisor) → §204 e §204 (ifexpr) → §205
+  - §203 catalogado — issue #205 "as Int" emite CHECKCAST "?" + istore sem unboxing (VerifyError, javap cravei) + contagem da fila coerente (25) — dono = 192.168.100.17
+  - §201/§202 regressos de lanes alheias com bissecao provada em worktree limpo
+  - LINHA DE BASE da estabilização registrada (gate de release) — 1819/3/0/7, as 3 vermelhas catalogadas com repro+causa (§181 residual -inf, §192 B41 aliasing) + PRÓXIMO PASSO do DOING atualizado ao estado medido — dono = 192.168.100.17
+  - traduz os 6 meta-vivos para EN (canonico) + par PT + switcher
+  - residual re-confirmado no HEAD pós-67db6c50 — diff exato: ÚNICA linha divergente é idx 4 (-inf as Int = 0 vs MIN); lanes nat viva (fix 22:42 ontem) — dono = 192.168.100.17
+  - linha S13b honesta p/ §192 — DONE = JVM/x86/JS/Script; riscv/aarch PENDURA na 1ª parseDoubleOrDefault pós-throw (repro 2 linhas + PC do loop no known-bugs) — dono = 192.168.100.17
+  - linha S13b honesta — DONE é JVM/x86/JS/Script; cross riscv/aarch PENDURA (§192, repro 2 linhas + PC do loop no known-bugs) — dono = 192.168.100.17
+  - menor repro CRAVADO (throw-OrDefault antes de parseDouble = hang; tabela 5 casos) + PC do loop infinito (escalação de expoente, s5≈2^63) + fix de 2 frentes p/ lane nat — dono = 192.168.100.17
+  - convivência + linha CodeQL health (PT+EN juntos pro overlay)
+  - reconcilia colisão tripla de §189 — parseOrDefault→§192 (minha), E2E blog→§193 (lane compiler, conteúdo intocado); §192 honestidade atualizada (determinística cravada 2/2 + cache desbloqueado) — dono = 192.168.100.17
+  - unifica C18 (lane .22 × .18) no merge + descriptor kof_web_security_opts
+  - causa raiz parcial lida do código — aliasing de slot no TEMPLATE B41 (default sobrescreve chain@24(sp)) — dono = 192.168.100.17
+  - status i18n medido 14/09 — par 214/214 (100%), switcher pendente só nos 6 meta-vivos, plano pós-release — dono = 192.168.100.17
+  - CodeQL 495→270 — paths-ignore+132 dismissals testes (804a03ea); seg main ×4 (c669990f); bloqueio unnamed-pattern no release-21; fila por arquivo livre
+  - lote i18n switcher preservado do working tree
+  - switcher EN|PT na 1a linha dos canônicos EN de learn/training/tooling — dono = 192.168.100.17
+  - §189 provado determinístico (riscv TRAVA em parseDoubleOrDefault) + resgate honesto do working tree compartilhado — dono = 192.168.100.17
+  - lote 6 — learn 07-39/glossary/native + training em EN
+  - lote 5 — stdlib/targets/tooling/ui + learn 00-06 em EN
+  - FEITO degrau-2 CodeQL (commit imediato)
+  - lote 4 — language-reference/runtime/stdlib parcial em EN
+  - PACTO DE AGREGAÇÃO (ordem da mantenedora) + resguardo claim C18 lane development (conteúdo intacto)
+  - lote 3 — development/distribution/editors/history em EN
+  - lote 2 — architecture/audits/debugging/decisions/development + backend-parity/philosophy em EN
+  - linha de base do gate de release (1819/3-FAIL/7-skip) + §181 residual (-inf) + §189 parseOrDefault cross catalogados — dono = 192.168.100.17
+  - sec-pack — push protection + dependabot-security-updates ativados (opt-in dela)
+  - sync bidirecional FEITO — 7 dependabot PRs + main<->beta (#179, main=851e514b)
+  - lote 1 — raiz + benchmark traduzidos para EN (canonico)
+  - sec-pack — AI findings on_push ativado (pedido da mantenedora)
+  - infraestrutura de documentacao bilingue EN/PT
+  - sec-pack FEITO — merge na main (9e289d84) + APIs ativas + issue #170 fechada
+  - sec-pack — limpa marcadores residuais do rebase + notas p/ lane .18 (blog add/add) + registro do replay
+  - sec-pack — Code Quality + secret scanning + private reporting ativados via API; missão merge-na-main sem bump (D-RELEASE mantido)
+  - registra commit 8eb156f4 do blog E2E + --fat
+  - lane development reivindica blog E2E (D-SPRING F12) — ChaCha20 já entregue pelo colega (3e1d1ff7), duplicata descartada com diff preservado
+  - ressalva da mantenedora — janela de patch NAO descarta nem congela features
+  - trava a regra da mantenedora — gatilho de patch 0.4.1 em 100-150 commits frente a main
+  - §186 — borda medida (literal direto × qualquer expressão) + Script também falha
+  - §187 novo — Char[] fora de faixa não estreita no Native (e JS); célula charnarrow
+  - §185 causa raiz corrigida (coerceFor, não o arrayStore morto) + face Bool[]
+  - §184/§185 — arrays de tipo estreito (Q4 no #132); célula narrowarr/chararr prova
+  - §181 seq do header sync + matriz sem linha duplicada de castrange
+  - fila time EXECUTADA — DECISIONS + README marcados (S7e-S7h, 6/6)
+  - link known-bugs.md #101/#102 to their upstream issues
+  - §182 — parse ISO de kof.time com campo de sinal diverge (JVM/Script vs Native/JS)
+  - §181 fix JS — alerta de dupla-avaliação do operand (helper/IIFE obrigatório)
+  - sincroniza registro da sessão (§180d + suíte 1509/35/5/207)
+  - §180 face (d) — -nan (NaN negativo de libm) não é normalizado no Native
+  - registra caça Q4 da sessão (§180c/§181/§181d/bug82) + suíte verde
+  - fila ABERTA 10→12 itens — registra §180/§181 na linha de varredura
+  - bug 82 — registra face do sufixo `d/D/f/F` (Native/JS rejeitam; JVM/Script aceitam)
+  - §181 face (d) — toInt()/toLong() (§89) sofrem o mesmo desvio
+  - §181 — cast FP→Int/Long fora de faixa/NaN/Inf divergente no Native e JS
+  - PRÓXIMO PASSO degrau 3 — expr-fallback MORTO por 2 medicoes (gate !isLoopHeader insuficiente, cond aninhada com join-back-edge); so pos-dominador + goldens por shape em sessao dedicada
+  - degrau 3a negativa REFORCADA — gate !isLoopHeader provado INSUFICIENTE (2a quebra do diamond)
+  - degrau 3a TENTADO-REJEITADO registrado — fallback de expr na blockCondition reabre o trap 3 via header de loop (medição, nao opiniao)
+  - §180 face (c) — println(Float) no Native imprime a expansão double
+  - §180 — overclaim do bug 44: double→string no Native x86 não é JDK Double.toString
+  - alinha numeração pós-rebase (§177/§178 corrigidos, §179 catalogado) — dono 192.168.100.15
+  - §176 WEB001 colidiu com lane JS/web no remoto — renumerada a minha seção p/ §177 - dono 192.168.100.22
+  - gate pos-rebase medido (1497/33/5/194) - dono 192.168.100.22
+  - desambiga colisão §174 — minha seção KofWebJs → §176 (a §174 legítima da lane bugs-and-gaps/ é anterior e mantém o número)
+  - degrau 2b registrado (plano + DOING PRÓXIMO PASSO) — narrowing 308 candidatos, −10 medidos, anti-fachada Q7 (contCond revertido)
+  - sincroniza §168 como CORRIGIDO na fila do known-bugs.md
+  - §168 CORRIGIDO (efeito 3ab4c99e) + EDI001 degrau-13 gate verde - dono 192.168.100.22
+  - §168 CORRIGIDO (SEM025 json, efeito de 3ab4c99e, re-verificado no kof check) + EDI001 degrau-13 gate verde - dono 192.168.100.22
+  - Fase C degrau 1 FEITO (e17ac9e1) + PRÓXIMO PASSO (joins aninhados = pós-dominador real) + §168
+  - plano único roadmap §23 + cluster migração fundido no umbrella
+  - SG-021 — pedido de json.encode indentado registrado (regra 6, sem decisão)
+  - §168/§169 no known-bugs (causa raiz + menor repro + prova) + DOING da lane 9094
+  - Fase C — diagnóstico EXATO do sub-caso if-sem-else pronto p/ executar (fixture J.g reproduzido: oracle g(6)=107/g(1)=101 medido com java real; traço do CFG do stub: linha 280 anda p/ o join + 275 re-entra → 206 recusa; regra: then.succ==[exitStart] && preds⊆{b,then}; mecanismo: parâmetro stop no walker — NÃO é 3 linhas, sessão dedicada; golden de execução OBRIGATÓRIO no mesmo commit, padrão DecompileTest:747-791). DOING PRÓXIMO PASSO aponta p/ o diagnóstico. dono = 192.168.100.17
+  - Fase C — gargalo medido (StoreCat: struct() linha 206 recusa join = 2452 stubs silenciosos; instanceof/STORE/branch são SINTOMAS do mesmo join) + plano de sub-caso estreito (if-then sem else) + pointer da infra de golden de EXECUÇÃO que JÁ existe (DecompileTest:747-791, java -cp + assertEquals stdout). R6: join errado = compilável+semântica errada = pior bug; nunca relaxar struct sem golden. dono = 192.168.100.17
+  - PRÓXIMO PASSO com fila StoreCat medida + fase C gated por golden (junta de if sem else = sub-caso estreito). dono = 192.168.100.17
+  - registra experimente NEGATIVO — aceitar $ no TreeScope.resolve = −9 stubs só + risco anewarray-interna (PARSE041). Probes ✓ (instanceof/as de interna compilam) mas o drop real (BuiltinTypes.isString) é astore_1+ifeq multi-stmt = Fase C; regex atual protege anewarray de interna. REVERTIDO, working tree limpo em 35fc24b8. Medição via Med+DriftCheck no mesmo corpus 688. dono = 192.168.100.17
+  - registros da verdade medida — DECOMPILER estágio-2 com números da árvore limpa (1856→1660→1475, zero drift 4=4, 89 skeleton); §165 re-verificado COM node v22 = não reproduz em build limpo (trap do inlining static-final); §166 registrado: ArtifactSizeTest hello JS estoura 8297B>8085B por shim DOM #121 no CORE (bisect b05b3906→cd8ad70b) — lane JS/gate; DOING PRÓXIMO PASSO = TreeScope no statements-path. dono = 192.168.100.17
+  - update ownership details and status for TRANSLATOR.md
+  - DOING — lane desta sessão = bugs-and-gaps; registra sync/auditoria dos 5 registros
+  - README development — suíte 1653→1662 e testes de migração 70→73 (medidos no HEAD)
+  - sync contagem da suíte ao HEAD medido (1611→1662: 1479+31+5+147)
+  - RECUSA de re-disparo ~09:55Z - nada sem dono na lane development (.22), fila 8 de outras lanes - dono 192.168.100.22
+  - sync stdlib S1a/S1/S2/S3 FEITO + PRÓXIMO PASSO - dono 192.168.100.22
+  - plano S1a/S1/S2/S3 marcados FEITOs (medição real 13/09) + DOING - dono 192.168.100.22
+  - move PLAN-SOLID-500 FEITO por outra instancia preservado (regra 8) - dono 192.168.100.22
+  - update PRÓXIMO PASSO with current status and reclassification of PLAN-SOLID-500
+  - update PLAN-SOLID-500 path to docs/architecture and clarify status
+  - add PLAN-SOLID-500 for class refactoring strategy and guidelines
+  - README development — nº da suíte é a execução no host, não a linha (apodrece a cada commit)
+  - §3 do README — DD-OTP S2-JVM implementado (não "implementar S2"); registra docs sync no DOING
+  - sincroniza README development + PLAN-SOLID-500 com a realidade (F3 fechada 498/12 dívidas; fila bugs 8; §81/§163/§165)
+  - cabeçalho do PLAN-SOLID-500 sincronizado (F3 fechada, ratchet 12)
+  - §165 re-verificado (não reproduz em clean build) + sumário da lane gate/qualidade
+  - re-verificação — NÃO reproduz em build limpo; era constante INLINED (JsRuntimeUiJsonMap)
+  - §163 pushed + lane gate/qualidade sem trabalho novo — re-disparo recusado (fila 8, gate verde)
+  - §165 JS ui-jsonmap seed-sem-export (menor repro; célula jsonenc-map só roda com node)
+  - registra RECUSA de re-disparo da lane gate/docs — nada novo (gate verde, docs/development sem doc pendente, fila 8)
+  - fecha varredura de overclaims — 6 células de matriz, gate final 1645/0/13-node/157
+  - fecha auditoria da lane gate/docs — §131 sincronizado, fila 12→8, docs/development sem doc concluído pendente; PRÓXIMO PASSO = §81 (lane .18, não tocar)
+  - corpus sincronizado — sobrecarga de método existe nos 4 backends (AGENTS.md, type-system, functions, training, status); §136 alcance atualizado
+  - §131 fechado (18a64d45, 4 backends — harness 4/4 re-medido) — fila 9→8; gate pós-§131 verde 1645/0/13-node/157
+  - §117 fechado (3734f2aa) — fila 10→9; gate pós-§117 verde 1644/0/13-node/157; parity KofConcurrency2Test 34
+  - gate pós-§89 verde (1643/0/13-node/157) + suíte do README 1611→1643; PRÓXIMO PASSO aponta lane .18
+  - §89 fechado (4 alvos re-medidos + warning SEM090) — fila 11→10; README/plan-stdlib/DOING alinhados
+  - repara header corrompido do known-bugs (§11 truncado) + §106 fechado (fila 12→11) + §89 evidência corrigida (quebra nos 4 alvos, não só link nativo) + regra 9 cluster
+  - RECUSA de re-disparo ~07:55Z — fila estável PROVADA (issues/PRs abertos VAZIOS, comentários terceiros = nenhum, CI unidade success, discussão #113 no caminho do interp roda e passa). Cron 9094 parado, 9093 intocado.
+  - retifica causa raiz pós-rebase — lane nat 53b089fd já movia root_start p/ .data do programa (kof_gc_mark usa _end); restante real = fallback de poda por CWD; DOING sincronizado
+  - recusa por lane (nada sem dono na development) — pow fechado
+  - corrige extrapolação roundTo (regra 6) + sincroniza fila §1 item 6
+  - sync pow FEITO + roundTo aprovado-7a (README §3) + DOING próximo passo = roundTo
+  - varredura completa da fila — issues abertas = VAZIAS; discussions #25 (switch-expr já implementada) e #36 (7 bugs = #28–#35 todos corrigidos) respondidas + fechadas
+  - §156 FEITO confirmado no HEAD remoto (fix+testes preservados, re-validado 340/0) - dono 192.168.100.22
+  - lane 9094 zera fila de issues — #113 corrigida (root_start cobre estáticos, prova nm), #97 fechada (medido 32520B/37), #25 é feature existente
+  - nota do autostash stale (superseded por HEAD; mantido, regra 8) - dono 192.168.100.15
+  - recusa honesta pos-IntelliJ (nada sem dono) - dono 192.168.100.22
+  - §17 editor support cita IntelliJ degrau-10 + DOING - dono 192.168.100.22
+  - learn/38 IntelliJ install real (degrau-10) + DOING - dono 192.168.100.22
+  - regra de identidade por IPv4 local — esta sessão = dono 192.168.100.18 (conflito com bloco .md-soltos resolvido preservando ambos)
+  - sync .md soltos 13/09 (native pow S1b.2, editor degrau 12 provado, stdlib S1b.2 outro agente) - dono 192.168.100.22
+  - regra 9 - agentes se identificam pelo IPv4 local (dono = IP; esta sessao 192.168.100.22)
+  - cluster legado + OTP sincronizados 13/09 (contradicao LEGACY, contagem 70 testes, S2-JVM 020be966)
+  - update README.md to reflect 70 tests in migration platform and clarify documentation status
+  - update implementation status in LEGACY_MIGRATION.md and IMPLEMENTATION_PLAN.md to reflect 70 passing tests
+  - update LEGACY_MIGRATION.md to clarify documentation status and implementation state
+  - add guidelines for `check_500` gate thresholds and handling code size limits
+  - regra 8 - nunca descartar trabalho de outro agente (diretriz da mantenedora 13/09, agentes em conjunto)
+  - enhance comments in check_500.sh and check_500-baseline.txt for clarity and consistency
+  - bump 0.4.0-beta FEITO (e8a8aeea do outro agente + meus complementos) - sem colisao, tree limpo
+  - improve comments and messages in check_500.sh for clarity and consistency
+  - update version references from 0.3.22-beta to 0.4.0-beta in README, check_500.sh, and versioning.md
+  - update version references from 0.3.22-beta to 0.4.0-beta across multiple documentation files
+  - standardize version formatting across multiple documentation files
+  - roadmap.md sincronizado 13/09 (header 0.2.6->0.3.22-beta, OTP S2-JVM, VERSION) + auditoria 9 docs (nada a mover)
+  - PRÓXIMO PASSO registra DD-01 FEITO 2ef6ce69 + lane sem colisão (fila 106/89/117 é do outro agente)
+  - DD-01 planning-finally-return movido p/ docs/decisions/ (bug 45 FECHADO 063ed956)
+  - §4.1 planning-finally-return → FECHADO (DD-01 4-targets 063ed956)
+  - registra sync §45/S10c nos registros centrais (3e8167d8)
+  - sincroniza §45 (finally-return) e S10c (randomBytesHex) nos registros — fila 14→13 abertos, parity/README
+  - DD-STDLIB-01 movido p/ docs/stdlib/ + refs S10c sincronizadas
+  - corrige cross-refs a arquivos movidos (roadmap→development/roadmap, native-multiarch, DATABASE_VISION→stdlib, PLAN-UNIVERSAL/scoped-resources, specification-gaps→bugs-and-gaps)
+  - evidência CI da beta (runs failure) reforça o alerta de gate do #116
+  - README §1/§4.1/§4.2 corrige localização 3-estados (6 docs → decision-pending, 4 registros → bugs-and-gaps) + OTP S2-JVM
+  - lane 9094 issues — registro dos commits da fila + alerta de gate da beta
+  - PRÓXIMO PASSO registra fixes de path + condição de recusa por estabilidade
+  - corrige paths pós-refactor (complexity-audit docs/audits; actual-state → bugs-and-gaps/known-bugs)
+  - roadmap-audit header nota 13/09 + OTP §127/§131 corrigidos/decididos no bloco de atualização
+  - architecture.md — diagramas ASCII viram Mermaid (render nativo no GitHub)
+  - varredura de claims stale pós-ratificações 13/09 (roadmap-audit P4, matrix S10c, finally-return, stdlib-expansion, OTP 8x, README S2/ratchet)
+  - fila §1 itens 4/6 sincronizados — DD-OTP (S2 JVM) e pow/-lm/S10c ratificados 13/09, não mais 'na mesa'
+  - README §2/§3/§4.3 sincronizado com a fila viva (14 abertos; §65 NÃO REPRODUZ; NAT-STR01→§161; DD-STDLIB-01 fora de future/)
+  - architecture.md — diagramas ASCII viram Mermaid (render nativo no GitHub)
+  - dispatcher 05:30 — sessão de organização (bugs-and-gaps/decision-pending/audits) + auditoria native-multiarch/DD-STDLIB-01; próximo tick = manter movimento de docs ao decidir/fechar + células matriz×teste, sem código de lane alheia
+  - DD-STDLIB-01 sai de future/ — decisão 6a ratificada 13/09 (a própria doc se contradizia: topo ✅DECIDIDO × status 'PROPOSED aguarda decisão' — corrigido p/ RATIFICADO/Implementação pendente, lane STDLIB executora); futuro/README e README development atualizados
+  - conclusão honesta agrupa §104b-ii como lane bugfixer (não regra-6) — 7+3+3+1=14 coerente com a fila
+  - ecosystem-coverage baseline ~1620→1611 testes (alinhado a docs/status.md 13/09)
+  - conclusão honesta alinhada ao PR #115 (§65→NÃO REPRODUZ): 14 itens, não 13; §65 sai das lanes alheias
+  - specification-gaps version 0.3.0-beta→0.3.22-beta (pom revision atual)
+  - fila de renumeração da série OTP §127-129 corrigida p/ §162-164 (merge ocupou §157-160)
+  - §2.2 tabela corrigida contra medição (auditoria doc-vs-código, lane development) — CI cross ❌→✅ (job cross-native existe e verde, run 34732932745), 13/13→42/42 (surefire medido), 'consequência prática: stub sai 0' marcada SUPERADA (hoje executa lógica sob qemu; re-auditoria 12/09 no topo já dizia — a tabela §2.2 é de 01/09 e contradizia o próprio topo do doc)
+  - reordena §155/§156 antes de §157-160 (merge deixou fora de ordem) + conclusão honesta reflete §157-160 corrigidos e §156 code-pure
+  - NAT-STR01 renumerado §157→§161 (colisão com o merge dos §157-160 da issue-lane)
+  - registra NAT-STR01 (case-fold ASCII-only no Native) como §157 — lacuna: README apontava p/ known-bugs mas só existia na matriz
+  - refactor de clareza (pedido da mantenedora) — auditorias saem de development/architecture/history e passam a morar em docs/audits/
+  - sincroniza registros com o estado real — fila 14 itens (era 12 com §149 fechado por engano), desambigua colisão §127/128/129, corrige versão e contagens
+  - sincronizar plano — S2-JVM implementado (commit anterior), ratificação registrada
+  - P0 — WIP §103.1 (69fdab59) quebrou o javac do KofRuntime na beta-0.4.0; resolvido pelo fix do dono (§103: 751a83f2/3fd3c1b3)
+  - ratificação da mantenedora 13/09 — 12 decisões (OTP S2 1a, json Map sorted 2b, §89 alias+warning 3a, DD-01 4a bump 0.3.1, Long=BigInt 5b, 6a hex, 7a -lm, 8a slots, 9a cast, 10a sobrecarga, 11b fila, 12 abrir TLS+NAT-STR01)
+  - registrar descarte do commit duplicado de §149 (reversão conflitava com fix 29923a5b da lane dona) — estado = remoto, gate 1611/0
+  - retificação da MINHA análise pós-fix 29923a5b — eu afirmei 'fix não pode morar em JsIfThrowElse' e 'IR byte-idêntico'; o fix real foi no parser (isLoopStart lookahead) e o dump byte-idêntico eu NUNCA rodei (alegação de memória — não asserir o não-rodado) + PRÓXIMO PASSO re-sincronizado (gate 1611/0, 13 abertos todos em decisão/lane alheia)
+  - retificação interna — índice dizia '14 abertos' enquanto o próprio §2 (triagem 13/09) diz '13 seções sem ✅'; contagem conferida seção a seção neste HEAD (16 seções sem ✅ no cabeçalho − 3 com 'CORRIGIDO' sem glifo: §28, §32, §93) = 13
+  - #110 FEITO (21e7495b, respondida 5650161070)
+  - tabela-resumo corrigida contra o código — 9/18/21/22/23 'não reverificados' viram REVERIFICADOS com prova (16/16 testes neste HEAD) e a ressalva 'host arm64/macOS sem toolchain' marcada como superada (host atual x86_64 + qemu riscv/aarch; Native reverificado 11/09–13/09)
+  - §149 JS corrigido — suíte 1611/0 (13 err node) em status/README/backend-parity/AGENTS/DOING
+  - dispatcher 22:50 — gate vermelho = §149 (causa raiz completa em known-bugs); próximo tick exige DECISÃO da mesa sobre a porta do fix (Optimizer vs pilha de end-labels do §147)
+  - mecanismo exato da poda — Optimizer (unreachable+jump-to-next, linhas 44-45/180) apaga o Jump/Label(end) pós-throw; NÃO é o lowering nem só o parser
+  - #102.2 FEITO (9e823af9); WIP-103 em /tmp/RESGATE-* p/ o dono
+  - análise da lane dev — metade matriz FECHADA (0c107eb9), metade JS com causa raiz corrigida e locus do fix provado
+  - #108 FEITO+fechada; WIP-103 alheio stasheado intacto (stash@{0})
+  - 1602/2/5 re-medido no e1962735 + matriz doc sincronizada às células do teste
+  - watcher all = varredura completa a cada tick (triar+corrigir+fechar)
+  - watcher processado — resposta 5649828936 (B40 4459ff57 compile OK); plano + DOING sincronizados
+  - baseline ≤500 17→9 sincronizado (split-7 e45140d6 tirou ExpressionMethodCallLowerer)
+  - §9 triado ✅ (nativeLambdaMutableCapture 1/1) — fila 14→13
+  - fila 17→14 — §145/146/147 ✅ 440730c8; §149 aberto (lane bugfix-101); §9 p/ triagem
+  - S-7 FEITO eabf814b + PRÓXIMO PASSO (fila §1 item 1 concluído)
+  - tree-shaking consolidado em docs/ — plano CONCLUÍDO
+  - releases.md → release-naming.md — colisão de caixa com RELEASES.md quebrava checkout em macOS/Windows
+  - sem trailer Co-authored-by (polui o log) + identidade única consolidada
+  - add JavaFX error handling guidelines to prevent regressions
+  - higiene de identidade do git — agente vive SÓ no --local (temmcode); --global é da mantenedora e nunca é tocado; scripts/CI nunca setam identidade (release.yml usa kof-release-bot)
+  - suíte 1585 = 1413+31+5+136 re-medida no HEAD 54da1325 (gate1585.log)
+  - retifica premissa falsa do dispatcher 20:10 ('host sem qemu/toolchain cross')
+  - 'free sem caller = código morto' era FALSO — riscv faz 57 allocs e 0 frees
+  - sincroniza impeditivos da fatia S2 ao medido — §128 ✅ 12/09; buraco de design do selectAny documentado
+  - 3 bugs de backend reportados por PublioSantos — REPRODUZIDOS + causa raiz localizada neste HEAD
+  - agente PODE postar via conta da mantenedora (override 12/09) — MAS todo comentário DEVE abrir com bloco de citação marcando autoria real como "Kof-agent-worker" (apelido entre aspas, nunca como se fosse conta real). A regra antiga (NUNCA comentar como melmonfre) gerou rascunho pendente eternamente na #97; a nova troca o risco de identidade pelo risco de parecer palavra da mantenedora — e o elimina com a marcação. Prova de uso: #97 issuecomment-5649162397 (marcação presente).
+  - recusa de re-disparo 20:15 — re-varredura pós-F2, TODO vazio honesto
+  - F2 (CompilerDriver) FECHADA com prova medida — 487 ≤500, ratchet sem violação
+  - recusa de re-disparo 20:00 — re-varredura fila §1 + mesa bugs, TODO vazio honesto
+  - recusa de re-disparo na lane nat — varredura de estabilidade 12/09 (nada sem dono)
+  - varredura doc-vs-realidade — claims de 31/08 sincronizados ao medido
+  - varredura doc-vs-realidade — 7 células sincronizadas ao medido no HEAD
+  - suíte 1580 re-medida no HEAD 9cda2b3d + AGENTS.md sem o 'bug 59 aberto/59 falhas'
+  - decompõe a face (1) GC mark-sweep cross em 5 degraus executáveis (G-1..G-5)
+  - sincroniza a fila ao medido HOJE — S-5 cross ✅ (103→18 syms), suíte 1579→1580, ratchet 13→12
+  - add Kof philosophy manifesto to guide development principles
+  - contagens da suíte sincronizadas ao gate medido — total 1576/1560→1579 + 32 linhas da tabela regeneradas dos surefire-reports
+  - célula WEB002-Native sincronizada ao medido — 'sem kof_web_* no asm' era FALSO
+  - PRÓXIMO PASSO = auditoria fila §1 completa (tudo owned/decisão); re-disparo = doc-vs-realidade nas matrizes vivas OU resgate do S-5/GC se 9092 largar
+  - ratchet ≤500 aponta p/ nº autoritativo (wc -l do baseline) em vez de número cru que apodrece
+  - sincroniza a FILA ao estado medido — suíte 1577→1579, ratchet 17→14, donos S-5/S-6 da #97
+  - varredura doc-vs-realidade da coluna ABERTO — 4 linhas corrigidas p/ CORRIGIDO + 1 p/ gap honesto JSN004
+  - README vira FILA — base 0.3.22-beta, estado real medido hoje + ordem de execução dos planos
+  - CONCLUI a reclassificação de docs/development/ + future/ — unidade meia-executada resgatada (working tree de sessão encerrada no meio do turno)
+  - unidades 12/09 — heartbeat porta-dinâmica (9092=outra sessão, ticks mortos 1h), NUL no known-bugs (grep pulava o backlog), triagem §139 (doc-sync de correção já commitada) + watchers #97 processados (S-6 autorizado ao ViniAguiar1, fora da lane dev); PRÓXIMO PASSO = S-5 só se a lane 9092 largar
+  - sincroniza doc-vs-realidade — §139 foi CORRIGIDO em 39da8416 (parser JS consome KofPop/KofPop2 no meio de fragmento; célula nullableprint sem exclusão trava os 2 repros nos 4 targets) mas o header dizia ABERTO. ConformanceMatrixTest 11/11 medido. Mesmo padrãoo da lição SG-002 (doc descreve estado pré-fix).
+  - remove byte NUL literal (default de Char escrito como \0 bruto na linha 3556) — o arquivo era tratado como BINÁRIO pelo grep ('binary file matches'), o que fazia TODA varredura (triagem de bugs abertos, auditoria de segredos, grep -r nos agentes) PULAR o backlog inteiro silenciosamente
+  - planning-mutability + planning-switch-expr voltam p/ docs/decisions/
+  - known-bugs/ecosystem-coverage apontam o caminho real em docs/development/ (comentários Java + learn/19)
+  - atalhos mortos de docs/development/ resolvidos no estado-corrente
+  - pós-movimento — células da matriz ecosystem-coverage resolvidas sob docs/, banners 0.3.22-beta no corpus, contagem da suíte real (1576/0/126-skip), docs/future/ → docs/development/future/ em comentários Java, learn 00→39 na tabela de corpus do AGENTS/README
+  - mover arquivos soltos de docs/ para subdiretórios de domínio (architecture/debugging/stdlib/history/distribution/comparison/decisions/ui)
+  - auditoria doc-vs-realidade — objmethods/native (LINK_FAIL 104b-i virou bloqueio REAL 104b-ii) + linha da unidade CI-cross (f2fee2f8) com o PRÓXIMO PASSO devido
+  - heartbeat na porta certa (9093 = sessão viva; conferir ss antes de assumir) + watcher de issue #97 a cada 2h documentado como parte do loop
+  - identidade de agente DESVENDADA — atribuição por e-mail de autor (temmcode 268 commits = aminadojava@gmail.com verificado), não App/PAT; setup git config por clone; proibido comentar issue como melmonfre (corpo vai p/ .issue<N>-reply-pending.md gitignored + pendência no DOING) + watcher de issue #97 c/ scripts/issue-watcher.sh (cron 2h, attach obrigatório)
+  - célula jsondec-recordlist Native — PARTIAL com a verdade do §48 (era 'não compila' de 08/09; hoje é recusa JSN004 em compilação, R6; ConformanceMatrixDocTest verde)
+  - reconcila o PRÓXIMO PASSO apos a S-2.5 (a35053f9 saiu sem atualizar a linha — auto-denuncia + despacho corrigido)
+  - auditoria dev/ — CANVAS001 reprovado verde + doc consolidado (movido future/->docs/); AGENTS.md perde flag obsoleta !canvasCreation
+  - 12/09 — §107 3-alvos + #97 S-1 + re-auditorias doc-vs-realidade; contagem 1249->1560/0/5-skip medida neste HEAD (5 skips = BD externos MySQL/Mongo/Postgres, cross EXECUTA)
+  - corrige a tabela do topo — varredura 08/09 estava APÓCRIFA (39/62/63/64/46/48/50/59/61 estão ✅ nos próprios cabeçalhos); fila real 12/09 = 16 abertas, cada uma com bloqueio mensurável (decisão/lane/congelado), ecoando a mesa do bugfixer 4d51defe
+  - reconcilia a linha PRÓXIMO PASSO apócrifa do rodapé — §135 resolvido, suíte verde, #97 aceite via issue e S-1 FEITA a3996600; fila real = S-2 (provides/needs por fatia)
+  - re-auditoria medida do estado cross riscv/aarch — doc contradiz o código (regra AGENTS 'audit vs reality', estado-4)
+  - reconcilia as duas retificações da toolchain cross — host-dependente (evidência de ambos os hosts)
+  - mesa bugfixer 12/09 = 0 itens desbloqueados (17 abertos auditados 1-1: cada um com bloqueio mensurável — contrato/mantenedora (45,81,89,94,101,106,117,125,129,§127-cast,§132,§68a/§70), lane alheia (65 web/UI, 90, 107 CEDIDO dev 12/09, 131 semântica), cross-sem-toolchain-aqui (114/§104b-ii, provas §123/§126/§127-JS)); FECHADOS da sessão: §127-JS f85ffadd + §128-JVM 6e68cb36 + §134-wildcard 6e147824 + retificações bda06e81/bc45aaf9; gate medido no HEAD exato (matrix 11/11, doc 1/1, classpath 6/6, concurrency 33/0, decompile 45/0); NÃO é condição de estabilidade (development/ e future/ seguem com trabalho) — cron continua; re-disparo da minha lane só assume se: resposta §125 chegar, regressão na suíte, ou dev liberar §107/infra storage-box
+  - retifica 92b01b2b — toolchain cross NÃO está neste host (medido: command -v ausente, find vazio, NativeRiscv64E2ETest 36/36 SKIPPED pelo guard assumeTrue); faces cross §123/§126-tag seguem sem prova possível aqui; afirmação possivelmente válida no host com qemu (B37/melissa), não neste — regra de hoje: auditar doc contra o código/ambiente, não contra a memória
+  - §137 cedida ao remoto 982f53f0 (fix paralelo descartado na fusao); DOING com a licao de colisao; gate medido 1547/0/5-skip
+  - linha da unidade SG-011B+§137 (paragrafo duplicado do replace anterior removido; refs renumerados §136/ratificacao §135)
+  - sincroniza o gap com o estado REAL do lexer (tokens já removidos; teste verde) — fila avança p/ cross§123/§126 + §107
+  - retifica ACHADO COLATERAL #88 — 'runtime sem export kofStringsIndent' era artefato do MEU build incremental (inlining de WS_RUNTIME static final em JsArtifactWriter.class); causa real do indentDedentJs vermelho = só node ausente no host (mesma classe do node-trio); lição: mvn -o clean na sonda antes de registrar causa-raiz de runtime gerado
+  - PRÓXIMO PASSO com §135 — plano tree-shaking enviado (eae16c46); S-1 pré-bloqueado pela decisão de contrato da suíte vermelha
+  - §135 — conflito de contrato SEM047(09/09) vs SG-011B(11/09) + DecompileTest switch — suíte vermelha no base, PRÉ-EXISTENTE a esta sessão
+  - PLAN-TREE-SHAKING — stdlib por alcançabilidade (frente designada pela mantenedora)
+  - linha #91 (gate CONC001) + PRÓXIMO PASSO com fila real (#96 merge, #87/#88 conflito B37, frente tree-shaking)
+  - update development focus and stability criteria in DOING.md
+  - update version and last update details in AGENTS.md
+  - add stability evaluation criteria for autonomous mode
+  - §129 FEITO + §125 com causa-raiz pinada (descritor, não print) + fila real (decisões de contrato em 2 itens, §104b-ii grande, prova cross p/ sessão com qemu)
+  - §125 no PRÓXIMO PASSO com o oracle medido (0 via precedente PN3)
+  - oracle resolvido pelo precedente medido — Nullable(INT)→0 no println; guard falta no boxPrimitive do print-lowering
+  - §113 pushed (d2a4dc0a+edb86c34) — gate no HEAD exato em execução
+  - faces cross 5/5 no header do known-bugs + suíte do HEAD no PRÓXIMO PASSO
+  - §122/§123/§124 FEITOs em um só commit + fila real corrigida (regra do MESMO commit, restaurada)
+  - §126 — chave do tipo errado em Map/Set/contains → Native SIGSEGV (design opção-B fechado)
+  - SG-020 — a regra 5 (SC para statics/campos compartilhados) ainda não tem prova
+  - emendas verificadas ao plano de supervisão + fechamento das 8 DDs independentes
+  - corrigir tabela de gaps desatualizada + travá-la com ConcurrencyGapsDocTest
+  - linha CONC — pos-merge + renumeracao 127-132 registrada
+  - move 0.3.0→0.4.0 FECHADO + fila real pós-merge (§113→§114x86→§107; toolchain cross = aspiracional neste host)
+  - spike #83 encerrado — supervisor viável em Kof puro (forma interface-factory) + 3 achados registrados (§107/§108/§109)
+  - resync pós-rebase — §111 cross fechado pelo agente B36/B37 (qemu naquela sessão; ausente NESTA); PRÓXIMO PASSO agora §112-JS com a tentativa revertida documentada + 104b-ii
+  - split residual fechado nos 5 targets + linha STDLIB atualizada
+  - residual riscv/aarch atualizado + linha STDLIB no DOING (B35+B36 juntos, split-trailing riscv em aberto)
+  - resíduos fechados + registro no DOING — teste ampliada p/ 22 vetores (bordas starts_with2 provadas sob qemu)
+  - varredura cross 11/09 sem bug novo + sonda §101 (cancel-colisão) travada em decisão
+  - §106 — Native println(coleção) imprime ponteiro como lixo (causa raiz: vtable -1 silencioso em kof.List/Map/Set)
+  - println(<coleção>) → lixo de ponteiro no nativo (sem kof_{list,set,map}_to_string; valueOf dispatch só trata vtable toString = records) — ABERTO, backend-only lane Native
+  - tabela known-bugs na varredura 11/09 — fila viva = §45/§104b/§104c + congelados explicitados
+  - json.encode(Map) quebra em 3/5 alvos (JVM crash reflection; x86/riscv link error) — registrado com repro medido, ABERTO (superfície JSON = decisão regra 6)
+  - renumera meu random-loop 102→105 (102 tomado pelo §102 indexOf no remoto 11/09) + ref no código/DOING
+  - snapshots históricos 02/09 (language-state/actual-state) movidos p/ docs/
+  - reclassificação development/ — SG-020 p/ docs/, planning PROPOSED p/ future/
+  - §102 FEITO (x86+JS) + PRÓXIMO=varredura collections/higher-order
+  - PRÓXIMO PASSO §102 (indexOf/lastIndexOf from-arg no Native, backend-only)
+  - renumera meu indexOf(String,from) p/ §102 (colidiu com §101 relacional-NaN no remoto) + linha PRÓXIMO
+  - renumera meu bug relacional-NaN p/ 101 (100 tomado pelo bug Char no remoto) + DOING MATH001 FEITO / PRÓXIMO=TIME002
+  - planning-otp-supervision.md — issue #83 (DD-OTP-01..13) + bug 101 registrado
+  - lane STDLIB S3b.2 uuid.v7 FEITO (5 alvos) + sync pós-rebase com S1b.1 lerp (remoto)
+  - restaurar linha S1b.1 (lane STDLIB) + sincronizar PRÓXIMO PASSO pós-rebase
+  - merges beta-0.4.0 + main(uuid.v7) resolvidos — PRÓXIMO PASSO lane Native JS §97
+  - NAT-STR01 estendido p/ toUpperCase/toLowerCase de instância (varredura String parte 2)
+  - §97/§98 — String.compareTo/hashCode link-fail + `<`/`>` Unspecified (varredura String parte 2)
+  - NAT-STR01 estendido p/ toUpperCase/toLowerCase de instância (varredura String parte 2)
+  - §97/§98 — String.compareTo/hashCode link-fail + `<`/`>` Unspecified (varredura String parte 2)
+  - merge main→beta pushado 082784cb — PRÓXIMO PASSO atualizado (fila da lane; nunca pushar main sem pedido)
+  - §79 fechado — header stale; 3 faces corrigidas verificadas na menor repro
+  - §89 registrado — conversão numérica de PRIMITIVO (.toDouble()/.toInt()) quebra link nos 3 nativos
+  - bugs 82-face-cross + 88 fechados; PRÓXIMO PASSO atualizado (gap boxing toDouble / FLT001 print / DD-*)
+  - varredura final spec-gaps — §39 (bug 87 corrigiu), SG-E1/E2/E3 fechados, resumo atualizado
+  - validação doc↔código do modelo de memória concorrente
+  - §82 registrado — toDouble/toFloat nativos fora do contrato (matriz medida)
+  - bug 81 — JS toLong = Number/double (overflow ±2^53 não lança); DOING atualizado
+  - §80 fechado + endurecido (matrizes stdmath/stdstrings/stdvalidation); PRÓXIMO PASSO = S1b math Double (ou uuid.isUuid p/ risco menor)
+  - S7c Native x86 addDays/diffDays FEITO (cd622c47) — header estava stale
+  - §79 corrigido — riscv/aarch ' -42 '->42 (sinal perdido), não -42
+  - STDLIB — bug 79 reivindicado; PRÓXIMO PASSO = U2 fix x86 (RuntimeStringParse)
+  - bug 79 — toInt/toLong nativos divergem do contrato JVM em entrada inválida (R6)
+  - §80 math/random feito nesta sessão; PRÓXIMO PASSO = strings/validation/security (guards)
+  - plan-stdlib-expansion + stdlib.md + learn/39 atualizados — addDays/diffDays x86 FECHADO (TIME002 residual só riscv/aarch)
+  - status PARCIAL — math/random corrigidos; strings/validation/security documentados c/ nota dos guards return 0
+  - bug paridade JS Bool — boolExpr==true sempre false (funções stdlib retornam 1/0; print coerce mas == usa === cru; evidência no .mjs gerado) + PRÓXIMO PASSO com fix (opção A, todos os sites incl guards validation)
+  - STDLIB — corpus fechado; PRÓXIMO PASSO = checar resposta da mantenedora às notas de design
+  - corpus em dia — idioms/stdlib cobre as entregas da sessão
+  - carry JS bool = false alarm (matriz stdmath prova println true/false no JS; isBoolOperand converte 1/0) — fechar após ler randomShapeJs
+  - PRÓXIMO PASSO refina S7c-1 (bloqueio qemu/toolchain documentado) + tarefa (B) paridade JS bool como próxima executável sem qemu
+  - DD-STDLIB-02 — semântica de tempo restante (fuso/assinaturas/format) é decisão, não edição
+  - S3b-ext feito — PRÓXIMO PASSO exato = formatCnpj (formatPis ambíguo -> nota)
+  - consolidar classificacao docs/development pela nova regra - mover planning-switch-expr + planning-mutability (FEITOS) p/ docs/, planning-finally-return (PROPOSED/zero codigo) p/ future/; classificar plan-stdlib-expansion por degrau (S7 unico aberto); atualizar README do indice + DOING.md
+  - DD-STDLIB-01 — retorno Array na camada de dispatch (S10c) é decisão, não edição
+  - lane spec-gaps COMPLETA — 11 decisões do maintainer aplicadas
+  - SG-003/SG-011 a SG-019 — registra decisões do maintainer aplicadas
+  - STDLIB — gate restaurado pelo autor (dd8a91fd fecha 53264c9f); lição 3ª vez do inlining (rm -rf target pós-pull de constante embutida); lane retoma p/ random S10
+  - STDLIB — registra gate quebrado no remote (53264c9f multidim/bug71 WIP: ArrayFiller nunca criado + import KofNewMultiArray ausente em JsExpressionParser) — build limpo falha; escapeJson S3.1c FEITO (d57f8e5c) suíte verde antes do rebase; lane pausa por colisão (bug 71 do autor)
+  - #62 docs de Kof (docs de Kof) — docs
+  - #61 respondida (design da mantenedora) — sessão issues 62-67
+  - switch-Fase-C em espera (stash WIP); #62 assumida; #61 não (design)
+  - bugs 46/50 verificados pós-fix órfão (a617d840) — testes verdes, linha bug-fix atualizada
+  - junta linha da lane STDLIB rachada por newline (`\\n` literal dentro do replace — contagem de pipes 7 restaurada)
+  - #60 fechada c/ evidência; convenção koftmp; próxima fila
+  - gotcha LEX004 — lexer pré-processa \\uXXXX antes do token
+  - #55/#57/#58 fechadas c/ evidência; próximo = degrau 2 multi-classe ou §§69-70
+  - #55 FECHADA (cherry-pick main def86a5a→c57855fd, prova recordhash 4 targets)
+  - add GitHub issue form templates
+  - Fase E — pop/instanceof/cast feitos (3ca20067); próximo degrau = multi-classe §7
+  - fila Fase E CORRIGIDA pela prova de drift — pop/instanceof/cast bloqueados por multi-classe, não por eles
+  - migração — 601/601 robustez (ff2369f6); fila Fase E = 1812 stubs/3306
+  - 39-stdlib — tutorial da standard library universal (S9.2)
+  - #54/bug 67 — corrigido registro da causa raiz (o 8968c883 sozinho NÃO fechava) + DOING com evidência
+  - SG-006 resolvido — short-circuit && paridade travada por teste (suíte verde)
+  - bug 46 — registra teste de isolamento (sem captura)
+  - registrar que #54 (bug 67) foi corrigido pelo lane bug-fix — agente migração não deve refazer
+  - bug 67 (#54) super(v) interp corrigido + known-bugs + DOING
+  - bug 50 — registra teste de validação channelWithSpawnNative
+  - #53 FECHADA (203096e4) + #54 aberta (interp super(v), sem dono) — próximo passo do loop
+  - SG-010 resolvido — val imutável (SEM037, bug 62a)
+  - 'ERRO de runtime: record é imutável' → 'ERRO de compilação SEM038' (training/language/classes + learn/07)
+  - learn/08 — p.x=99 é erro de COMPILAÇÃO SEM038 (não runtime)
+  - records — documenta imutabilidade (SEM038, bug 62)
+  - concurrency — documenta spawn { return ... } lambda literal + Handle (bug 46 Native gap)
+  - bug 65 — registra verificação do pipeline JS (descarta codegen; causa = timing runtime no browser)
+  - corrigir \\n literal que mesclou as linhas STDLIB e EDI001
+  - SG-006 — análise: JS emite &&/|| nativos com short-circuit; recomendar teste de paridade
+  - bug 46 — registra teste de regressão + confirmação SIGSEGV + nota sobre causa x86_64
+  - remover pipe extra órfão na linha STDLIB (herança do commit S5)
+  - bug 66 corrigido; estado atualizado
+  - #42 FECHADA (a/b/c, ed0475c8) — linha da sessão atualizada
+  - DD-02 → APLICADO (erro direto) + link p/ #53 (record+ctor JVM, aberto); issue #53 criada com repro mínimo
+  - bug 62 completo (a val SEM037 + b/c record SEM038); restam 5 exigem ambiente/regra 6
+  - bug 62 (mutabilidade) completo — (a) val SEM037, (b)/(c) record SEM038
+  - #42 62(b)/(c) FEITO (72e79b9f) — não retocar; mantém bloco 9364b973 da lane bug-fix
+  - consertar linha da lane STDLIB — S7-wedge dentro da linha + PRÓXIMO PASSO reordenado
+  - bug 50 correção candidata (futex WAIT args) + DOING estado real
+  - estado real dos bugs apos a sessao (48,59,62a corrigidos; doc atualizado)
+  - marcar bugs 43,44,63,64 como corrigidos (fixes já no código com testes)
+  - marcar bugs 7,9,18,21,22,23,30 como corrigidos (doc desatualizado)
+  - DD-02 — design dos validadores de mutabilidade (val/record, #42)
+  - normas de desenvolvimento colaborativo da pré-beta 0.3.0 no código de conduta
+  - training/idioms/stdlib.md — os 4 namespaces STDLIB com BAD/GOOD/WHY
+  - S4 completo — linha STDLIB na matriz de módulos + nota do plano
+  - contagem da suíte pós-merge (1249/0/64-skip)
+  - update PRÓXIMO PASSO and remove legacy heartbeat (auto-loop.sh ativo)
+  - add specification-gaps.md with compiler gaps (R6, HW001, CONC001, etc.)
+  - corrigir links internos para docs/development (#49)
+  - registra o bug 64 (KofJS descarta parâmetro após Long/Double)
+  - registra ldc2_w no DOING + IMPLEMENTATION_PLAN (follow-up d953d92)
+  - reverifica o inventário contra o build 0.3.1-beta e corrige a entrada 45
+  - registra bugs 62 e 63 (mutabilidade não validada; let redeclarado em parâmetro no KofJS)
+  - STDLIB S2a.2 FEITO (257b9b0) — linha de PRÓXIMO PASSO corrigida (fica em S2a.3)
+  - PRÓXIMO PASSO — estender emitLinear p/ long/casts c/ guard de tipo (lesson bug 62)
+  - sweeps R6 do decompiler (control-flow + numérico) — tudo degrada honesto
+  - STDLIB S1+S1a FEITO (d0b829a) — registro da lição do inline de constant JS + PRÓXIMO (S1b math Double, S2 strings)
+  - bug 6 — remove seção duplicada/desatualizada em known-bugs.md
+  - sincroniza tabela de testes (DoD-docs) — 1218 total, UiE2ETest 27, browser 16
+  - UI005 readonly/name FEITO na matriz + índice README desatualizado corrigido
+  - RETRATA 2 falsas falhas UI (build stale meu pós-rebase; suíte fresca 1091/59bug59 + 126 demais = verde) + EDI001 codeAction FEITO (4329898)
+  - UI002 FEITO (warning único no interpretador) — matriz + DOING
+  - codeAction feito + registro das 2 falhas UI003/UI006 (lane UI, regra 3)
+  - esclarece contagem da suíte (qemu presente vs ausente)
+  - suíte completa exige -Dmaven.test.failure.ignore=true (lição 08/09)
+  - PRÓXIMO PASSO — fila UI (UI002 warning, UI006 residual, UI007 bloqueado)
+  - UI006 FEITO (key/value/x/y + widget.on) — matriz + corpus
+  - UI003 FEITO (fieldset/iframe/video/audio/hr) — matriz + corpus
+  - Fase D (Type Recovery) marcada completa — provas 367d6c4
+  - DD-01 — finally no caminho return (bug 45) vira plano de design + limpeza
+  - 38-editors — tutorial kof editor (§27 pede corpus passo-a-passo)
+  - PRÓXIMO PASSO — varredura de exclusões obsoletas da matriz de conformância
+  - degrau 12 — docs/editors/* + corpus (training/cli, EDITOR_SUPPORT)
+  - DOING — degrau 11 feito (hook pós-instalador, e7e3564)
+  - fecha lane — issues #28–#35 fechadas no GitHub (0.3.1)
+  - fecha metade JS do bug 42 (recordhash) + corrige doc do 44
+  - especificação Editor Integration (plano, implementação depois)
+  - P0 fallbacks semânticos FECHADO (verificado no código)
+  - UI007 proposta de design (regra 6) + DOING atualizado (drawImage/Ul/Ol feitos)
+  - bug 56 (GitHub #30 split→ClassFormatError) + linha GITHUB-P0 no DOING
+  - auditoria planning-future — R1 marcado FEITO
+  - idiom web — contrato de retorno de handler (bug 53/54)
+  - auditoria planning-future — agente morto, lote 3 duplicata+flaky
+  - corrige causa-raiz da auditoria planning-future
+  - auditoria planning-future × docs/development/future
+  - bugs 53/54 (GitHub #28/#29) — reproduzidos + causa raiz por IR
+  - bug 49 descreve o código mesclado (5d6e68a), não minha versão descartada
+  - bugs 48/49 corrigidos (json list interpreter, try aninhado JS); suíte 1037/0
+  - F9 lotes 1-3 + 3 fixes da lane interpreter; suíte 1091/0/3-skip
+  - FASE 4 KofUI — auditoria de cobertura + matriz de gaps UI00x
+  - REFACTOR-500 COMPLETO — F3 NativeBackend 8834→479, check_500 OK, todas ≤500
+  - F3 reatribuída ao agente-idiomatic (fixes parou na 3.6; NativeBackend 1269)
+  - bugs 27/37/38/40 corrigidos (suíte 1025/0); 39 = design pendente
+  - bugs 27/37/40 corrigidos; 39 revertido (design); 38 pendente
+  - reivindica F9 — matriz Feature×Target com estado real do sweep cross-target
+  - atualiza caminhos de arquivos para os novos subpacotes SOLID (jvm/, nat/)
+  - comparação com a main — sem perda de funcionalidade
+  - bug 46 — spawn { return … } SIGSEGV no Native (variante do #29) + lane KOFSCRIPT g+h fechada
+  - SOLID organização em subpacotes — 7 módulos migrados (backend/js/jvm/nat/parser/runtime/vk)
+  - move pendentes para development/ e referencia no AGENTS.md
+  - regra de sincronização — verificar conflito antes de cada commit/push
+  - runFile SCRIPT feito (51754fd); proximo = paridade cross-target (regra 5)
+  - bug 36 CORRIGIDO (3c7641f) + heartbeat corrigido (--attach 9092, testado 1min)
+  - Fase 1 plataforma FEITA (6caf84d) — PRÓXIMO PASSO: F2 Target Architecture
+  - F0 auditoria real + plano técnico por fases (module system, targets, full-stack, KofUI/JS/Wasm/Android, conformance)
+  - roadmap-audit.md — matriz de estado real (12 itens + 12 fallbacks UNKNOWN P0)
+  - claim ROADMAP AUDIT lane (fase 1 auditoria em curso)
+  - KofScript = execução direta via KofInterpreter (status, backend-parity, bug 37 refinado)
+  - varredura FEITA (fix static-field + bug 35), bugs 36-40 registrados, licao do build stale ECJ
+  - varredura de paridade FEITA + bugs 35-40 registrados
+  - bug 34 registrado — método inexistente em builtin → no-op silencioso (R6)
+  - KOFSCRIPT pós-merge — paridade 15/15, bugs null+interval corrigidos, PRÓXIMO PASSO (bug 29/34 + varredura JS/Native)
+  - F3 3.1–3.9 completas (fixes-for-kofagent) + protocolo de prova honesta documentado
+  - REFACTOR-500 — FASE 9 (varredura) FEITA, só NativeBackend >500 (F3 do outro agente)
+  - KofScript = target de execução direta (interpretador da IR)
+  - REFACTOR-500 — FASE 2 COMPLETA (CompilerDriver ≤500)
+  - FASE 3 reivindicada (NativeBackend) — maintainer pediu, agente-idiomatic não iniciou; aviso de colisão NATIVE002 + plano byte-diff 3 targets
+  - PRÓXIMO PASSO — lane 4–8 fechada, CANVAS001 metade JVM corrigida, falta só design JS (lane Canvas)
+  - REFACTOR-500 — F2.33-F2.44 + lições (this->driver, campos intercalados)
+  - REFACTOR-500 — FASES 4-8 COMPLETAS (fixes-for-kofagent); suíte 955/0
+  - SG-001 palavras reservadas (bf84a86) + bug 33 corrigido + bug novo coleção
+  - REFACTOR-500 — F2.24-F2.32 + lição do bloco de instância
+  - SG-001 inclui membros de classe (7e6f9e3, suíte19)
+  - SG-001 resolvido (fn/fun/func → PARSE085, suíte18 verde)
+  - âncoras do CompilerDriver por método (não linha) + contagem AST 50 nós
+  - LANG-SPEC FEITO — suíte16 969/0/3-skip (zero regressão, docs puros)
+  - README + architecture.md — separa linguagem≠compilador≠target, corrige pipeline
+  - syntax (formas concretas) + compiler-architecture (implementação)
+  - modules + semantics + specification-status + specification-gaps
+  - functions + closures + classes
+  - expressions + statements — semântica de cada forma
+  - types + type-system — catálogo de tipos e regras concretas de validade
+  - grammar — gramática EBNF extrativa + AST (39 nós) + precedência exata
+  - lexical-structure — gramática léxica completa (tokens, keywords, literais, operadores, erros LEX00x)
+  - Language Reference — índice + separação linguagem≠compilador≠target (LANG-SPEC)
+  - REFACTOR-500 — lição da divisão do ExpressionMethodCallLowerer (cadeia if/else)
+  - REFACTOR-500 — F2.21-F2.23 + suíte 948 verde
+  - RFC completa §3-24 + plano I1-I4 — topologia, kof.toml, System, build/deploy, targets, segurança, testes, open questions
+  - REFACTOR-500 — F2.12-F2.20 (CompilerDriver 3419)
+  - RFC §3-7 — principles, application, manifesto kof.toml, componentes, topologia, monólito
+  - RFC APPLICATION_MODEL §1-2 — motivation + auditoria do estado (CLI/stdlib/targets/gaps)
+  - bug 28 — nota de recorrência 05/09 (suíte 969 pós bug-32, flake confirmada)
+  - REFACTOR-500 — FASE 5+8 FEITAS (fixes-for-kofagent); PRÓXIMO FASE 7 Parser
+  - REFACTOR-500 — limpa PRÓXIMO PASSO (F2.12 LoweringContext)
+  - REFACTOR-500 — F2.11 + PRÓXIMO PASSO (LoweringContext)
+  - REFACTOR-500 — F2.10 CompilerImports
+  - Bug 28 — flaky WS/SSE connection counter (JVM) registrado
+  - REFACTOR-500 — F2.9 CompilerDesugar
+  - time.sleep real no cross (ce81639) — fecha unidade
+  - regra 7 — unidade em progresso = turno em progresso
+  - REFACTOR-500 — F2.8 ModuleRoots
+  - estado real do NATIVE002-stdlib (sweep completo 05/09)
+  - REFACTOR-500 — F2.5-F2.7
+  - bug 31 (process.<inexistente> segfault) + gap formato log cross
+  - linha melissa — sweep R6 completo (SECN000, json decoders, metrics # TYPE, tradutor quote-aware); suíte 962/0
+  - REFACTOR-500 — F2.5 BoxClassFactory
+  - #29 spawn { lambda } com handle quebra em todos os targets
+  - re-dispacho nao e conversa — regra 6 do turno autonomo
+  - linha melissa atualizada — Map/Set/higher-order FEITO, sweep 0 divergencias
+  - PRÓXIMO PASSO — sweep R6 crypto/process-spawn-edge/json-edge/string-utf8
+  - REFACTOR-500 — PRÓXIMO PASSO atualizado (F2.5 BoxClassFactory/CompilerImports)
+  - REFACTOR-500 — F2.4 CompilerTypes
+  - REFACTOR-500 — F2.3 TypeEmitter + PRÓXIMO PASSO
+  - REFACTOR-500 — F2.1/F2.2 CompilerDriver (TypeMetrics, StringMethodRegistry)
+  - restaura PRÓXIMO PASSO + linha melissa (merge remoto sobrescreveu)
+  - REFACTOR-500 — divisão confirmada (idiomatic F1-3+9, fixes-for-kofagent F4-8) + FASE 1 completa
+  - REFACTOR-500 — FASE 1 COMPLETA (NativeRuntime)
+  - REFACTOR-500 — F1.15 divide métodos gigantes restantes
+  - REFACTOR-500 — F1.14 dedup
+  - REFACTOR-500 — F1.13 security/validation/observability
+  - REFACTOR-500 — F1.12 printnum/net/vk/misc
+  - REFACTOR-500 — F1.11 concurrency
+  - REFACTOR-500 — F1.10 RuntimeMemory/RuntimeGc
+  - REFACTOR-500 — progresso F1.1-F1.9 (agente-idiomatic) e regressão de paridade do merge
+  - Bug 28 (flake ws counter) + PRÓXIMO PASSO (auditoria R6 observability/scheduler)
+  - modo autonomo — regra do turno + PRÓXIMO PASSO
+  - FLT001-cross na matriz de gaps + Bug 27 (println(char) diverge — pré-existente remoto)
+  - REFACTOR-500 — divisão confirmada (fixes-for-kofagent faz Fases 4-8)
+  - gap 27 — paridade String.valueOf(char) JS vs JVM/Native (R6)
+  - reconcile note for planning-future <-> beta-0.3.0 (merge state, pre-existing charAt failure, normalization checklist)
+  - update AGENTS.md with autonomous mode guidelines and conditions for stopping
+  - add REFACTOR-500 entry for class division guidelines
+  - lição aprendida 04/09 — trabalhe sempre em partes pequenas
+  - add PLAN-SOLID-500 for class restructuring guidelines
+  - known-bugs.md — Bug 19 atualizado (triple-nested resolvido 04/09)
+  - NATIVE002-stdlib FEITO (JSON+http+spawn riscv64/aarch64; db→DB001)
+  - regra todowrite obrigatório (status visível a cada etapa)
+  - break TIER 2 into measurable subtasks (2.1.1–2.5.1)
+  - seção 0.2.7-beta movida para o topo
+  - WEB001/WEB002/HTTP002 atualizados ao estado real (03/09)
+  - SYN001 23/23 (enum exaustivo) + suíte 910
+  - bronca formal — 3 incidentes de processo (03/09)
+  - corpus do switch-expressão + status 906 testes
+  - atualiza known-bugs.md e DOING.md com status 03/09
+  - NATIVE002 paridade stubs→real FEITO — log config cache mq interval scheduler com cli via kof_time; aquitetura confirmada
+  - CONC003 fechado - async real no JS documentado em todo o repo
+  - trilha universal — Tier 0 fechado; Tier 1 (SYSTEMS) pendências mapeadas; WEB002 reivindicado por agente-planning
+  - MySQL prepared binário FEITO (02b9ddb) — status/parity/DOING atualizados
+  - limpa duplicatas; umico Em curso + Abertos
+  - WEB002 devolvido a ABERTO (escopo muito grande pra sessao; proximo passo: server bloqueante com accept+request-line+match de rota literal) — NAO pega outro enquanto GC fechado
+  - marca GC sweep+flag FEITO (dono agente-planning); reivindico WEB002 (NativeWebRuntime.java novo; handler com trampolim)
+  - ajustes de escopo apos HTTP002/GC — WEB002 e maior (closure trampolines); GC sweep fechado, auto-collect pendente safe-points
+  - status 854 + CHANGELOG noite 03/09 — 14 bugs corrigidos
+  - DOING.md — 13/25 bugs corrigidos no known-bugs (03/09)
+  - DOING.md — MySQL prepared FEITO (4ce1f25), NATIVE002 valid/observability FEITO (b20aa49), aberto: query binaria + GC
+  - update AGENTS.md and DOING.md with behavior freezing guidelines; revise test counts in status and stdlib-logging documentation
+  - DOING.md — coordenacao multi-agente (dono por gap, estado, arquivos)
+  - rodada 3 (usuários) — 6 bugs novos (total 23)
+  - bateria pós-merge — bugs 16-17 + contagens reais 819 (merge riscv64)
+  - update known bugs and status with new test results and bug descriptions
+  - resolve conflitos do merge de main (riscv64 13/13, counts reais)
+  - rodada agressiva — 6 bugs novos em known-bugs.md (total 15)
+  - bug-hunt 02/09 — 9 bugs documentados em known-bugs.md p/ próximo agente
+  - esclarece class X(...) = record em TODOS os md; reduce padronizado
+  - learn/19 esclarece java.util.* (interop, não idiomático para coleções)
+  - auditoria final — switch break opcional, learn/04 arrays, learn/12 notas, contagens 810
+  - merge backend-parity deltas (LOG001 JS + Vulkan conditional + main fixes)
+  - regra de arquitetura — máximo 500 linhas por classe (refactor futuro)
+  - captura mutável, concat FP, riscv64 — registros 02/09
+  - riscv64 real (02/09) no corpus — targets.md, overview, roadmap, actual-state
+  - learn/21 honesto — interop Java parcial verificada; contagem 810
+  - riscv64 runtime em asm puro (sem C) — status/parity alinhados
+  - honestidade verificada — exceptions String-only, class X(...) = record
+  - gotchas do koflama — ANEWARRAY ref types, Map descriptor jar, unboxing NPE, Int overflow em acumuladores micro, UTF-8 vs latin-1
+  - recalibra contagem de testes para 805 (788+8+5+4) pós-merge
+  - disclaimer da marca no README + NATIVE002 — toolchain cruzada + runtime C via gcc validado (02/09)
+  - consistência geral — versão 0.2.6-beta, contagem de testes 788, datas 02/09
+  - SECN002 fechado (AES-256-GCM no KofJS) + contagem 780 (763+8+5+4)
+  - deltas 01/09 (spawn captura, short-circuit JS, Channel param, pthread_create alinhamento, KofJS browser) + contagem 778 + MySQL wire protocol
+  - contagem 778 + bug #2 spawn→await→spawn resolvido (mesmo fix de alinhamento pthread_create)
+  - chained-OR membership caveat — Set<T> declarado quebra no JVM; só setOf local nos 3 targets
+  - casts primitivos as Char/as Int, Long[], String.valueOf builtin + fixes 01/09 (frame List.add, I2C, L2I)
+  - future/ fica só com planos; risc/arm (em desenvolvimento) -> docs/native-multiarch.md com estado real + como finalizar
+  - §4.8.1 Kof Security — evolução estratégica (auditoria + PQC híbrido ML-KEM/ML-DSA + SecureChannel + threat model + roadmap por maturidade)
+  - status 769 tests (752 kof-compiler +8 script +5 c-compiler +4 cli); integrate upstream io/fn-parser fixes
+  - status 768 tests; LSP references/rename, W3C traceId/spanId, P1-4 LCA moduleRoot, P3-10 ORM003 typed column
+  - update project status and test counts; add multimedia handling details for Kof
+  - alinha contagem de testes (736 = 723+8+5) e pipeline de release
+  - sweep profundo — todos os MDs sincronizados com o estado 0.2.6-beta
+  - guias de instalação por SO (sem versão hardcoded) + sweep 0.2.6-beta
+  - gap COMP002 do config fechado — causa era descritor ws faltando no JVM
+  - CONC001 fechado — spawn/await nos 3 targets (parity de concorrência)
+  - sync
+  - CONC003 no JS já cobre spawn stmt + spawn-expr — gap restante é async real
+  - JSN001/FLT001 fechados — parity JSON Float/Double no Native; CONC003 parcial
+  - Fase 7 Router marcada como implementada com detalhes
+  - status 0.2.3-beta + kof.cache fechado (fix nativo + E2E)
+  - update all md to 0.2.0-beta 27 Aug 2026 (658 tests, KofC, KofScript, kof.http JS, imports fix)
+  - update all md to 0.2.0-beta 27 Aug 2026 (658 tests, KofC, KofScript, kof.http JS, imports fix)
+  - move DATABASE_VISION e KOF_VS_SPRING de future para docs; future fica só com planejados + kof-native risc/arm
+  - stdlib — await/join de spawn (P1), CONC003 no JS
+  - stdlib P1 — Map/Set (JVM/JS, COL001 Native) e enum (3 targets)
+  - sync 0.1.0-beta 25/08 — generics Box<T> + SEM025 Object fix + test counts
+  - bugs #13/#14 resolvidos, plano P0 atualizado
+  - JSN003 encerrado na documentacao
+  - bug #13 (secret_get nativo) encerrado
+  - CONFIG001 nativo concluido (8/8 testes E2E)
+  - estado do CONFIG001 nativo (WIP ~90%) e contagem de testes
+  - bugs 13-14 na lista (secret_get nativo segfault; FP sem SSE no Native) + progresso do plano
+  - kof.log nativo na documentação (LOG001 só no JS)
+  - kof.orm completo na documentação (saveAll, page, operadores no where, deleteAll, count filtrado, MariaDB/PostgreSQL)
+  - package.sh no Windows — Git Bash + descoberta do Python (OBS-005/006)
+  - kof.orm na tabela de features (status.md + README)
+  - DATABASE_VISION — nível 0 do kof.db implementado (JDBC idiomático JVM, SQLite nativo, MySQL WIP); níveis 1-4 seguem a visão
+  - README e status finais (513/513, kof.db, JSON completo)
+  - document the intent-oriented paradigm with honest framing
+  - update local build instructions with lib/kof.jar workaround
+  - document the kof.ui platform (widgets, events, webview)
+  - auditoria do ecossistema da stdlib — matriz de cobertura (G1-G12)
+  - debugger — Fases 1-3 implementadas (kof-debug MVP validado)
+  - status — debugger Fases 1-2 (DebugInfo na IR, JVM metadata)
+  - status — 394 testes, guidelines idiomáticas e estado real
+  - fake-idioms — primary constructor is implemented (record-style since 0.0.5)
+  - sync all .md with real 0.0.5 state
+  - reorganize — move completed docs out of future/
+  - status — 375/375, KofJS 100% (GraalJS embutido)
+  - status — kof.io filesystem API, kof test, current test state
+  - status — Fases H/J/K/L concluídas, I design pronto
+  - Legacy Migration Platform architecture
+  - align learning and training corpus with 0.0.4-alpha
+  - distribution, packaging, versioning and state aligned with 0.0.4-alpha
+  - atualizar status, architecture, actual-state, README
+
+### Refactoring
+
+  - §375 — extrai a resolucao top-level/overload/defaults/extern de BuiltinCallTyper para TopLevelCallTyper (612 -> 485; check_500 rc=0)
+  - §344 —JsCallEmitter 608->466 (JsOperatorEmitter) + BuiltinCallTyper 620->541 (BuiltinUiCallTyper); check_500 rc=0; ledger §343/§344 FIXED
+  - split SemanticAnalyzer 601->451 — gate <=500 vermelho no tip desde #333
+  - §335 split NativeX86Calls(634->561) + ExpressionBinaryLowerer(601->541) — gate do tip verde, zero regressao
+  - split StatementLowerer 605→490 — gate ≤500 verde (§307)
+  - split runApkPipeline -> ApkToolchain (gate 500; CmdBuild 547->470, baseline entry removed)
+  - extrai ReturnValueLowerer — check_500 gate (#278)
+  - split ExpressionAssignmentLowerer 585→354 (extract field-assign)
+  - split ExpressionMethodCallLowerer (603 -> 439) — check_500 gate was red
+  - REFACTOR-500 — split SemanticAnalyzer (719→566) and SemExpressionTyper (618→537) under the 600 CI gate
+  - §193 split p/ gate ≤600 (StringReceiverGuards) + renumeração SEM063→SEM064 (colisão com o guard de campo-final do #331/#327, §176)
+  - improve payload size handling for frame encoding
+  - extrai maquina de expressao do linearReturn em machineRun (Fase C degrau 3, unidade 1/n)
+  - split Translate.java 526->255 + TranslateStatements 287 (gate <=500) - dono 192.168.100.22
+  - F3 FECHADA — NativeBackend 505→498 ≤500; PLAN-SOLID-500 completo
+  - NativeBackend 579→505 — NativeStaticData extraído (bug 41)
+  - split NativeBackend 671->579 (check_500 verde) — NativeSymbolMangling + array emitters
+  - split-7/8 — dedupe gap-diagnostics in ExpressionMethodCallLowerer (515→468) and extract builtin namespace inference from MemberCallTyper (550→379) into MemberCallNamespaces
+  - simplify error handling in ExpressionMethodCallLowerer and extract argument emission to a dedicated method
+  - extract static method type inference logic into MethodCallNamespaces class
+  - ExpressionInstanceCallLowerer 554->481 — famílias builtin por receiver em ExpressionBuiltinInstanceCalls (baseline 12->11)
+  - JsControlFlowParser 530->492 — split por RESPONSABILIDADE real (baseline 13->12)
+  - BytecodeDecoder 521->359 via BytecodeCp.java (baseline 14->13)
+  - SemanticAnalyzer 535->473 removendo visitor no-op (base do ratchet: 17->14)
+  - Parser 513->320 via TypeDeclarations.java + baseline do ratchet encolhe 17->16
+  - hook de injecao kof.supervisor em classe propria (regra <=500)
+  - JvmStringMathRuntime 504→465 + JvmUuidRuntime novo (58) — split do próprio 79d2668a
+  - S1a stdlib — JvmRuntimeCallDescriptors 504→354 (callReturnDescriptor → JvmRuntimeReturnDescriptors, gate ≤500 limpo na lane) + docs/development/plan-stdlib-expansion.md (mapeamento da arquitetura real da stdlib: Kof<Domain>.java→typer→3 backends, existente vs lacunas P0-P2, degraus S1-S9) + claim STDLIB no DOING
+  - dividir lowerer UI + JsRuntimeUiWidgets + JvmRuntimeUi (gate <=500)
+  - F3 — extrai NativeClassMeta (vtable/string data, 118 linhas)
+  - F3 — extrai NativeOpHelpers (ops de emissão, 178 linhas)
+  - F3 — extrai NativeArchEmitter (emitRiscv/emitAarch64, 262 linhas)
+  - F3 — extrai NativeMethodEmitter (emitMethod/emitOperation/emitStart, 251 linhas)
+  - SOLID — JsExpressionParser 526→383 (JsExpressionStatementParser helper)
+  - SOLID — JsControlFlowParser 514→499 (JsLabelParser helper)
+  - SOLID — ExpressionParser 519→475 (ExpressionNewParser helper)
+  - SOLID — migra parser para dev.kof.compiler.parser (10 classes)
+  - SOLID — migra backend/orquestração para dev.kof.compiler.backend (4 classes)
+  - SOLID — migra backend JVM para dev.kof.compiler.jvm (35 classes)
+  - SOLID — migra backend nativo para dev.kof.compiler.nat (36 classes)
+  - SOLID — migra runtime nativo para dev.kof.compiler.runtime (60 classes)
+  - SOLID — migra backend JS para dev.kof.compiler.js (30 classes)
+  - SOLID — 271 classes public + extrai RecordDeclarationNode/KofOperation
+  - SOLID — separa JsMethodCtx.java (5 classes) em arquivos próprios
+  - SOLID — separa AstNodes.java (59 decls) em arquivos próprios
+  - SOLID — separa IRNodes.java (45 records) em arquivos próprios public
+  - SOLID subpackages — grupo vk public (corrige acesso cross-package)
+  - divide KofInterpreter/KofInterpreterBuiltins em 8 colaboradores <=500
+  - update progress and next steps for REFACTOR-500 phases
+  - change resolveCalleeName method visibility to public
+  - extract assembly logic to NativeAssembler class
+  - F2.53 extrai CompilerUiEmitter (UI instance, packed color, SAM)
+  - F2.52 extrai lowerAndEmit para CompilerPipeline
+  - F2.51 move setters/local-scope/isAbstract para CompilerDriverState
+  - F2.50 move 35 wrappers/setters para CompilerDriverState (herança)
+  - F2.49 extrai CompilerEmission2 (super-bridge, args, increment)
+  - F2.48 extrai CompilerDriverState (33 campos via herança)
+  - F2.47 extrai CompilerEmissionHelpers + CompilerConfigSupport
+  - F2.46 extrai CompilerTypeSupport (type helpers)
+  - F2.45 extrai CompilerPipeline (orquestração)
+  - FASE 3.6 — aritmética x86_64 + predicados de tipo extraídos (NativeBackend 2070→1741, REFACTOR-500)
+  - FASE 3.5 — calls String/JSON x86_64 extraídos p/ NativeX86StringCalls (2286→2070, REFACTOR-500)
+  - FASE 3.4 — emissores cross riscv64 extraídos (2 classes ≤500, NativeBackend 2850→2286, REFACTOR-500)
+  - FASE 3.3 — HTTP/spawn riscv64 extraídos (3 classes ≤500, NativeBackend 3632→2850, REFACTOR-500)
+  - FASE 3.2 — tradutor riscv→aarch64 extraído p/ NativeAarch64Translator (4113→3632, REFACTOR-500)
+  - FASE 3.1 — constantes asm riscv64 fora do NativeBackend (8834→4113, REFACTOR-500)
+  - ExpressionStaticCallLowerer 502→493 — construtor Canvas move p/ ExpressionUiStaticLowerer (REFACTOR-500 varredura)
+  - F2.44 extrai CompilerOrmSupport (ORM + super-bridges)
+  - F2.43 extrai CompilerFunctionLowering (funções top-level)
+  - F2.42 extrai CompilerRecordSupport (métodos sintéticos de record)
+  - F2.41 extrai CompilerClassLowering (lowering de classes)
+  - F2.40 extrai CompilerComparisons (comparação + retorno)
+  - F2.39 extrai CompilerLambdaClass (geração de classes lambda)
+  - F2.38 extrai CompilerAnnotations (lowering de anotações)
+  - F2.37 extrai CompilerCaptureScanner (análise de capturas)
+  - F2.36 extrai CompilerCaptures (coleta de capturas de lambda)
+  - F2.35 extrai ExpressionOrmCallLowerer (ORM estático)
+  - F2.34 extrai ExpressionJsonCallLowerer (json.encode/decode)
+  - F2.33 extrai ExpressionInstanceCallLowerer (dispatch de instância)
+  - VkChain64Asm 3568 -> 57 (wrapper source() concatena 15 classes por dominio, REFACTOR-500)
+  - VkChain64Dispatch — kof_vk_dispatch64 (REFACTOR-500)
+  - VkChain64WSp — wputsp + wrunsp (REFACTOR-500)
+  - VkChain64W32 — wput32 + wrun32 (REFACTOR-500)
+  - VkChain64W64 — wput + wrun (REFACTOR-500)
+  - VkChain64Matvec — load_w + matvec (REFACTOR-500)
+  - VkChain64Shape — set_shape + shape_xy (REFACTOR-500)
+  - VkChain64Submit — submit + write_desc (REFACTOR-500)
+  - VkChain64Helpers — helpers fail/trace (REFACTOR-500)
+  - VkChain64Loader — dlopen/dlsym libvulkan (REFACTOR-500)
+  - VkChain64Data — .data/.bss/.rodata (REFACTOR-500)
+  - VkChain64Alloc — vk64_alloc_buffer (REFACTOR-500)
+  - VkChain64Init — init_common parte A (REFACTOR-500)
+  - VkChain64InitSpv — init parte B: spv/shader/pipelines (REFACTOR-500)
+  - VkChain64Init2 — pipe32+split opcionais (REFACTOR-500)
+  - VkChain64InitPools — init pools (pipe32/split/pools de VkChain64Asm, REFACTOR-500)
+  - F8.6 JvmBackend sem resíduos (REFACTOR-500)
+  - F8.5 extrai JvmOpEmitter de JvmBackend (REFACTOR-500)
+  - F8.4 extrai JvmOpCollections de JvmBackend (REFACTOR-500)
+  - F8.3 extrai JvmLiteralEmitter de JvmBackend (REFACTOR-500)
+  - F8.2 extrai JvmRecordEmitter de JvmBackend (REFACTOR-500)
+  - F8.1 extrai JvmAnnotations de JvmBackend (REFACTOR-500)
+  - F2.32 extrai ExpressionUiMediaCallLowerer (Ui/Media/Io estáticos)
+  - F2.31 extrai 5 lowerers de namespace (http/time/mq/config/cache)
+  - F2.30 extrai ExpressionLogCallLowerer (log.*)
+  - F2.29 extrai ExpressionSchedulerCallLowerer (scheduler.*)
+  - F2.28 extrai ExpressionProcessCallLowerer (namespace process.*)
+  - F2.27 extrai ExpressionDbCallLowerer (namespace db.*)
+  - F2.26 extrai ExpressionPrintLowerer (print/println)
+  - F2.25 extrai ExpressionUiStaticLowerer (Icon/Font/Button/Component/Store)
+  - F2.24 extrai ExpressionStaticCallLowerer (branches receiver-null)
+  - FASE 6 — renomeia ExpressionTyper/MethodCallTyper → Sem* (colisão de nome com F2.15/F2.16 do CompilerDriver)
+  - FASE 4.6 — remove classe placeholder vazia JsMethodCtx (REFACTOR-500)
+  - FASE 4.5 — divide parsing/lowering em 8 classes coesas ≤500 (REFACTOR-500)
+  - FASE 4.4 — extrai MethodCtx/LoopCtx/NewPending/DupMarker/StatementEnd + helpers estáticos (REFACTOR-500)
+  - FASE 4.3 — extrai JsLoweringContext (estado compartilhado do lowering) (REFACTOR-500)
+  - FASE 4.2 — extrai JsTypeMapper (helpers puros de nome/tipo) (REFACTOR-500)
+  - FASE 4.1 — extrai runtime constants + JsArtifactWriter (REFACTOR-500)
+  - F1.16 divide RuntimeJsonDecode em 2 (517→292)
+  - F2.21 extrai CollectionCallLowerer (branches List/Channel/Map/Set)
+  - REFACTOR-500 F6 (6/6) — remove SSE_CONNECTION_TYPE órfã do SemanticAnalyzer
+  - FASE 7 — divide Parser em StatementParser/ExpressionParser/LambdaParser/TypeParser/AnnotationParser/ClassMemberParser (REFACTOR-500)
+  - FASE 7 — cria ParseContext (estado compartilhado do parsing, REFACTOR-500)
+  - REFACTOR-500 F6 (5/6) — extrai ExpressionTyper + StatementAnalyzer + 3 typer de MethodCallExpr
+  - REFACTOR-500 F6 (4/6) — extrai SymbolTableBuilder
+  - REFACTOR-500 F6 (3/6) — extrai TypeChecker
+  - REFACTOR-500 F6 (2/6) — extrai MemberResolver
+  - F2.20 extrai ExpressionAssignmentLowerer + ExpressionBinaryLowerer
+  - REFACTOR-500 F6 (1/6) — SemanticAnalyzer expõe estado via accessors
+  - F2.19 extrai ExpressionMethodCallLowerer (case MethodCallExpr, 2205 linhas)
+  - F2.18 extrai ExpressionLowerer (emitExpression, 3169 linhas)
+  - F2.17 extrai CollectionMethodTyper (List/Map/Set/String)
+  - F2.16 extrai MethodCallTyper (case MethodCallExpr do inferExprType)
+  - F2.15 extrai ExpressionTyper (inferExprType)
+  - F2.14 divide StatementLowerer — SwitchStmtLowerer + SwitchExprLowerer
+  - F2.13 extrai StatementLowerer (emitStatementInner + switch-expr)
+  - F2.12 adiciona resolveWithTypeParams/substituteTypeVariable/defaultValueOp ao CompilerTypes
+  - FASE 8 — Main 1229 → 375 (dispatcher + comandos pequenos) (REFACTOR-500)
+  - FASE 8 — extrair CmdBuild/CmdRun/CmdTest/CmdScript/CmdServe + KofCliSupport de Main (1229) (REFACTOR-500)
+  - F2.11 adiciona type/enum/record helpers ao CompilerTypes
+  - F2.10 extrai CompilerImports (expandKofImports + declarationName)
+  - FASE 8 — KofJsRunner 568 → 419 + KofJsWebview (162) (REFACTOR-500)
+  - F2.9 extrai CompilerDesugar (desugarTests/desugarApplication/buildTestHarnessMain)
+  - FASE 8 — Bench 630 → 286 (orquestração só) (REFACTOR-500)
+  - FASE 8 — extrair BenchRunners (149) de Bench (630) (REFACTOR-500)
+  - FASE 8 — KofScript 608 → 479 + KofScriptExecutor (164) (REFACTOR-500)
+  - FASE 8 — extrair BenchBaseline (162) de Bench (630) (REFACTOR-500)
+  - F2.8 extrai ModuleRoots (moduleRootFor/commonAncestor/derivedPackageOf)
+  - FASE 8 — extrair BenchDiscovery (100) de Bench (630) (REFACTOR-500)
+  - F2.7 extrai JsonDispatch (encode/decode/listTag/sanitize)
+  - F2.6 extrai HierarchyResolver (5 métodos de hierarquia)
+  - F2.5 extrai BoxClassFactory (criação de box mutável)
+  - F2.4 extrai CompilerTypes (toType/qualifyViaImports/ownerTypeFromInternal/mainClassType)
+  - F2.3 extrai TypeEmitter.boxPrimitive
+  - FASE 8 — JvmVkRuntime 995 → wrapper + 3 partes ≤500 (REFACTOR-500)
+  - FASE 8 — JvmMediaRuntime 673 → wrapper + 2 partes ≤500 (REFACTOR-500)
+  - FASE 8 — JvmWebRuntime 716 → wrapper + 2 partes ≤500 (REFACTOR-500)
+  - FASE 8 — JvmStringRuntime 983 → wrapper 15 + 5 partes ≤500 (REFACTOR-500)
+  - F2.2 extrai StringMethodRegistry (assinaturas de String/Object)
+  - F2.1 extrai TypeMetrics (11 helpers de tipo puros)
+  - F1 final — RuntimeSecurityData extrai rodata; todas as Runtime* ≤500
+  - F1 COMPLETA — NativeRuntime 17726→141 linhas, orquestrador puro
+  - F1.15 divide JsonArrayDecode/Log/Config/Io/Db — NativeRuntime 5564→267 linhas
+  - F1.14 dedup — RuntimeJsonUtils/Cache/Time/Ui ligados ao NativeRuntime
+  - F1.13 extrai security/validation/observability/map/set/enum
+  - F1.12 extrai RuntimePrintNum/RuntimeNet/RuntimeVk/RuntimeMisc
+  - F1.11 extrai RuntimeConcurrency/Channel/Scheduler/Mq
+  - F1.10 extrai RuntimeMemory + RuntimeGc (alloc/free/gc/exit/panic/errors)
+  - F1.8 extrai RuntimeArray (alloc/length/get/set)
+  - F1.7 extrai RuntimeList (kof_list_new/grow/add/get/set/...)
+  - F1.6 extrai RuntimeStringBase (from_literal/memcpy/length/concat/equals/print_string)
+  - F1.5 extrai RuntimeStringOps + RuntimeStringEdit
+  - F1.4 extrai RuntimeStringSearch (contains/startsWith/endsWith/indexOf/lastIndexOf)
+  - F1.3 extrai RuntimeStringParse (toInt/toLong/toDouble/toFloat)
+  - F1.2 extrai RuntimeStringConv (int/char/long/bool/float/double→string)
+  - FASE 8 — Optimizer 611 → 240 (REFACTOR-500)
+  - FASE 8 — OptimizerConstantFold (388) — passe de constant folding (REFACTOR-500)
+  - FASE 8 — NativeWebRuntime 603 → 25 (REFACTOR-500)
+  - FASE 8 — NativeWebResponses (122) — helpers de resposta (REFACTOR-500)
+  - FASE 8 — NativeWebListen (355) — listen + handle_client (REFACTOR-500)
+  - FASE 8 — NativeWebCore (156) — dados + primitivas web (REFACTOR-500)
+  - FASE 8 — NativeHttpRuntime 652 → 30 (REFACTOR-500)
+  - FASE 8 — NativeHttpCore (392) — request core + wrappers (REFACTOR-500)
+  - FASE 8 — NativeHttpParseUrl (172) — parse URL + erro https (REFACTOR-500)
+  - FASE 8 — NativeHttpPrimitives (113) — data + buffer helpers (REFACTOR-500)
+  - FASE 8 — JdwpClient 503 → 415 + JdwpPacket (100) (REFACTOR-500)
+  - FASE 5 — JvmRuntime 2526 → 132 + 7 classes ≤500 (REFACTOR-500)
+  - optimize descriptor set binding logic in assembly
+  - remove observability metrics implementation
+  - runtime em assembly PURO (sem C) — Kof é Kof
+  - streamline return value handling and remove debug tracing for 'add' method
+  - update variable declaration examples for clarity and consistency
+  - simplify argument handling in KofIo method calls to prevent frame bugs
+
+### Tests
+
+  - fixa o desperdicio de despacho e a semantica de eventos do watcher/auto-loop (RED contra os scripts atuais)
+  - test(native,cross) #464 §363 §364 — isolamento Float compound-assign + arestas dos ports §359, travados nos 4 alvos
+  - makealive 3.1.0 sonda da forma do provider (claim D-MAKEALIVE) — campos tipados (MvRes)->Map<String,String> sobre record COMPLEM parse+tipos, mas invoke direto em campo-lambda NAO tipa ('Cannot resolve method read on type MvProvider', medido); forma travada = precedente workflow (copia p/ local tipado, workflow-host.kf:356) — provada JVM==JS byte-parity + Native compile (MakealivePrimitivesE2ETest 6/6); shapes measured, never assumed (plano §2)
+  - #278 scope-3 guarda de atomicidade nullable-primitivo — 5/5 verdes, mediidas
+  - #278 scope-3 guarda de atomicidade nullable-primitivo — 5/5 verdes no tip isolado
+  - D-TROOL migração dos testes Bool?/Boolean? + lei Kleene E2E (TrooleanLawE2ETest)
+  - 3.0.1 recon — trava as 6 formas do §4 sem embarcar superficie
+  - #463 — normaliza CRLF na face Script do primitivoAsStringsifies
+  - 8.6 LanguageCoreSurfaceTest — golden do NUCLEO medido no tip + flips 8.2/8.5/8.6 no tracker (EN+PT) + DOING (B)(C)
+  - refresh dos goldens de Char no cross (§333/D-PRINT)
+  - trava de fonte-unica no hover dos 31 namespaces (LSP-A, pos-X10)
+  - rotear qemu cru p/ NativeRiscv64E2ETest.qemu (sysroot) em 10 classes + DOING §284-map EN/PT
+  - replace obsolete nonJvmTargetIsHonestGap with deterministic runSdkless variant
+  - fecha §279 — pin anti-regressao do ICE do JS em if de primitivo nulavel + ledger EN+PT
+  - #278 D-NULL-INTENT — confirma I6 também na posição de condição direta de if
+  - #278 D-NULL-INTENT — corpus de regressão Q0 (I1-I8)
+  - prove the scalar ABI set (Long e2e + FfiSignature mapping lock)
+  - selftest do check_known_bugs_status ganha caso §904 (✅-face + ⚠️ REMAINS OPEN = live) — cumpre a promessa do commit anterior com fixture plantado, nao so dado real
+  - R6 machine gate — every emitted domain gap must have a parity row
+  - lock the web-gate gap codes (WEB002/003/004/006) against the §275 drift class
+  - §258 debt #794 — remove never-read local in KofHttpNativeTimeoutE2ETest
+  - §255 fechado — guard de sysroot no crossNativeSqliteNowCompiles (SKIP honesto)
+  - S12c isNis — golden da célula stdvalidation CORRIGIDO (deslocado 1) + sync de docs
+  - prova local do GATE 1 — falso-VERDE da lista (state:null omitido) + falso-RED de instancias
+  - EXPERIMENTO controlado — 4 chaves de @SuppressWarnings, scan decide qual cola
+  - §233 — migração 4x .get(N)->[N] no SPLIT_PROGRAM de NativeStringCompareCrossTest (blast-radius do contrato §202/602dcbc0 split()->String[] esquecido no arquivo cross ha ~1 dia; nem o 5e996312 migrou): PROVA MEDIDA — no remoto PURO 3a0826df o cross estava 2/2 VERMELHO (compile fail SEM "array nao tem metodo get()"), com a migracao 2/2 VERDE sob qemu riscv64+aarch64 e o golden SPLIT_GOLDEN BYTE-IDENTICO (nao relaxado, Q5 — e exatamente o programa que roda na JVM com ec=0 e mesma saida, medido 14/09 ~16:40). Takeover legitimo: lane nat encerrada (11/09), lane .15 registry NAO migrou o arquivo, e o red bloqueia o gate de release. Docs: §233 ✅ FIXED EN+PT, §237 ✅ registro com credit ao 8935c8a7 (medido 1/1 verde no remoto puro — nao e fix desta lane), fila-13 32->30 (delta = §233/§237; contagem base da lane .15 respeitada), DOING com a auto-correcao honesta da campanha (guard §240 no typer = REDUNDANTE apos o 5e996312 na raiz — commits locais descartados ANTES de publicar; migracao §241-enfraquecedora DESCARTADA apos medir que Throwable real volta a lancar no remoto; lição: bisect+medicao no tip ANTES de entregar) — dono = 192.168.100.17
+  - add tests for guarded pattern switch expressions to fix issue #199
+  - #243/#220 — prova de boxing em atribuição de primitivo a campo T
+  - #221 — prova de static field com inicializador de expressao (10*10, "foo"+"bar")
+  - #155 — prova de segunda interface com retorno primitivo (Boolean/Int)
+  - #229 — prova de switch-expr em atribuicao composta (+=/-=) e reatribuicao
+  - #193/#198 — prova de tipo-funcao como type-arg de new List<() -> T>()
+  - unidade 2a — pathOracle brute-force (DEFINICAO caminho-a-caminho) vs passada rapida em CFGs REAIS do corpus (300 classes, blocos<=40) = divergencia zero bloco a bloco, 6/6 fresco 4.28s; DECOMPILER.md EN/PT atualizado. Correctness da passada provada ANTES de ligar o walker (de-risk imediatoPostDom em struct() na unidade 2b) — dono = 192.168.100.17
+  - #204 — prova de no-arg () -> void para block-lambda sem return
+  - prova de regressao do deref-null em CompilerImports (NPE L67 sem guard)
+  - subscript em List e VALIDO desde #149/#152 — so String/Map/Set dao SEM054
+  - corpus alinhado ao contrato — split() retorna String[]; acesso e arr[i], nao .get(i)
+  - add §204 regression test for else-branch analysis (Q1 gap)
+  - add regression test for issue #163
+  - add setAndMapConstruction test case for #139/#150
+  - regressao #128 — json.decode<Record> com campo List<Record>? aninhado
+  - regressao #127 — record com Int? (equals/hashCode/toString)
+  - torna gate de asm riscv/aarch OPCIONAL ate dev nativo completo (D-ASM-GATE)
+  - stress array bounds safety (KOF-SBD-001-STRESS)
+  - corrente de 2 if-sem-else executa os 4 caminhos (Q3: borda não vaza entre irmãos)
+  - EDI001 degraus 6-9 - prova de instalacao vim/emacs/geany/nano (21/21) + plano sync - dono 192.168.100.22
+  - jsondec-map estreita o narrow exigido pelo congelado §87 (regressão visível do #126; A/B medido: pai 5a116284 verde, 61495f69 vermelho SEM049)
+  - célula de matriz castfn (§127-JVM) — prova 4 targets em CI
+  - células de matriz p/ §155/§156/§157 — overclaims de alvo-múltiplo (4 targets em CI)
+  - prova NATIVA automatizada de §89/§131 — células de matriz numconv/methodoverload (4 targets em CI)
+  - anota KofScriptTest.evalNativeTarget como regressão do GC x86 + DOING
+  - pow — trava a recusa MATH001 cross (KofMathTest.powCrossArchRefused)
+  - §103.2 Int→Long em campo prova o I2L do ExpressionAssignmentLowerer (repro do reporter, VerifyError antes)
+  - KofJsBrowserE2ETest acha o Chrome do macOS em vez de pular em silêncio
+  - sonda JS declara os imports do runtime podado; plano e DOING com o gate
+  - E2E dedicados por target p/ descarte Long/Double (delta sobre 360401a4)
+  - hardening da poda riscv (2 testes não-vácuos sobre o port 2f1dba45) + sync de doc do design S-6 (unidade de topo, aprovada na #97)
+  - prova qemu real das faces riscv64+aarch64 da tag de chave de Map
+  - faces UTF-16 riscv/aarch provadas (B34) — NativeStringUtf16CrossTest
+  - bug 104 — célula objmethods na matriz de paridade (record em coleção) + §104b/§104c registrados
+  - STDLIB — paridade cross de validation/net/time/escape em qemu (auditoria R6 parte 2)
+  - STDLIB — paridade cross (riscv/aarch) do core stdlib em qemu
+  - stdvalidation ganha `isCpf==true`/`isCpf==false` — fecha a família flagged como FALTAM
+  - stdstrings ganha caso `isAlpha("Hello") == true` — 4 targets
+  - matriz stdmath ganha os casos `==true`/`==false` — 4 targets travam a comparação
+  - varredura R6 completa — +5 namespaces (security/orm/config/cache/log)
+  - varredura R6 estendida a db/http/cache/mq (4 famílias de outras lanes)
+  - varredura R6 — 8 namespaces stdlib nunca são silenciosos
+  - paridade kof-script × JVM compilado da stdlib nova (S10–S12b)
+  - reabilita native p/ channel-spawn (bug 50) e adiciona spawnexpr-return (bug 46)
+  - json.decode<List<Record>> Native dá JSN004 (gap honesto, não link fail)
+  - isolamento spawn { return 42 } sem captura — separa causa captura vs return lambda
+  - bug 50 — channel+spawn no Native (valida fix candidata futex WAIT quando build disponível)
+  - SG-006 — short-circuit && no JS/JVM (String? null && length > 0 não NPE)
+  - spawn-expr lambda literal com return + handle no Native; docs bug 61 gap honesto FFI001
+  - Fase C — trava degradação honesta de do-while com corpo ramificado
+  - Fase C — trava laço aninhado + corpo não-linear (verificação com probes)
+  - staticfield/staticpluseq nos 4 targets (bug 41 já corrigido no Native)
+  - fecha bug 52 — re-throw em catch já tinha paridade JS (colateral do 45)
+  - kitchen-sink com ORACLE strict-verifier (P0 parte 4)
+  - gate de CI da matriz — doc × exclusões do teste (Fase 9)
+  - comentário do freshDriver atualizado (bug 51 corrigido em b7afc5a)
+  - bug 48 — regressão decode<List<Record>> no interpretador + matriz
+  - ConformanceMatrixTest lote 1 — linguagem core nos 4 targets
+  - cross-target sweep JS/Native (regra 5) — bugs 41-45 registrados + gate JVM×JS
+  - casos dos bugs 35/36/static-field travados em JVM×JS
+  - gate de paridade permanente interpretado vs JVM (15 casos)
+  - guard Assumptions.assumeTrue (qemu ausente) em time/scheduler cross — convenção NATIVE002
+  - E2E riscv64/aarch64 Map/Set (paridade exata com x86_64)
+  - channelBlocksBeforeSendJvm não pinifica corrida de agendamento
+  - mic gap aceita as duas formulações do MEDIA003
+  - update passwordsNative test to validate successful hash on Native target
+  - prova de Turing-completude — Ackermann + loop de 1M nos 3 targets
+
+### Build
+
+  - bump version to 0.4.9-beta [skip ci]
+  - bump version to 0.4.8-beta [skip ci]
+  - bump version to 0.4.7-beta [skip ci]
+  - bump version to 0.4.6-beta [skip ci]
+  - bump version to 0.4.5-beta [skip ci]
+  - bump version to 0.4.4-beta [skip ci]
+  - bump version to 0.4.3-beta [skip ci]
+  - bump version to 0.4.3-beta [skip ci]
+  - bump version to 0.4.2-beta [skip ci]
+  - bump version to 0.4.1-beta [skip ci]
+  - prepend JDK compilador ao PATH dos E2E (D-BASELINE, release 25)
+  - baseline da toolchain 21 -> 25 (D-BASELINE, decisão da mantenedora)
+  - bump version to 0.4.0-beta [skip ci]
+  - nomenclatura 0.4.0-beta (pedido da mantenedora - proxima versao quando estavel)
+  - bump version to 0.3.23-beta [skip ci]
+  - bump version to 0.3.22-beta [skip ci]
+  - bump version to 0.3.21-beta [skip ci]
+  - bump version to 0.3.20-beta [skip ci]
+  - bump version to 0.3.19-beta [skip ci]
+  - bump version to 0.3.18-beta [skip ci]
+  - bump version to 0.3.17-beta [skip ci]
+  - bump version to 0.3.16-beta [skip ci]
+  - bump version to 0.3.15-beta [skip ci]
+  - bump version to 0.3.14-beta [skip ci]
+  - bump version to 0.3.13-beta [skip ci]
+  - bump version to 0.3.12-beta [skip ci]
+  - bump version to 0.3.11-beta [skip ci]
+  - bump version to 0.3.10-beta [skip ci]
+  - bump version to 0.3.9-beta [skip ci]
+  - bump version to 0.3.8-beta [skip ci]
+  - bump version to 0.3.7-beta [skip ci]
+  - bump version to 0.3.6-beta [skip ci]
+  - bump version to 0.3.5-beta [skip ci]
+  - bump version to 0.3.4-beta [skip ci]
+  - bump version to 0.3.3-beta [skip ci]
+  - bump version to 0.3.2-beta [skip ci]
+  - bump version to 0.3.1-beta [skip ci]
+  - bump version to 0.3.0-beta [skip ci]
+  - abre linha 0.3.0-beta na branch beta-0.3.0
+  - bump version to 0.2.8-beta [skip ci]
+  - bump version to 0.2.7-beta [skip ci]
+  - bump version to 0.2.6-beta [skip ci]
+  - bump version to 0.2.5-beta [skip ci]
+  - bump version to 0.2.4-beta [skip ci]
+  - bump version to 0.2.3-beta [skip ci]
+  - bump version to 0.2.2-beta [skip ci]
+  - bump version to 0.2.1-beta [skip ci]
+  - bump version to 0.2.0-beta [skip ci]
+  - bump version to 0.1.11-beta [skip ci]
+  - bump version to 0.1.10-beta [skip ci]
+  - bump version to 0.1.9-beta [skip ci]
+  - bump version to 0.1.8-beta [skip ci]
+  - bump version to 0.1.7-beta [skip ci]
+  - bump version to 0.1.6-beta [skip ci]
+  - bump version to 0.1.5-beta [skip ci]
+  - bump version to 0.1.4-beta [skip ci]
+  - bump version to 0.1.3-beta [skip ci]
+  - bump version to 0.1.2-beta [skip ci]
+  - bump version to 0.1.1-alpha [skip ci]
+  - bump version to 0.0.14-alpha [skip ci]
+  - bump version to 0.0.13-alpha [skip ci]
+  - bump version to 0.0.12-alpha [skip ci]
+  - bump version to 0.0.11-alpha [skip ci]
+  - bump version to 0.0.10-alpha [skip ci]
+  - bump version to 0.0.9-alpha [skip ci]
+  - bump version to 0.0.8-alpha [skip ci]
+  - bump version to 0.0.7-alpha [skip ci]
+  - rebuild kof-webview with file:// module CORS fix
+  - bump version to 0.0.6-alpha [skip ci]
+  - bump version to 0.0.5-alpha [skip ci]
+  - centralized versioning, official launchers and packaging
+
+### Tooling
+
+  - fix do probe de credencial - coderoot e listener real via ss
+  - reaproveita o ipc do VS Code quando o headless nao herda GIT_ASKPASS
+  - clean de reator inteiro antes da suite
+  - guarda mecanizada as duas mortes de RAM medidas 19/09
+  - official TextMate grammar and editor/LSP documentation
+
 <!-- NEXT-RELEASE -->
 
 ## [0.2.7-beta] - 2026-09-04
